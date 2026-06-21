@@ -532,7 +532,24 @@ def get_meta_ads_performance():
         "comparison": comparison
     })
 
+def _apply_campaign_status_overrides(campaigns):
+    """Aplica overrides de status salvas no arquivo local sobre qualquer lista de campanhas."""
+    if not os.path.exists(CAMPAIGN_STATUS_FILE):
+        return campaigns
+    try:
+        with open(CAMPAIGN_STATUS_FILE, "r", encoding="utf-8") as f:
+            overrides = json.load(f)
+        for camp in campaigns:
+            cid = str(camp["id"])
+            if cid in overrides:
+                camp["status"] = overrides[cid]
+                logging.info(f"Override de status aplicado: campanha {cid} → {overrides[cid]}")
+    except Exception as e:
+        logging.error(f"Erro ao aplicar overrides de status: {e}")
+    return campaigns
+
 def _get_campaigns_list():
+
     client = get_ads_client()
     campaigns = []
     
@@ -591,7 +608,7 @@ def _get_campaigns_list():
                 })
             
             if campaigns:
-                return campaigns
+                return _apply_campaign_status_overrides(campaigns)
         except Exception as e:
             logging.error(f"Erro ao buscar campanhas reais: {e}. Retornando campanhas simuladas.")
 
@@ -644,18 +661,7 @@ def _get_campaigns_list():
         camp["alerts"] = alerts
         
     # Carregar overrides de status de campanha (para persistência local/simulação)
-    if os.path.exists(CAMPAIGN_STATUS_FILE):
-        try:
-            with open(CAMPAIGN_STATUS_FILE, "r", encoding="utf-8") as f:
-                overrides = json.load(f)
-                for camp in campaigns:
-                    cid = str(camp["id"])
-                    if cid in overrides:
-                        camp["status"] = overrides[cid]
-        except Exception as e:
-            logging.error(f"Erro ao aplicar overrides de status: {e}")
-        
-    return campaigns
+    return _apply_campaign_status_overrides(campaigns)
 
 @app.route("/api/campaigns", methods=["GET"])
 def get_campaigns():
