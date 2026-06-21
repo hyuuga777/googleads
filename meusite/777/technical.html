@@ -318,27 +318,29 @@
 
     function loadPageData() {
         loadInfrastructure();
+        checkApiStatus();
     }
 
     async function loadInfrastructure() {
         try {
             const res = await fetch(`${API_BASE}/infrastructure`);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const data = await res.json();
 
             const tagsTbody = document.getElementById('tags-table-body');
-            tagsTbody.innerHTML = '';
+            if (tagsTbody) tagsTbody.innerHTML = '';
             
-            data.tags.forEach(t => {
+            (data.tags || []).forEach(t => {
                 const isInstalled = t.status === "INSTALLED";
                 const badgeClass = isInstalled ? "enabled" : "error";
                 const badgeLabel = isInstalled ? "Instalada" : "Ausente";
                 
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td class="campaign-name-cell">${t.page}</td>
+                    <td class="campaign-name-cell">${t.page || ''}</td>
                     <td>${t.tag || 'Global Site Tag (gtag.js)'}</td>
                     <td><span class="status-pill ${badgeClass}">${badgeLabel}</span></td>
-                    <td style="font-family: monospace;">${t.latency}</td>
+                    <td style="font-family: monospace;">${t.latency || '--'}</td>
                     <td>
                         ${isInstalled ? `
                             <span style="color:var(--text-secondary); font-size:0.75rem;">Operando</span>
@@ -347,43 +349,50 @@
                         `}
                     </td>
                 `;
-                tagsTbody.appendChild(row);
+                if (tagsTbody) tagsTbody.appendChild(row);
             });
 
-            document.getElementById('seo-sitemap-count').textContent = `${data.sitemap_url_count} URLs encontradas`;
+            const sitemapEl = document.getElementById('seo-sitemap-count');
+            if (sitemapEl) sitemapEl.textContent = `${data.sitemap_url_count || 0} URLs encontradas`;
             
             const blockedSpan = document.getElementById('seo-blocked-pages');
             const fixRobotsBtn = document.getElementById('btn-fix-robots');
             
-            if (data.blocked_pages.length > 0) {
-                blockedSpan.textContent = data.blocked_pages.join(', ');
-                blockedSpan.style.color = 'var(--pink)';
-                fixRobotsBtn.style.display = 'inline-block';
-            } else {
-                blockedSpan.textContent = 'Nenhuma página de campanha bloqueada';
-                blockedSpan.style.color = 'var(--success)';
-                fixRobotsBtn.style.display = 'none';
+            if (blockedSpan) {
+                if ((data.blocked_pages || []).length > 0) {
+                    blockedSpan.textContent = data.blocked_pages.join(', ');
+                    blockedSpan.style.color = 'var(--pink)';
+                    if (fixRobotsBtn) fixRobotsBtn.style.display = 'inline-block';
+                } else {
+                    blockedSpan.textContent = 'Nenhuma página de campanha bloqueada';
+                    blockedSpan.style.color = 'var(--success)';
+                    if (fixRobotsBtn) fixRobotsBtn.style.display = 'none';
+                }
             }
 
-            document.getElementById('robots-view-terminal').textContent = data.robots_txt || "robots.txt vazio ou inexistente.";
+            const robotsEl = document.getElementById('robots-view-terminal');
+            if (robotsEl) robotsEl.textContent = data.robots_txt || "robots.txt vazio ou inexistente.";
 
             const ga4Container = document.getElementById('ga4-log-container');
-            ga4Container.innerHTML = '';
+            if (ga4Container) ga4Container.innerHTML = '';
             
-            data.ga4_logs.forEach(log => {
+            (data.ga4_logs || []).forEach(log => {
                 const statusClass = 
                     log.status === "SUCCESS" ? "ga4-status-success" : 
                     log.status === "WARNING" ? "ga4-status-warning" : "ga4-status-error";
                 
                 const entry = document.createElement('div');
                 entry.className = 'ga4-log-entry';
+                // Proteção: timestamp pode ser "2026-06-18 12:00:00" ou só "2026-06-18"
+                const tsParts = (log.timestamp || '').split(' ');
+                const timeStr = tsParts.length > 1 ? tsParts[1] : (tsParts[0] || '--:--:--');
                 entry.innerHTML = `
-                    <span class="ga4-time">[${log.timestamp.split(' ')[1]}]</span>
-                    <span class="ga4-event">${log.event.toUpperCase()}</span>
-                    <span class="${statusClass}">● ${log.status}</span>
-                    <span style="color:var(--text-secondary);">${log.message}</span>
+                    <span class="ga4-time">[${timeStr}]</span>
+                    <span class="ga4-event">${(log.event || '').toUpperCase()}</span>
+                    <span class="${statusClass}">● ${log.status || ''}</span>
+                    <span style="color:var(--text-secondary);">${log.message || ''}</span>
                 `;
-                ga4Container.appendChild(entry);
+                if (ga4Container) ga4Container.appendChild(entry);
             });
 
         } catch (err) {
@@ -516,7 +525,6 @@
                 loadInfrastructure();
             }, 500);
         }
-    }
     }
 
 </script>
