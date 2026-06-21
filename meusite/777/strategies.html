@@ -700,8 +700,8 @@
             descriptions.push(cb.value);
         });
         
-        if (headlines.length === 0 || descriptions.length === 0) {
-            showNotification("Erro", "Selecione pelo menos um título e uma descrição.", false);
+        if (headlines.length < 3 || descriptions.length < 2) {
+            showNotification("Erro", "Selecione pelo menos 3 títulos e 2 descrições (requisito do Google Ads para anúncios RSA).", false);
             return;
         }
         

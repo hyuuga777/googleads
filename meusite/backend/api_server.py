@@ -1884,11 +1884,16 @@ def publish_ad_draft():
     except Exception as e:
         logging.error(f"Erro ao salvar arquivo de rascunhos de anúncio: {e}")
         
+    if not applied_real_api:
+        return jsonify({
+            "status": "error",
+            "message": f"Erro ao publicar no Google Ads. Detalhes: {error_msg or 'Nenhum grupo de anúncios (Ad Group) ativo encontrado para esta campanha.'}"
+        }), 400
+        
     return jsonify({
         "status": "success",
-        "message": "Anúncio RSA enviado com sucesso como Rascunho (Pausado) para o Google Ads!",
-        "applied_real_api": applied_real_api,
-        "api_error": error_msg
+        "message": "Anúncio RSA criado com sucesso como Pausado (Rascunho) no Google Ads!",
+        "applied_real_api": True
     })
 
 @app.route("/api/offline_funnel", methods=["GET"])
