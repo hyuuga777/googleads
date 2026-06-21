@@ -619,9 +619,8 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-        if (sessionStorage.getItem('cyborg_analytics_auth') === 'true') {
-            showDashboard();
-        }
+        // Bypass de autenticação — acesso direto ao painel de analytics
+        showDashboard();
         
         // Mobile sidebar toggle
         document.getElementById('sidebar-toggle-btn')?.addEventListener('click', () => {
