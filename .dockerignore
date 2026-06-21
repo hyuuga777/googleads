@@ -1,0 +1,22 @@
+.git
+.vscode
+.claude
+**/*.mp4
+**/*.pdf
+**/*.log
+__pycache__/
+*.pyc
+
+# Pastas pesadas/desnecessárias no Docker
+meusite/novodashbord/
+meusite/base/
+meusite/lotads - Copia/
+meusite/lotads/
+meusite/lotar/
+meusite/lotauto/
+meusite/lothome/
+meusite/lotseo/
+meusite/lotsite/
+meusite/novodashbord
+meusite/base
+

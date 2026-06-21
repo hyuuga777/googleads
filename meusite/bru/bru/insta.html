@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INSTAGRAM</title>
+
+    <link rel="icon" type="image/png" href="insta.png">
+    <link rel="apple-touch-icon" href="insta.png">
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer; /* Indica que é clicável */
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; 
+        }
+
+        /* Botão de Ativar Som (Overlay) */
+        #unmute-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            font-weight: bold;
+            font-size: 18px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            pointer-events: none; /* Permite clicar no vídeo através do botão */
+            transition: opacity 0.3s;
+        }
+
+        /* Animação para chamar atenção */
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .pulsing {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body onclick="ativarSom()">
+
+    <div id="unmute-overlay" class="pulsing">
+        🔊 Clique para ativar o som
+    </div>
+
+    <video id="meuVideo" autoplay muted loop playsinline>
+        <source src="video.mp4" type="video/mp4">
+        Seu navegador não suporta vídeos.
+    </video>
+
+    <script>
+        function ativarSom() {
+            var video = document.getElementById("meuVideo");
+            var overlay = document.getElementById("unmute-overlay");
+
+            // Tira o mudo
+            video.muted = false;
+            
+            // Garante que o volume está no máximo
+            video.volume = 1.0; 
+
+            // Se por acaso o vídeo estava pausado, dá play
+            video.play();
+
+            // Esconde o botão de aviso
+            overlay.style.opacity = '0';
+            
+            // Remove o botão da tela após o efeito de sumir
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 300);
+        }
+    </script>
+
+</body>
+</html>

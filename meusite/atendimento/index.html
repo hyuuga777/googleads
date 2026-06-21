@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="pt-br" dir="ltr">
+     <head>
+      <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" href="android-icon-512.webp" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="apple-touch-icon.webp">
+    <link rel="manifest" href="manifest.webmanifest">
+ <!-- Event snippet for Visualização de página conversion page -->
+<script>
+  gtag('event', 'conversion', {
+      'send_to': 'AW-18229917249/nEPMCLjG0_QbEIaq_ulC',
+      'value': 1.0,
+      'currency': 'BRL'
+  });
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18229917249"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-18229917249');
+</script>
+
+    <meta charset="UTF-8">
+    <title>Agência Cyborg - Atendimento</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <script defer src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    <!-- Custom Styles for Lead Capture -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: linear-gradient(135deg, #161616 0%, #2d2d2d 100%);
+        color: #fff;
+        min-height: 100vh;
+      }
+      
+      .lead-capture-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      
+      .step-container {
+        display: none;
+        text-align: center;
+        max-width: 600px;
+        width: 100%;
+        animation: fadeInUp 0.6s ease-out;
+      }
+      
+      .step-container.active {
+        display: block;
+      }
+      
+      .step-question {
+        font-size: 2.5rem;
+        font-weight: 600;
+        margin-bottom: 2rem;
+        color: #fff;
+        line-height: 1.2;
+      }
+      
+      .step-input {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto 2rem;
+        padding: 1rem 1.5rem;
+        font-size: 1.2rem;
+        border: 2px solid #22ecfa;
+        background: transparent;
+        color: #fff;
+        border-radius: 8px;
+        outline: none;
+        transition: all 0.3s ease;
+      }
+      
+      .step-input::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+      
+      .step-input:focus {
+        border-color: #00a8cc;
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+      }
+      
+      .step-textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+      
+      .step-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      
+      .step-btn {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border: 2px solid #22ecfa;
+        background: transparent;
+        color: #22ecfa;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .step-btn:hover {
+        background: #22ecfa;
+        color: #161616;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4);
+      }
+      
+      .step-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+      
+      .step-btn.primary {
+        background: #22ecfa;
+        color: #161616;
+      }
+      
+      .step-btn.primary:hover {
+        background: #00a8cc;
+        border-color: #00a8cc;
+      }
+      
+      .progress-bar {
+        width: 100%;
+        max-width: 400px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 2px;
+        margin: 0 auto 3rem;
+        overflow: hidden;
+      }
+      
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #22ecfa, #00a8cc);
+        border-radius: 2px;
+        transition: width 0.6s ease;
+        width: 25%;
+      }
+      
+      .step-number {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 1rem;
+      }
+      
+      .success-message {
+        display: none;
+        text-align: center;
+        animation: fadeInUp 0.6s ease-out;
+        max-width: 600px;
+        width: 100%;
+      }
+      
+      .success-icon {
+        font-size: 4rem;
+        color: #22ecfa;
+        margin-bottom: 1.5rem;
+      }
+      
+      .success-title {
+        font-size: 2.5rem;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 1.5rem;
+      }
+      
+      .success-text {
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.6;
+        margin-bottom: 2rem;
+      }
+      
+      .success-subtitle {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 1rem;
+        margin-top: 2rem;
+      }
+      
+      .success-description {
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.5;
+        margin-bottom: 2rem;
+      }
+      
+      .whatsapp-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 1.2rem 2.5rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+        background: #25D366;
+        color: #fff;
+        border: none;
+        border-radius: 50px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+      }
+      
+      .whatsapp-btn:hover {
+        background: #20b358;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+        color: #fff;
+        text-decoration: none;
+      }
+      
+      .whatsapp-icon {
+        font-size: 1.5rem;
+      }
+      
+      .loading {
+        display: none;
+        color: #22ecfa;
+        margin-top: 1rem;
+        font-size: 1rem;
+      }
+      
+      .error-message {
+        color: #ff4444;
+        margin-top: 1rem;
+        font-size: 0.9rem;
+        display: none;
+      }
+      
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      @media (max-width: 768px) {
+        .step-question {
+          font-size: 2rem;
+        }
+        
+        .success-title {
+          font-size: 2rem;
+        }
+        
+        .step-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+        
+        .step-btn {
+          width: 100%;
+          max-width: 300px;
+        }
+        
+        .whatsapp-btn {
+          width: 100%;
+          max-width: 350px;
+          justify-content: center;
+        }
+      }
+    </style>
+    
+  </head>
+
+  <body>
+
+    <!-- Page Content Start -->
+    <main>
+      <div class="lead-capture-container">
+        
+        <!-- Step 1: Nome -->
+        <div class="step-container active" id="step-1">
+          <div class="step-number">Pergunta 1 de 4</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 25%;"></div>
+          </div>
+          <h2 class="step-question">Qual seu nome?</h2>
+          <input type="text" class="step-input" id="nome" placeholder="Nome Completo" required>
+          <div class="step-buttons">
+            <button type="button" class="step-btn primary" onclick="nextStep(1)">
+              Próximo →
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2: Telefone -->
+        <div class="step-container" id="step-2">
+          <div class="step-number">Pergunta 2 de 4</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 50%;"></div>
+          </div>
+          <h2 class="step-question">Qual seu WhatsApp?</h2>
+          <input type="tel" class="step-input" id="telefone" placeholder="Exemplo: 35 99728 6067" required>
+          <div class="step-buttons">
+            <button type="button" class="step-btn" onclick="prevStep(2)">
+              ← Voltar
+            </button>
+            <button type="button" class="step-btn primary" onclick="nextStep(2)">
+              Próximo →
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3: Email -->
+        <div class="step-container" id="step-3">
+          <div class="step-number">Pergunta 3 de 4</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 75%;"></div>
+          </div>
+          <h2 class="step-question">Qual seu E-mail?</h2>
+          <input type="email" class="step-input" id="email" placeholder="seu@email.com" required>
+          <div class="step-buttons">
+            <button type="button" class="step-btn" onclick="prevStep(3)">
+              ← Voltar
+            </button>
+            <button type="button" class="step-btn primary" onclick="nextStep(3)">
+              Próximo →
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 4: Como podemos ajudar -->
+        <div class="step-container" id="step-4">
+          <div class="step-number">Pergunta 4 de 4</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 100%;"></div>
+          </div>
+          <h2 class="step-question">Como podemos te ajudar?*</h2>
+          <textarea class="step-input step-textarea" id="ajuda" placeholder="Conectar começa por ouvir. Descreva sua necessidade sem filtros" required></textarea>
+          <div class="step-buttons">
+            <button type="button" class="step-btn" onclick="prevStep(4)">
+              ← Voltar
+            </button>
+            <button type="button" class="step-btn primary" onclick="submitForm()" id="submit-btn">
+              Enviar ✓
+            </button>
+          </div>
+          <div class="loading" id="loading">
+            Enviando... ⏳
+          </div>
+          <div class="error-message" id="error-message"></div>
+        </div>
+
+        <!-- Success Message -->
+        <div class="success-message" id="success-message">
+          <div class="success-icon">✓</div>
+          <h2 class="success-title">Conexão iniciada!</h2>
+          <p class="success-text">
+            Sua mensagem já está com a gente. Nossa equipe vai analisar seu desafio e te dar um retorno rapidinho.
+          </p>
+          
+          <h3 class="success-subtitle">Não quer esperar?</h3>
+          <p class="success-description">
+            Encurte o caminho e fale com a gente agora mesmo.
+          </p>
+          
+          <a href="https://wa.me/5535997286067?text=Olá! Vim através do site e gostaria de falar com um especialista." 
+             class="whatsapp-btn" 
+             target="_blank">
+            <span class="whatsapp-icon">💡</span>
+           Chamar no WhatsApp
+          </a>
+        </div>
+
+      </div>
+    </main>
+    
+    <!-- Lead Capture Script -->
+    <script>
+      let currentStep = 1;
+      const totalSteps = 4;
+      
+      function nextStep(step) {
+        // Validar campo atual
+        const currentInput = document.querySelector(`#step-${step} .step-input`);
+        if (!currentInput.value.trim()) {
+          currentInput.focus();
+          alert('Por favor, preencha este campo.');
+          return;
+        }
+        
+        // Validação específica para email
+        if (step === 3) {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(currentInput.value)) {
+            alert('Por favor, insira um email válido.');
+            currentInput.focus();
+            return;
+          }
+        }
+        
+        // Validação específica para telefone
+        if (step === 2) {
+          const phoneRegex = /^[\(\)\s\-\+\d]{10,}$/;
+          if (!phoneRegex.test(currentInput.value.replace(/\s/g, ''))) {
+            alert('Por favor, insira um telefone válido.');
+            currentInput.focus();
+            return;
+          }
+        }
+        
+        if (currentStep < totalSteps) {
+          // Esconder step atual
+          document.getElementById(`step-${currentStep}`).classList.remove('active');
+          
+          // Mostrar próximo step
+          currentStep++;
+          document.getElementById(`step-${currentStep}`).classList.add('active');
+          
+          // Focar no input do próximo step
+          setTimeout(() => {
+            const nextInput = document.querySelector(`#step-${currentStep} .step-input`);
+            if (nextInput) nextInput.focus();
+          }, 300);
+        }
+      }
+      
+      function prevStep(step) {
+        if (currentStep > 1) {
+          // Esconder step atual
+          document.getElementById(`step-${currentStep}`).classList.remove('active');
+          
+          // Mostrar step anterior
+          currentStep--;
+          document.getElementById(`step-${currentStep}`).classList.add('active');
+          
+          // Focar no input do step anterior
+          setTimeout(() => {
+            const prevInput = document.querySelector(`#step-${currentStep} .step-input`);
+            if (prevInput) prevInput.focus();
+          }, 300);
+        }
+      }
+      
+      function submitForm() {
+        // Validar último campo
+        const lastInput = document.querySelector('#step-4 .step-input');
+        if (!lastInput.value.trim()) {
+          lastInput.focus();
+          alert('Por favor, preencha este campo.');
+          return;
+        }
+        
+        // Mostrar loading
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('submit-btn').disabled = true;
+        document.getElementById('error-message').style.display = 'none';
+        
+        // Coletar dados do formulário
+        const formData = {
+          nome: document.getElementById('nome').value,
+          telefone: document.getElementById('telefone').value,
+          email: document.getElementById('email').value,
+          ajuda: document.getElementById('ajuda').value
+        };
+        
+        console.log('Enviando dados:', formData);
+        
+        // Enviar dados para o script PHP
+        fetch('enviar_lead_webhook.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData)
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erro no servidor: ' + response.status);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Resposta do servidor:', data);
+          
+          // Esconder loading
+          document.getElementById('loading').style.display = 'none';
+          
+          if (data.success) {
+            // Mostrar mensagem de sucesso
+            setTimeout(() => {
+              document.getElementById('step-4').classList.remove('active');
+              document.getElementById('success-message').style.display = 'block';
+            }, 500);
+          } else {
+            throw new Error(data.message || 'Erro desconhecido');
+          }
+        })
+        .catch(error => {
+          console.error('Erro:', error);
+          document.getElementById('loading').style.display = 'none';
+          document.getElementById('submit-btn').disabled = false;
+          
+          // Mostrar erro
+          const errorDiv = document.getElementById('error-message');
+          errorDiv.textContent = 'Erro ao enviar. Verifique sua conexão e tente novamente.';
+          errorDiv.style.display = 'block';
+          
+          // Tentar novamente automaticamente após 3 segundos
+          setTimeout(() => {
+            errorDiv.style.display = 'none';
+          }, 5000);
+        });
+      }
+      
+      // Permitir navegação com Enter
+      document.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          const activeStep = document.querySelector('.step-container.active');
+          if (activeStep) {
+            const stepId = activeStep.id.split('-')[1];
+            
+            if (stepId < totalSteps) {
+              nextStep(parseInt(stepId));
+            } else {
+              submitForm();
+            }
+          }
+        }
+      });
+      
+      // Focar no primeiro input quando a página carregar
+      window.addEventListener('load', function() {
+        setTimeout(() => {
+          const firstInput = document.querySelector('#step-1 .step-input');
+          if (firstInput) firstInput.focus();
+        }, 500);
+      });
+      
+      // Máscara para telefone
+      document.getElementById('telefone').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length >= 11) {
+          value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+        } else if (value.length >= 7) {
+          value = value.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+        } else if (value.length >= 3) {
+          value = value.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+        }
+        e.target.value = value;
+      });
+    </script>
+  <style>
+            .btn-whatsapp {
+            position: fixed;
+            outline: none;
+            bottom: 45px;
+            right: 35px;
+            height: 65px;
+            width: 65px;
+            cursor: pointer;
+            z-index: 10000000;
+            
+        
+            }
+            </style>
+                
+                    <a href="https://api.whatsapp.com/send?phone=5535997286067" target="_blank"  class="btn-whatsapp">
+                        <lottie-player src="whats.json"
+                            background="transparent"  speed="0.7"  style="width: 100px; height: 100px;"  loop autoplay>
+                           </lottie-player>
+                    </a>
+  </body>
+
+</html>
+

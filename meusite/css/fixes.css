@@ -1,0 +1,103 @@
+/* =========================================================
+   LIGHTHOUSE FIXES
+   1. Contrast: bg-accent + opposite variables
+   2. Contrast: t-muted-extra variable override
+   3. CLS: lottie-player explicit dimensions
+   ========================================================= */
+
+/* ----------------------------------------------------------
+   FIX 1 — Contrast: text on bg-accent (cyan #1cedfa)
+   Regardless of the theme, the background of .bg-accent is ALWAYS cyan (#1cedfa).
+   White text on cyan fails contrast.
+   We redefine the opposite and border variables inside .bg-accent to be dark #0d0d0d
+   to guarantee a contrast ratio > 4.5:1 in both light and dark modes.
+   ---------------------------------------------------------- */
+.bg-accent {
+  --t-opp-bright: #0d0d0d !important;
+  --st-opp-bright: #0d0d0d !important;
+  --t-opp-medium: #303030 !important;
+}
+
+/* Fallbacks for any explicit styles */
+.bg-accent h3.opposite,
+.bg-accent p.t-opposite,
+.bg-accent .btn-outline.opposite,
+.bg-accent .btn-outline.opposite .btn-caption,
+.bg-accent .btn-outline.opposite i {
+  color: #0d0d0d !important;
+  border-color: #0d0d0d !important;
+}
+
+/* ----------------------------------------------------------
+   FIX 2 — Contrast: marquee muted-extra text
+   Light mode: --t-muted-extra--light = #B2AEAD on #FAF7F6 ≈ 1.9:1 (FAILS)
+   By overriding --t-muted-extra--light directly on :root to #6B6866,
+   we achieve a ~4.6:1 contrast ratio passing WCAG AA, without affecting dark mode.
+   ---------------------------------------------------------- */
+:root {
+  --t-muted-extra--light: #6B6866 !important;
+}
+
+/* Backup helper to force color on light mode marquee */
+[color-scheme=light] .marquee.muted-extra .marquee__text,
+[color-scheme=light] .marquee.muted-extra .marquee__image {
+  color: #6B6866 !important;
+}
+
+@media (prefers-color-scheme: light) {
+  .marquee.muted-extra .marquee__text,
+  .marquee.muted-extra .marquee__image {
+    color: #6B6866 !important;
+  }
+}
+
+/* ----------------------------------------------------------
+   FIX 3 — CLS: lottie-player elements
+   Reserve explicit dimensions so the browser allocates space
+   before the JS loads, preventing layout shift.
+   ---------------------------------------------------------- */
+
+/* Prevent any lottie-player from being zero-sized before load */
+lottie-player {
+  display: block;
+}
+
+/* Logo in header — matches the 30% width style already set inline */
+.mxd-header__logo lottie-player,
+.mxd-logo lottie-player {
+  min-height: 40px;
+  height: 40px;
+  aspect-ratio: 3 / 1;
+}
+
+/* Hero circle animation */
+.hero-07-circle__image lottie-player {
+  width: 100%;
+  height: 100%;
+  min-height: 260px;
+}
+
+/* Hero animations (any lottie inside hero block) */
+.mxd-hero-07 lottie-player {
+  min-height: 200px;
+}
+
+/* WhatsApp floating lottie */
+lottie-player[src="whats.json"] {
+  width: 60px;
+  height: 60px;
+  min-width: 60px;
+  min-height: 60px;
+}
+
+/* ----------------------------------------------------------
+   FIX 4 — Prevent JS FOUC/CLS for animated reveal items
+   ---------------------------------------------------------- */
+.loading__item {
+  opacity: 0;
+  transform: translateY(60px);
+}
+.loading__fade {
+  opacity: 0;
+}
+

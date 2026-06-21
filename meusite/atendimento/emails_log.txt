@@ -1,0 +1,21 @@
+2025-12-04 17:28:35 | SUCESSO | email_direto | BRUNO APARECIDO DOS SANTOS | brunosantos@agenciacyborg.com
+2026-02-13 20:33:35 | SUCESSO | email_direto | Renata de Assis  | renatinha.crfss@gmail.com
+2026-02-19 03:08:38 | SUCESSO | email_direto | t1 | brunosantos@agenciacyborg.com
+2026-02-19 03:08:50 | SUCESSO | email_direto | t2 | brunosantos@agenciacyborg.com
+2026-02-19 03:09:03 | SUCESSO | email_direto | t3 | brunosantos@agenciacyborg.com
+2026-02-19 03:09:13 | SUCESSO | email_direto | t4 | brunosantos@agenciacyborg.com
+2026-02-19 03:09:25 | SUCESSO | email_direto | t5 | brunosantos@agenciacyborg.com
+2026-02-19 03:09:34 | SUCESSO | email_direto | t6 | brunosantos@agenciacyborg.com
+2026-02-19 03:09:45 | SUCESSO | email_direto | t7 | brunosantos@agenciacyborg.com
+2026-02-19 03:10:13 | SUCESSO | email_direto | t8 | brunosantos@agenciacyborg.com
+2026-02-19 03:10:32 | SUCESSO | email_direto | t9 | brunosantos@agenciacyborg.com
+2026-02-19 03:11:13 | SUCESSO | email_direto | t11 | brunosantos@agenciacyborg.com
+2026-02-19 03:11:26 | SUCESSO | email_direto | t12 | brunosantos@agenciacyborg.com
+2026-02-19 03:11:37 | SUCESSO | email_direto | t13 | brunosantos@agenciacyborg.com
+2026-02-19 03:11:47 | SUCESSO | email_direto | t14 | brunosantos@agenciacyborg.com
+2026-02-19 03:11:59 | SUCESSO | email_direto | t15 | brunosantos@agenciacyborg.com
+2026-02-19 03:12:10 | SUCESSO | email_direto | t16 | brunosantos@agenciacyborg.com
+2026-02-19 03:12:22 | SUCESSO | email_direto | t16 | brunosantos@agenciacyborg.com
+2026-02-19 03:12:33 | SUCESSO | email_direto | t17 | brunosantos@agenciacyborg.com
+2026-05-21 20:48:35 | SUCESSO | email_direto | tetete | bruno@ehhjob.com.br
+2026-05-27 23:09:10 | SUCESSO | email_direto | bruno | brunosantos@agenciacyborg.com

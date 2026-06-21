@@ -1,0 +1,37 @@
+.claude
+.vscode
+*.log
+SESSION_CHECKPOINT.json
+__pycache__/
+*.pyc
+**/*.mp4
+**/*.pdf
+
+# Credenciais sensíveis (não commitar em repositório público!)
+google-ads.yaml
+google-analytics-credentials.json
+google-gtm-credentials.json
+client_secret_*.json
+
+# Scripts e documentações na raiz (evitar vazamento de credenciais)
+/*.py
+/*.md
+/*.pdf
+/links.txt
+/naomexeressedocumentoehmeu
+/skills/
+
+# Pastas pesadas de desenvolvimento/não necessárias para a API
+meusite/novodashbord/
+meusite/base/
+meusite/lotads - Copia/
+meusite/lotads/
+meusite/lotar/
+meusite/lotauto/
+meusite/lothome/
+meusite/lotseo/
+meusite/lotsite/
+meusite/novodashbord
+meusite/base
+
+

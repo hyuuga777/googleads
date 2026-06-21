@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyborg Google Ads — AI Orchestrator</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js para BI visual -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="googleads_dashboard.css">
+    <!-- Lottie Player for Logo -->
+    <script defer src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+</head>
+<body>
+
+<div class="ambient-glow-1"></div>
+<div class="ambient-glow-2"></div>
+
+<div id="login-section" class="login-wrapper">
+    <div class="login-card">
+        <div class="login-logo">
+            <h1>CYBORG ORCHESTRATOR</h1>
+            <p>AI Google Ads Engine Controller</p>
+        </div>
+        
+        <div class="login-terminal">
+            [SYSTEM] AGENT ORCHESTRATOR STATUS: ONLINE<br>
+            [SYSTEM] AQUIETANDO MOTOR DE IA... DIGITE A CHAVE DO ORQUESTRADOR PARA LIBERAR MODIFICAÇÕES.
+        </div>
+
+        <div id="error-msg" class="error-box">[!] CHAVE DE ACESSO INVÁLIDA.</div>
+
+        <form onsubmit="handleLogin(event)">
+            <div class="input-group">
+                <label for="password">Chave de Orquestração</label>
+                <input type="password" id="password" class="holo-input" placeholder="••••••••" required autocomplete="off">
+            </div>
+            <button type="submit" class="cyber-btn">Autenticar Operador</button>
+        </form>
+    </div>
+</div>
+
+<div id="dashboard-section" class="dashboard-wrapper">
+
+    <!-- Sidebar Lateral -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <img src="logo.png" alt="Logo" class="sidebar-logo">
+        </div>
+        
+        <div class="sidebar-menu">
+            <div class="menu-group">
+                <div class="menu-heading">OPERACIONAL</div>
+                <nav class="sidebar-nav">
+                    <a href="googleads_dashboard.html" class="sidebar-link" id="nav-overview">
+                        <span class="icon">📊</span> Visão
+                    </a>
+                    <a href="campaigns.html" class="sidebar-link" id="nav-campaigns">
+                        <span class="icon">🚀</span> Campanhas
+                    </a>
+                    <a href="strategies.html" class="sidebar-link active-link" id="nav-strategies">
+                        <span class="icon">🧠</span> Estratégias
+                    </a>
+                    <a href="funnel.html" class="sidebar-link" id="nav-funnel">
+                        <span class="icon">🎯</span> Funil
+                    </a>
+                    <a href="technical.html" class="sidebar-link" id="nav-technical">
+                        <span class="icon">🛠️</span> SEO
+                    </a>
+                    <a href="approvals.html" class="sidebar-link" id="nav-approvals">
+                        <span class="icon">🔔</span> Insights
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="menu-group">
+                <div class="menu-heading">ADMINISTRATIVO</div>
+                <nav class="sidebar-nav">
+                    <a href="dashboard.html" class="sidebar-link" id="nav-admin">
+                        <span class="icon">📈</span> Admin
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <div class="main-content">
+        <header class="app-header">
+            <div style="display: flex; align-items: center;">
+                <button class="sidebar-toggle" id="sidebar-toggle-btn">☰</button>
+                <div>
+                    <h1 style="font-family: var(--font-title); font-size: 1.3rem; margin: 0; background: var(--cyber-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Estratégias</h1>
+                    <span style="font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-top: 3px;">Dashboard / Estratégias</span>
+                </div>
+            </div>
+            
+            <div class="header-actions">
+                <div class="status-badge" id="api-status-badge">
+                    <div class="status-dot"></div>
+                    <span id="api-status-text">Verificando...</span>
+                </div>
+                <button onclick="handleLogout()" class="logout-btn">Desconectar</button>
+            </div>
+        </header>
+
+    <main class="main-container">
+        <section id="strategies" class="tab-content active">
+            <!-- Planejador Rápido de Campanha por IA -->
+            <div class="cyber-box" style="margin-bottom: 35px; border-color: rgba(0, 243, 255, 0.35); box-shadow: var(--neon-shadow);">
+                <h2 class="box-title"><span class="indicator"></span>🚀 Planejador Inteligente de Campanhas (Google Ads)</h2>
+                
+                <form id="ai-planner-form" class="strategy-form" onsubmit="generateCampaignStrategy(event)" style="margin-bottom: 0;">
+                    <div class="form-section">
+                        <div class="form-row">
+                            <label for="planner_title">Título do Anúncio / Serviço <span class="accent">*</span></label>
+                            <input type="text" id="planner_title" class="form-input" placeholder="ex: Clínica Odontológica em São Paulo" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="planner_url">URL do Site / Landing Page <span class="accent">*</span></label>
+                            <input type="url" id="planner_url" class="form-input" placeholder="ex: https://meusite.com.br" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <div class="form-row">
+                            <label for="planner_budget">Investimento Diário Pretendido (R$) <span class="accent">*</span></label>
+                            <input type="number" step="0.01" min="10" id="planner_budget" class="form-input" placeholder="ex: 50.00" required>
+                        </div>
+                        <div class="save-btn-wrapper" style="margin-top: 25px;">
+                            <button type="submit" class="btn-large-save" id="btn-generate-planner" style="background: linear-gradient(135deg, var(--cyan), var(--purple));">⚡ Gerar Planejamento de Campanha</button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Resultados e Veredicto da IA -->
+                <div id="ai-planner-result" style="display: none; margin-top: 30px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 25px; animation: fadeIn 0.4s ease-out;">
+                    <h3 style="font-family: var(--font-title); font-size: 1rem; color: var(--cyan); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.05em;">
+                        📋 Dossiê Estratégico da IA Cyborg
+                    </h3>
+                    
+                    <div class="strategy-form">
+                        <!-- Coluna 1: Diagnóstico e Segmentação -->
+                        <div class="form-section">
+                            <div class="budget-bar-group" style="background: rgba(0, 243, 255, 0.02); border-color: rgba(0, 243, 255, 0.15);">
+                                <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--cyan); display: block; margin-bottom: 5px;">Objetivo Detectado</span>
+                                <p id="result-objective" style="font-size: 1.05rem; color: #fff; font-weight: bold;">Leads via WhatsApp</p>
+                            </div>
+                            
+                            <div class="budget-bar-group" style="background: rgba(157, 0, 255, 0.02); border-color: rgba(157, 0, 255, 0.15); margin-top: 15px;">
+                                <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: #d199ff; display: block; margin-bottom: 5px;">Segmentação Geográfica Recomendada</span>
+                                <p id="result-geo-rec" style="font-size: 1.05rem; color: #fff; font-weight: bold; margin-bottom: 8px;">LOCAL / RAIO ESPECÍFICO</p>
+                                <p id="result-geo-explanation" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4;"></p>
+                            </div>
+                            
+                            <div class="budget-bar-group" style="margin-top: 15px;">
+                                <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); display: block; margin-bottom: 8px;">Palavras-Chave de Intenção Sugeridas</span>
+                                <div id="result-keywords-container" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                    <!-- Badges -->
+                                </div>
+                                <span style="font-size: 0.72rem; color: var(--text-secondary); display: block; margin-top: 10px; font-style: italic;">
+                                    *Preenchidas automaticamente no painel abaixo.
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <!-- Coluna 2: Avatar do Cliente e Sugestão de Anúncios -->
+                        <div class="form-section">
+                            <div class="budget-bar-group" style="background: rgba(255, 255, 255, 0.01);">
+                                <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); display: block; margin-bottom: 5px;">Dores do Avatar</span>
+                                <p id="result-avatar-dores" style="font-size: 0.88rem; color: #fff; line-height: 1.4; margin-bottom: 12px;"></p>
+                                <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); display: block; margin-bottom: 5px;">Desejos do Avatar</span>
+                                <p id="result-avatar-desejos" style="font-size: 0.88rem; color: #fff; line-height: 1.4;"></p>
+                            </div>
+                            
+                            <div class="budget-bar-group" style="background: rgba(255, 0, 85, 0.01); border-color: rgba(255, 0, 85, 0.15); margin-top: 15px;">
+                                <span style="font-weight: bold; font-size: 0.85rem; text-transform: uppercase; color: var(--pink); display: block; margin-bottom: 8px;">RSA Generator: Headline & Copy suggestions</span>
+                                <div style="font-size: 0.85rem; color: var(--text-secondary);">
+                                    <strong style="color: #fff; display: block; margin-bottom: 8px;">Títulos sugeridos (Headlines - Selecione até 15):</strong>
+                                    <div id="result-ads-headlines" style="display:flex; flex-direction:column; gap:6px; margin-bottom: 15px;"></div>
+                                    
+                                    <strong style="color: #fff; display: block; margin-bottom: 8px;">Descrições sugeridas (Descriptions - Selecione até 4):</strong>
+                                    <div id="result-ads-descriptions" style="display:flex; flex-direction:column; gap:6px; margin-bottom: 15px;"></div>
+
+                                    <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top:15px; margin-top:15px; display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+                                        <div class="form-row">
+                                            <label for="ad-sitelinks" style="font-size:0.75rem;">Sitelinks (URLs separadas por vírgula)</label>
+                                            <input type="text" id="ad-sitelinks" class="form-input" style="padding: 6px; font-size:0.8rem;" placeholder="https://site.com/servico, ...">
+                                        </div>
+                                        <div class="form-row">
+                                            <label for="ad-utm" style="font-size:0.75rem;">Campanha UTM (utm_campaign)</label>
+                                            <input type="text" id="ad-utm" class="form-input" style="padding: 6px; font-size:0.8rem;" value="cyborg_ai_ads">
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:10px;">
+                                        <div class="form-row">
+                                            <label for="ad-image" style="font-size:0.75rem;">URL do Asset de Imagem</label>
+                                            <input type="text" id="ad-image" class="form-input" style="padding: 6px; font-size:0.8rem;" placeholder="https://site.com/image.jpg">
+                                        </div>
+                                        <div class="form-row">
+                                            <label for="ad-logo" style="font-size:0.75rem;">URL do Asset de Logotipo</label>
+                                            <input type="text" id="ad-logo" class="form-input" style="padding: 6px; font-size:0.8rem;" placeholder="https://site.com/logo.png">
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-top: 20px; display:flex; justify-content:flex-end;">
+                                        <button type="button" class="cyber-btn" style="background:linear-gradient(135deg, var(--cyan), var(--purple)); padding: 8px 16px; font-size:0.8rem;" onclick="publishAdDraft()">Publicar Rascunho no Google Ads</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cyber-box">
+                <h2 class="box-title"><span class="indicator purple"></span>Configurações do Motor de Orquestração</h2>
+                
+                <form id="rules-form" class="strategy-form" onsubmit="saveRules(event)">
+                    <div class="form-section">
+                        <div class="form-row">
+                            <label for="target_cpa">CPA Alvo Máximo (<span class="accent">R$</span>)</label>
+                            <input type="number" step="0.01" id="target_cpa" class="form-input" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="min_cpa">CPA Limite Mínimo para Escala (<span class="accent">R$</span>)</label>
+                            <input type="number" step="0.01" id="min_cpa" class="form-input" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="max_cpc">CPC Limite de Palavra-chave (<span class="accent">R$</span>)</label>
+                            <input type="number" step="0.01" id="max_cpc" class="form-input" required>
+                        </div>
+                        <div class="toggle-container">
+                            <span style="font-weight: bold; font-size: 0.85rem; text-transform: uppercase; color: var(--text-secondary);">Orquestração de IA Ativa</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="rules_enabled">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="form-row">
+                            <label for="min_budget">Orçamento Diário Mínimo (<span class="accent">R$</span>)</label>
+                            <input type="number" step="0.01" id="min_budget" class="form-input" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="max_budget">Orçamento Diário Máximo (<span class="accent">R$</span>)</label>
+                            <input type="number" step="0.01" id="max_budget" class="form-input" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="adjustment_rate">Percentual de Ajuste por Ciclo (<span class="accent">%</span>)</label>
+                            <input type="number" step="0.01" id="adjustment_rate" class="form-input" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="intent_keywords">Termos/Palavras-chave de Intenção de Compra (Vírgulas)</label>
+                            <textarea id="intent_keywords" class="form-textarea" placeholder="comprar, preco, contratar..."></textarea>
+                        </div>
+                        <div class="form-row">
+                            <label for="custom_prompt">Diretiva Personalizada de IA (Custom Prompt de Relatórios)</label>
+                            <textarea id="custom_prompt" class="form-textarea" placeholder="Ex: 'Escreva em tom urgente' ou 'Foque nos diferenciais de garantia local'"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="save-btn-wrapper">
+                        <button type="submit" class="btn-large-save" id="btn-save-rules">Salvar Configurações</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+    </div> <!-- Fim .main-content -->
+</div> <!-- Fim #dashboard-section -->
+
+<div class="notification-toast" id="toast">
+    <div class="toast-icon"></div>
+    <div class="toast-message">
+        <h4 id="toast-title">Notificação</h4>
+        <p id="toast-body">Mensagem de sistema</p>
+    </div>
+</div>
+
+<script src="config.js"></script>
+<script>
+
+    const API_BASE = (window.CYBORG_CONFIG && window.CYBORG_CONFIG.api_url) ? window.CYBORG_CONFIG.api_url : "http://127.0.0.1:5000/api";
+
+    async function sha256(message) {
+        const msgBuffer = new TextEncoder().encode(message);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function handleLogin(e) {
+        e.preventDefault();
+        const pass = document.getElementById('password').value;
+        const hash = await sha256(pass);
+        const correctHash = 'fc1b7a9976fa0826a827f334c30925963eb27dbc37048fddaeedf20a5edc1ab4';
+        if (hash === correctHash) {
+            sessionStorage.setItem('cyborg_googleads_auth', 'true');
+            showNotification("Acesso Autorizado", "Carregando o painel operacional de IA...", true);
+            initDashboard();
+        } else {
+            const errBox = document.getElementById('error-msg');
+            errBox.textContent = '[!] CHAVE INCORRETA. ACESSO NÃO AUTORIZADO.';
+            errBox.style.display = 'block';
+            showNotification("Acesso Negado", "Chave do orquestrador incorreta.", false);
+        }
+    }
+
+    function handleLogout() {
+        sessionStorage.removeItem('cyborg_googleads_auth');
+        if (window.location.pathname.endsWith('.php')) {
+            window.location.href = 'googleads_dashboard.php?action=logout';
+        } else {
+            location.reload();
+        }
+    }
+
+    function initDashboard() {
+        const authenticated = true; // Bypass authentication for local ease of use
+        if (!authenticated) {
+            document.getElementById('login-section').style.display = 'flex';
+            document.getElementById('dashboard-section').style.display = 'none';
+        } else {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('dashboard-section').style.display = 'flex';
+            checkApiStatus();
+            if (typeof loadPageData === 'function') {
+                loadPageData();
+            }
+            setInterval(checkApiStatus, 15000);
+        }
+    }
+
+    function showNotification(title, message, isSuccess = true) {
+        const toast = document.getElementById('toast');
+        document.getElementById('toast-title').textContent = title;
+        document.getElementById('toast-body').textContent = message;
+        const icon = toast.querySelector('.toast-icon');
+        if (isSuccess) {
+            toast.style.borderColor = "var(--cyan)";
+            toast.style.boxShadow = "var(--neon-shadow)";
+            icon.style.backgroundColor = "var(--cyan)";
+            icon.style.boxShadow = "0 0 10px var(--cyan)";
+        } else {
+            toast.style.borderColor = "var(--pink)";
+            toast.style.boxShadow = "0 0 15px rgba(255, 0, 85, 0.4)";
+            icon.style.backgroundColor = "var(--pink)";
+            icon.style.boxShadow = "0 0 10px var(--pink)";
+        }
+        toast.classList.add('show');
+        setTimeout(() => { toast.classList.remove('show'); }, 4500);
+    }
+
+    async function checkApiStatus() {
+        try {
+            const res = await fetch(`${API_BASE}/status`);
+            const data = await res.json();
+            const dot = document.querySelector('#api-status-badge .status-dot');
+            const text = document.getElementById('api-status-text');
+            if (data.google_ads_api === "CONNECTED") {
+                text.textContent = "Google Ads Conectado";
+                text.style.color = "var(--cyan)";
+                dot.style.backgroundColor = "var(--cyan)";
+                dot.style.boxShadow = "0 0 10px var(--cyan)";
+            } else {
+                text.textContent = "Modo de Simulação";
+                text.style.color = "#ffb300";
+                dot.style.backgroundColor = "#ffb300";
+                dot.style.boxShadow = "0 0 10px #ffb300";
+            }
+        } catch (err) {
+            document.getElementById('api-status-text').textContent = "Backend Offline";
+            const dot = document.querySelector('#api-status-badge .status-dot');
+            dot.style.backgroundColor = "var(--pink)";
+            dot.style.boxShadow = "0 0 10px var(--pink)";
+        }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        initDashboard();
+        
+        // Mobile sidebar toggle
+        document.getElementById('sidebar-toggle-btn')?.addEventListener('click', () => {
+            document.querySelector('.sidebar').classList.toggle('open');
+        });
+        
+        // Click outside mobile sidebar to close it
+        document.addEventListener('click', (e) => {
+            const sidebar = document.querySelector('.sidebar');
+            const toggleBtn = document.getElementById('sidebar-toggle-btn');
+            if (sidebar && sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target !== toggleBtn) {
+                sidebar.classList.remove('open');
+            }
+        });
+
+        // Dynamic extension switcher
+        if (window.location.pathname.endsWith('.php')) {
+            document.querySelectorAll('.sidebar-nav a').forEach(link => {
+                const url = new URL(link.href, window.location.href);
+                if (url.pathname.endsWith('.html')) {
+                    url.pathname = url.pathname.replace('.html', '.php');
+                    link.href = url.pathname + url.search;
+                }
+            });
+        }
+    });
+
+
+    function loadPageData() {
+        loadRules();
+    }
+
+    async function loadRules() {
+        try {
+            const res = await fetch(`${API_BASE}/strategies`);
+            const data = await res.json();
+            
+            document.getElementById('target_cpa').value = data.target_cpa || 50;
+            document.getElementById('min_cpa').value = data.min_cpa || 30;
+            document.getElementById('max_cpc').value = data.max_cpc || 5;
+            document.getElementById('min_budget').value = data.min_budget || 10;
+            document.getElementById('max_budget').value = data.max_budget || 1000;
+            document.getElementById('adjustment_rate').value = (data.adjustment_rate * 100) || 10;
+            document.getElementById('rules_enabled').checked = data.rules_enabled !== false;
+            document.getElementById('intent_keywords').value = data.intent_keywords ? data.intent_keywords.join(', ') : '';
+            document.getElementById('custom_prompt').value = data.custom_prompt || '';
+            
+        } catch (err) {
+            console.warn("Erro ao carregar regras de IA via API, usando fallback localStorage:", err);
+            const data = JSON.parse(localStorage.getItem('cyborg_strategies') || '{}');
+            document.getElementById('target_cpa').value = data.target_cpa || 50;
+            document.getElementById('min_cpa').value = data.min_cpa || 30;
+            document.getElementById('max_cpc').value = data.max_cpc || 5;
+            document.getElementById('min_budget').value = data.min_budget || 10;
+            document.getElementById('max_budget').value = data.max_budget || 1000;
+            document.getElementById('adjustment_rate').value = (data.adjustment_rate * 100) || 10;
+            document.getElementById('rules_enabled').checked = data.rules_enabled !== false;
+            document.getElementById('intent_keywords').value = data.intent_keywords ? data.intent_keywords.join(', ') : '';
+            document.getElementById('custom_prompt').value = data.custom_prompt || '';
+        }
+    }
+
+    async function saveRules(event) {
+        event.preventDefault();
+        
+        const btn = document.getElementById('btn-save-rules');
+        btn.textContent = "Salvando...";
+        btn.disabled = true;
+
+        const keywordsArray = document.getElementById('intent_keywords').value
+            .split(',')
+            .map(k => k.trim())
+            .filter(k => k.length > 0);
+
+        const payload = {
+            target_cpa: parseFloat(document.getElementById('target_cpa').value),
+            min_cpa: parseFloat(document.getElementById('min_cpa').value),
+            max_cpc: parseFloat(document.getElementById('max_cpc').value),
+            min_budget: parseFloat(document.getElementById('min_budget').value),
+            max_budget: parseFloat(document.getElementById('max_budget').value),
+            adjustment_rate: parseFloat(document.getElementById('adjustment_rate').value) / 100.0,
+            rules_enabled: document.getElementById('rules_enabled').checked,
+            intent_keywords: keywordsArray,
+            custom_prompt: document.getElementById('custom_prompt').value.trim()
+        };
+
+        try {
+            const res = await fetch(`${API_BASE}/strategies`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            
+            const data = await res.json();
+            if (data.status === "success") {
+                showNotification("Regras Salvas", "Configurações de IA atualizadas com sucesso!", true);
+            } else {
+                showNotification("Erro", "Falha ao gravar regras.", false);
+            }
+        } catch (err) {
+            console.warn("Falha ao gravar regras via API, salvando localmente em localStorage:", err);
+            localStorage.setItem('cyborg_strategies', JSON.stringify(payload));
+            setTimeout(() => {
+                showNotification("Regras Salvas (Local)", "Configurações salvas localmente em cache!", true);
+            }, 500);
+        } finally {
+            btn.textContent = "Salvar Configurações";
+            btn.disabled = false;
+        }
+    }
+
+    async function generateCampaignStrategy(event) {
+        event.preventDefault();
+        
+        const btn = document.getElementById('btn-generate-planner');
+        const originalText = btn.textContent;
+        btn.textContent = "Analisando...";
+        btn.disabled = true;
+        
+        const title = document.getElementById('planner_title').value;
+        const url = document.getElementById('planner_url').value;
+        const budget = parseFloat(document.getElementById('planner_budget').value);
+        
+        try {
+            const res = await fetch(`${API_BASE}/generate_campaign_structure`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title: title,
+                    url: url,
+                    daily_budget: budget
+                })
+            });
+            
+            const data = await res.json();
+            if (data.status === "success") {
+                showNotification("Planejamento Gerado", "Métricas e palavras-chave injetadas abaixo!", true);
+                
+                document.getElementById('result-objective').textContent = data.objective_label;
+                document.getElementById('result-geo-rec').textContent = data.geo_recommendation;
+                document.getElementById('result-geo-explanation').textContent = data.geo_explanation;
+                document.getElementById('result-avatar-dores').textContent = data.avatar.dores;
+                document.getElementById('result-avatar-desejos').textContent = data.avatar.desejos;
+                
+                const kwContainer = document.getElementById('result-keywords-container');
+                kwContainer.innerHTML = '';
+                data.intent_keywords.forEach(kw => {
+                    const badge = document.createElement('span');
+                    badge.className = 'status-pill enabled';
+                    badge.style.cursor = 'default';
+                    badge.style.margin = '4px';
+                    badge.textContent = kw;
+                    kwContainer.appendChild(badge);
+                });
+                
+                const hlContainer = document.getElementById('result-ads-headlines');
+                hlContainer.innerHTML = '';
+                data.ad_suggestions.headlines.forEach((hl, idx) => {
+                    const lbl = document.createElement('label');
+                    lbl.style.display = 'flex';
+                    lbl.style.alignItems = 'center';
+                    lbl.style.gap = '8px';
+                    lbl.style.color = '#fff';
+                    lbl.style.margin = '4px 0';
+                    lbl.style.cursor = 'pointer';
+                    lbl.innerHTML = `<input type="checkbox" class="ad-headline-check" value="${hl}" checked> <span style="font-family: monospace;">${hl}</span>`;
+                    hlContainer.appendChild(lbl);
+                });
+                
+                const descContainer = document.getElementById('result-ads-descriptions');
+                descContainer.innerHTML = '';
+                data.ad_suggestions.descriptions.forEach((desc, idx) => {
+                    const lbl = document.createElement('label');
+                    lbl.style.display = 'flex';
+                    lbl.style.alignItems = 'center';
+                    lbl.style.gap = '8px';
+                    lbl.style.color = '#fff';
+                    lbl.style.margin = '4px 0';
+                    lbl.style.cursor = 'pointer';
+                    lbl.innerHTML = `<input type="checkbox" class="ad-description-check" value="${desc}" checked> <span style="font-family: monospace;">${desc}</span>`;
+                    descContainer.appendChild(lbl);
+                });
+                
+                document.getElementById('ai-planner-result').style.display = 'block';
+                
+                document.getElementById('target_cpa').value = data.target_cpa;
+                document.getElementById('min_cpa').value = Math.round(data.target_cpa * 0.7 * 100) / 100;
+                document.getElementById('max_cpc').value = data.max_cpc;
+                document.getElementById('min_budget').value = Math.round(budget * 0.5 * 100) / 100;
+                document.getElementById('max_budget').value = Math.round(budget * 2.0 * 100) / 100;
+                document.getElementById('adjustment_rate').value = 10;
+                document.getElementById('intent_keywords').value = data.intent_keywords.join(', ');
+                
+                document.getElementById('ai-planner-result').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                showNotification("Erro no Gerador", data.message, false);
+            }
+        } catch (err) {
+            console.warn("Falha ao gerar planejamento via API, usando gerador frontend simulado:", err);
+            const data = {
+                status: "success",
+                objective_label: "Conversões (Leads de WhatsApp)",
+                geo_recommendation: "Brasil (Otimizado por IA)",
+                geo_explanation: "Recomendado focar nas regiões Sul e Sudeste para maximizar a relevância e ticket médio.",
+                avatar: {
+                    dores: "Falta de previsibilidade de vendas e leads desqualificados no comercial.",
+                    desejos: "Ter um canal previsível e automatizado de atração de clientes."
+                },
+                intent_keywords: ["agência de marketing", "anunciar no google", "tráfego pago", "gestor de tráfego profissional", "como lotar agenda de clientes"],
+                ad_suggestions: {
+                    headlines: [
+                        "Agência de Marketing de Elite",
+                        "Previsibilidade de Vendas",
+                        "Tráfego Pago Otimizado por IA",
+                        "Seu Comercial Sem Parar",
+                        "Pare de Queimar Verba no Ads",
+                        "Lote Sua Agenda de Leads",
+                        "Cyborg AI Ads Manager",
+                        "Estrutura Comercial Blindada",
+                        "Relatórios Em Tempo Real",
+                        "Suporte Especializado 24h",
+                        "ROI Garantido Por Contrato",
+                        "Campanhas Inteligentes",
+                        "Anúncios Que Convertem",
+                        "Gestão de Tráfego de Elite",
+                        "Maximize Seu Faturamento"
+                    ],
+                    descriptions: [
+                        "Chega de leads frios. Criamos um motor previsível de vendas usando IA.",
+                        "Maximize suas conversões no Google Ads e triplique o retorno do seu investimento hoje.",
+                        "Descubra as falhas e os gargalos das suas campanhas em nosso painel analítico.",
+                        "Fale com um dos nossos orquestradores de tráfego cyborg e garanta seu setup gratuito."
+                    ]
+                },
+                target_cpa: 45.00,
+                max_cpc: 4.80
+            };
+            
+            showNotification("Planejamento Gerado (Local)", "Métricas e palavras-chave injetadas abaixo!", true);
+            
+            document.getElementById('result-objective').textContent = data.objective_label;
+            document.getElementById('result-geo-rec').textContent = data.geo_recommendation;
+            document.getElementById('result-geo-explanation').textContent = data.geo_explanation;
+            document.getElementById('result-avatar-dores').textContent = data.avatar.dores;
+            document.getElementById('result-avatar-desejos').textContent = data.avatar.desejos;
+            
+            const kwContainer = document.getElementById('result-keywords-container');
+            kwContainer.innerHTML = '';
+            data.intent_keywords.forEach(kw => {
+                const badge = document.createElement('span');
+                badge.className = 'status-pill enabled';
+                badge.style.cursor = 'default';
+                badge.style.margin = '4px';
+                badge.textContent = kw;
+                kwContainer.appendChild(badge);
+            });
+            
+            const hlContainer = document.getElementById('result-ads-headlines');
+            hlContainer.innerHTML = '';
+            data.ad_suggestions.headlines.forEach((hl, idx) => {
+                const lbl = document.createElement('label');
+                lbl.style.display = 'flex';
+                lbl.style.alignItems = 'center';
+                lbl.style.gap = '8px';
+                lbl.style.color = '#fff';
+                lbl.style.margin = '4px 0';
+                lbl.style.cursor = 'pointer';
+                lbl.innerHTML = `<input type="checkbox" class="ad-headline-check" value="${hl}" checked> <span style="font-family: monospace;">${hl}</span>`;
+                hlContainer.appendChild(lbl);
+            });
+            
+            const descContainer = document.getElementById('result-ads-descriptions');
+            descContainer.innerHTML = '';
+            data.ad_suggestions.descriptions.forEach((desc, idx) => {
+                const lbl = document.createElement('label');
+                lbl.style.display = 'flex';
+                lbl.style.alignItems = 'center';
+                lbl.style.gap = '8px';
+                lbl.style.color = '#fff';
+                lbl.style.margin = '4px 0';
+                lbl.style.cursor = 'pointer';
+                lbl.innerHTML = `<input type="checkbox" class="ad-description-check" value="${desc}" checked> <span style="font-family: monospace;">${desc}</span>`;
+                descContainer.appendChild(lbl);
+            });
+            
+            document.getElementById('ai-planner-result').style.display = 'block';
+            
+            document.getElementById('target_cpa').value = data.target_cpa;
+            document.getElementById('min_cpa').value = Math.round(data.target_cpa * 0.7 * 100) / 100;
+            document.getElementById('max_cpc').value = data.max_cpc;
+            document.getElementById('min_budget').value = Math.round(budget * 0.5 * 100) / 100;
+            document.getElementById('max_budget').value = Math.round(budget * 2.0 * 100) / 100;
+            document.getElementById('adjustment_rate').value = 10;
+            document.getElementById('intent_keywords').value = data.intent_keywords.join(', ');
+            
+            document.getElementById('ai-planner-result').scrollIntoView({ behavior: 'smooth' });
+        } finally {
+            btn.textContent = originalText;
+            btn.disabled = false;
+        }
+    }
+
+    async function publishAdDraft() {
+        const headlines = [];
+        document.querySelectorAll('.ad-headline-check:checked').forEach(cb => {
+            headlines.push(cb.value);
+        });
+        
+        const descriptions = [];
+        document.querySelectorAll('.ad-description-check:checked').forEach(cb => {
+            descriptions.push(cb.value);
+        });
+        
+        if (headlines.length === 0 || descriptions.length === 0) {
+            showNotification("Erro", "Selecione pelo menos um título e uma descrição.", false);
+            return;
+        }
+        
+        const finalUrl = document.getElementById('planner_url').value;
+        const utm = document.getElementById('ad-utm').value;
+        const sitelinks = document.getElementById('ad-sitelinks').value;
+        const image = document.getElementById('ad-image').value;
+        const logo = document.getElementById('ad-logo').value;
+        
+        // Append UTM parameters to URL if campaign UTM is specified
+        let publishedUrl = finalUrl;
+        if (utm) {
+            const separator = publishedUrl.includes('?') ? '&' : '?';
+            publishedUrl += `${separator}utm_source=google&utm_medium=cpc&utm_campaign=${encodeURIComponent(utm)}`;
+        }
+        
+        const payload = {
+            campaign_id: "23542530230", // Default campaign ID
+            headlines: headlines,
+            descriptions: descriptions,
+            final_url: publishedUrl,
+            sitelinks: sitelinks,
+            image_asset: image,
+            logo_asset: logo
+        };
+        
+        showNotification("Enviando", "Publicando rascunho de anúncio no Google Ads...", true);
+        
+        try {
+            const res = await fetch(`${API_BASE}/publish_ad_draft`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await res.json();
+            if (result.status === "success") {
+                showNotification("RSA Publicado!", "Rascunho criado com status PAUSADO no Google Ads!", true);
+            } else {
+                showNotification("Erro na API", result.message || "Erro desconhecido.", false);
+            }
+        } catch (err) {
+            console.warn("Erro ao publicar rascunho via API, simulando localmente:", err);
+            setTimeout(() => {
+                showNotification("RSA Publicado (Simulado)", "Rascunho criado localmente com status PAUSADO!", true);
+            }, 1000);
+        }
+    }
+
+</script>
+</body>
+</html>
