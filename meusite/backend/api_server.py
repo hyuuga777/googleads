@@ -683,7 +683,7 @@ def update_campaign_status(campaign_id):
             else:
                 campaign.status = status_enum.PAUSED
                 
-            client.copy_from(campaign_operation.update_mask, client.get_helper().field_mask(None, campaign))
+            client.copy_from(campaign_operation.update_mask, protobuf_helpers.field_mask_for_update(None, campaign))
             campaign_service.mutate_campaigns(customer_id=CUSTOMER_ID, operations=[campaign_operation])
             logging.info(f"Status da campanha {campaign_id} alterado para {new_status} na API real do Google Ads.")
         except Exception as e:
