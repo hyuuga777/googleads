@@ -619,7 +619,11 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-        if (sessionStorage.getItem('cyborg_googleads_auth') === 'true') {
+        const authenticated = sessionStorage.getItem('cyborg_googleads_auth') === 'true';
+        if (!authenticated) {
+            document.getElementById('login-section').style.display = 'flex';
+            document.getElementById('dashboard-section').style.display = 'none';
+        } else {
             showDashboard();
         }
         
