@@ -13,6 +13,11 @@
             --font-body: 'Space Grotesk', sans-serif;
             --cyber-gradient: linear-gradient(135deg, var(--cyan), var(--purple));
             --neon-shadow: 0 0 15px rgba(0, 243, 255, 0.35);
+
+            /* --- Configurações do Efeito Matrix --- */
+            --matrix-color: #00ff66;
+            --matrix-glow-color: #ffffff;
+            --matrix-bg-opacity: 0.85;
         }
 
         * {
@@ -1997,4 +2002,30 @@
     .app-header {
         padding: 15px 20px !important;
     }
+}
+
+/* --- Matrix Rain Canvas Background para o Dashboard --- */
+#matrix-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -3;
+    pointer-events: none;
+    display: block;
+}
+
+.matrix-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-dark);
+    opacity: var(--matrix-bg-opacity, 0.85);
+    z-index: -2;
+    pointer-events: none;
+    display: block;
+    transition: opacity 0.3s ease;
 }

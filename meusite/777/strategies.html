@@ -18,6 +18,9 @@
 </head>
 <body>
 
+<canvas id="matrix-canvas"></canvas>
+<div class="matrix-overlay"></div>
+
 <div class="ambient-glow-1"></div>
 <div class="ambient-glow-2"></div>
 
@@ -207,6 +210,10 @@
                                             <label for="ad-logo" style="font-size:0.75rem;">URL do Asset de Logotipo</label>
                                             <input type="text" id="ad-logo" class="form-input" style="padding: 6px; font-size:0.8rem;" placeholder="https://site.com/logo.png">
                                         </div>
+                                    </div>
+
+                                    <div style="margin-top: 15px; padding: 12px; background: rgba(0, 243, 255, 0.05); border: 1px dashed rgba(0, 243, 255, 0.25); border-radius: 6px; font-size: 0.78rem; line-height: 1.4; color: var(--cyan); margin-bottom: 10px; text-align: left;">
+                                        <strong>ℹ️ Onde encontrar no Google Ads:</strong> O anúncio será criado diretamente dentro da lista de anúncios do Grupo de Anúncios ativo desta campanha com o status <strong>PAUSADO</strong>. Ele não irá para a aba global de "Rascunhos de Campanha" do Google Ads, permitindo que você o revise e ative diretamente na campanha.
                                     </div>
 
                                     <div style="margin-top: 20px; display:flex; justify-content:flex-end;">
@@ -738,7 +745,8 @@
             });
             const result = await res.json();
             if (result.status === "success") {
-                showNotification("RSA Publicado!", "Rascunho criado com status PAUSADO no Google Ads!", true);
+                showNotification("RSA Publicado!", "Anúncio inserido com status PAUSADO!", true);
+                alert("Sucesso!\n\nO anúncio RSA foi criado diretamente dentro do Grupo de Anúncios ativo da sua campanha no Google Ads com o status PAUSADO.\n\nPara ativá-lo, vá em: Campanhas -> Anúncios no seu painel do Google Ads, selecione o anúncio criado e mude para Ativo.");
             } else {
                 showNotification("Erro na API", result.message || "Erro desconhecido.", false);
             }
@@ -746,10 +754,12 @@
             console.warn("Erro ao publicar rascunho via API, simulando localmente:", err);
             setTimeout(() => {
                 showNotification("RSA Publicado (Simulado)", "Rascunho criado localmente com status PAUSADO!", true);
+                alert("Modo offline/Simulado:\n\nO anúncio RSA foi simulado com sucesso diretamente dentro do Grupo de Anúncios ativo localmente com o status PAUSADO.");
             }, 1000);
         }
     }
 
 </script>
+<script defer src="matrix_dashboard.js"></script>
 </body>
 </html>
