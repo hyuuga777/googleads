@@ -598,7 +598,7 @@
         const hash = await sha256(pass);
         const correctHash = 'fc1b7a9976fa0826a827f334c30925963eb27dbc37048fddaeedf20a5edc1ab4';
         if (hash === correctHash) {
-            sessionStorage.setItem('cyborg_analytics_auth', 'true');
+            sessionStorage.setItem('cyborg_googleads_auth', 'true');
             showDashboard();
         } else {
             const err = document.getElementById('error-msg');
@@ -608,7 +608,7 @@
     }
 
     function handleLogout() {
-        sessionStorage.removeItem('cyborg_analytics_auth');
+        sessionStorage.removeItem('cyborg_googleads_auth');
         location.reload();
     }
 
@@ -619,8 +619,9 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-        // Bypass de autenticação — acesso direto ao painel de analytics
-        showDashboard();
+        if (sessionStorage.getItem('cyborg_googleads_auth') === 'true') {
+            showDashboard();
+        }
         
         // Mobile sidebar toggle
         document.getElementById('sidebar-toggle-btn')?.addEventListener('click', () => {

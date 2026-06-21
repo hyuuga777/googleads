@@ -169,7 +169,7 @@
     }
 
     function initDashboard() {
-        const authenticated = true; // Bypass authentication for local ease of use
+        const authenticated = sessionStorage.getItem('cyborg_googleads_auth') === 'true';
         if (!authenticated) {
             document.getElementById('login-section').style.display = 'flex';
             document.getElementById('dashboard-section').style.display = 'none';
