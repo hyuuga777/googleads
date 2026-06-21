@@ -716,6 +716,8 @@ def update_campaign_status(campaign_id):
         
     return jsonify({"status": "success", "message": f"Campanha {campaign_id} alterada para {new_status} com sucesso."})
 
+
+
 @app.route("/api/campaigns/<campaign_id>/report", methods=["GET"])
 def get_campaign_report(campaign_id):
     # 1. Obter a lista de campanhas
@@ -1287,7 +1289,23 @@ def _generate_campaign_report(camp, strategies, bounce_rate, hidden_waste):
             {"type": "Escassez", "hook": "Restam apenas 3 vagas de otimização de tráfego com garantia de performance este mês."}
         ]
         
+    target_cpa = strategies.get("target_cpa", 50.0)
+    cpa = cost / conversions if conversions > 0 else None
+    
+    if cost == 0:
+        roi_analysis = "Nenhum investimento registrado nesta campanha até o momento."
+    elif conversions == 0:
+        roi_analysis = f"⚠️ **Campanha com Prejuízo Total**: Foram investidos **R$ {cost:.2f}** e nenhuma conversão foi gerada. A campanha está drenando verba sem trazer leads ou vendas, operando com retorno zero (prejuízo absoluto)."
+    else:
+        if cpa > target_cpa:
+            roi_analysis = f"🚨 **CPA Estourado (Campanha Não Lucrativa)**: Esta campanha consumiu **R$ {cost:.2f}** para gerar apenas **{conversions:.0f}** conversão(ões). O Custo por Aquisição (CPA) real de **R$ {cpa:.2f}** superou a meta definida de **R$ {target_cpa:.2f}**. **Esta campanha não gerou retorno financeiro positivo e operou com prejuízo financeiro**."
+        else:
+            roi_analysis = f"✅ **CPA sob Controle (Campanha Lucrativa)**: Foram investidos **R$ {cost:.2f}** para gerar **{conversions:.0f}** conversão(ões). O CPA real está em **R$ {cpa:.2f}**, abaixo da meta planejada de **R$ {target_cpa:.2f}**."
+
     report = f"""### 🔍 Relatório Cirúrgico de Performance — {camp_name}
+
+#### 💸 Análise de Lucratividade & Retorno (ROI)
+* {roi_analysis}
 
 #### 🛑 Desperdício Oculto Detectado: **R$ {hidden_waste:.2f}**
 * **Métrica da Falha**: **{bounce_rate*100:.1f}%** dos cliques vindos do Google Ads abandonaram a landing page em menos de 5 segundos (rejeição total).
