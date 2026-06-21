@@ -683,7 +683,7 @@ def update_campaign_status(campaign_id):
             else:
                 campaign.status = status_enum.PAUSED
                 
-            client.copy_from(campaign_operation.update_mask, protobuf_helpers.field_mask(None, campaign))
+            client.copy_from(campaign_operation.update_mask, protobuf_helpers.field_mask(None, campaign._pb))
             campaign_service.mutate_campaigns(customer_id=CUSTOMER_ID, operations=[campaign_operation])
             logging.info(f"Status da campanha {campaign_id} alterado para {new_status} na API real do Google Ads.")
         except Exception as e:
@@ -2038,7 +2038,7 @@ def approve_insight():
                         
                         client.copy_from(
                             budget_operation.update_mask,
-                            protobuf_helpers.field_mask(None, updated_budget)
+                            protobuf_helpers.field_mask(None, updated_budget._pb)
                         )
                         budget_service.mutate_campaign_budgets(customer_id=CUSTOMER_ID, operations=[budget_operation])
                         applied_real_api = True
@@ -2063,7 +2063,7 @@ def approve_insight():
                             updated_crit.status = client.enums.AdGroupCriterionStatusEnum.PAUSED
                             client.copy_from(
                                 op.update_mask,
-                                protobuf_helpers.field_mask(None, updated_crit)
+                                protobuf_helpers.field_mask(None, updated_crit._pb)
                             )
                             operations.append(op)
                         
