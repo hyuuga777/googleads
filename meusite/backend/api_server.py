@@ -4086,6 +4086,9 @@ def apply_campaign_ai_suggestions(campaign_id):
     suggestions = data.get("suggestions", {})
     add_autonomous_log(f"Operador aplicou manualmente otimizações sugeridas pela IA na campanha '{campaign_id}'.")
     
+    client = get_ads_client()
+    
+    # 1. Negativar palavras-chave no Google Ads real e banco de dados local
     paused = suggestions.get("pause_keywords", [])
     for kw in paused:
         add_autonomous_log(f"Keyword '{kw}' pausada e enviada para negativar.")
@@ -4098,10 +4101,70 @@ def apply_campaign_ai_suggestions(campaign_id):
                     """, (str(campaign_id), str(kw)))
         except: pass
 
+    if paused and client:
+        try:
+            campaign_criterion_service = client.get_service("CampaignCriterionService")
+            operations = []
+            for kw in paused:
+                op = client.get_type("CampaignCriterionOperation")
+                campaign_criterion = op.create
+                campaign_criterion.campaign = client.get_service("CampaignService").campaign_path(CUSTOMER_ID, campaign_id)
+                campaign_criterion.negative = True
+                campaign_criterion.keyword.text = kw
+                campaign_criterion.keyword.match_type = client.enums.KeywordMatchTypeEnum.BROAD
+                operations.append(op)
+                
+            if operations:
+                campaign_criterion_service.mutate_campaign_criteria(customer_id=CUSTOMER_ID, operations=operations)
+                logging.info(f"Sucesso ao aplicar {len(operations)} keywords negativas no Google Ads.")
+        except Exception as e:
+            logging.error(f"Erro ao aplicar keywords negativas no Google Ads: {e}")
+
+    # 2. Ajustar orçamento no Google Ads real
     inc_bud = suggestions.get("increase_budget", [])
+    red_bud = suggestions.get("reduce_budget", [])
+    
+    budget_change_amount = None
     if inc_bud:
         add_autonomous_log(f"Solicitado aumento de orçamento diário para a campanha '{campaign_id}'.")
+        budget_change_amount = 15.0  # aumentar R$ 15.00
+    elif red_bud:
+        add_autonomous_log(f"Solicitado redução de orçamento diário para a campanha '{campaign_id}'.")
+        budget_change_amount = -10.0 # reduzir R$ 10.00
+        
+    if budget_change_amount is not None and client:
+        try:
+            ads_service = client.get_service("GoogleAdsService")
+            query = f"""
+                SELECT campaign.id, campaign_budget.resource_name, campaign_budget.amount_micros 
+                FROM campaign 
+                WHERE campaign.id = {campaign_id}
+            """
+            response = ads_service.search(customer_id=CUSTOMER_ID, query=query)
+            rows = list(response)
+            if rows:
+                budget_res = rows[0].campaign_budget.resource_name
+                current_micros = rows[0].campaign_budget.amount_micros
+                current_amount = float(current_micros) / 1000000.0
+                new_amount = max(5.0, current_amount + budget_change_amount)
+                new_amount_micros = int(new_amount * 1000000.0)
+                
+                budget_service = client.get_service("CampaignBudgetService")
+                budget_operation = client.get_type("CampaignBudgetOperation")
+                updated_budget = budget_operation.update
+                updated_budget.resource_name = budget_res
+                updated_budget.amount_micros = new_amount_micros
+                
+                client.copy_from(
+                    budget_operation.update_mask,
+                    protobuf_helpers.field_mask(None, updated_budget._pb)
+                )
+                budget_service.mutate_campaign_budgets(customer_id=CUSTOMER_ID, operations=[budget_operation])
+                logging.info(f"Orçamento da campanha {campaign_id} alterado para R$ {new_amount:.2f} no Google Ads.")
+        except Exception as e:
+            logging.error(f"Erro ao atualizar orçamento da campanha no Google Ads: {e}")
     
+    # 3. Criar anúncio RSA no Google Ads real e banco de dados local
     new_ads = suggestions.get("new_ads", {})
     if new_ads and new_ads.get("headlines"):
         add_autonomous_log(f"Rascunho de anúncio RSA criado para '{campaign_id}' com títulos: {', '.join(new_ads['headlines'][:3])}.")
@@ -4118,6 +4181,44 @@ def apply_campaign_ai_suggestions(campaign_id):
                         json.dumps(new_ads.get("descriptions", [])),
                     ))
         except: pass
+
+        if client:
+            try:
+                # Encontrar o primeiro ad_group ativo desta campanha
+                ads_service = client.get_service("GoogleAdsService")
+                query = f"""
+                    SELECT ad_group.id 
+                    FROM ad_group 
+                    WHERE campaign.id = {campaign_id} AND ad_group.status = 'ENABLED' 
+                    LIMIT 1
+                """
+                response = ads_service.search(customer_id=CUSTOMER_ID, query=query)
+                rows = list(response)
+                if rows:
+                    ad_group_id = str(rows[0].ad_group.id)
+                    ad_group_ad_service = client.get_service("AdGroupAdService")
+                    ad_group_ad_operation = client.get_type("AdGroupAdOperation")
+                    ad_group_ad = ad_group_ad_operation.create
+                    ad_group_ad.ad_group = client.get_service("AdGroupService").ad_group_path(CUSTOMER_ID, ad_group_id)
+                    ad_group_ad.status = client.enums.AdGroupAdStatusEnum.PAUSED  # Salvar como pausado
+                    
+                    ad = ad_group_ad.ad
+                    ad.final_urls.append("https://agenciacyborg.com/lead")
+                    
+                    for text in new_ads.get("headlines", [])[:15]:
+                        ad_text_asset = client.get_type("AdTextAsset")
+                        ad_text_asset.text = text[:30]
+                        ad.responsive_search_ad.headlines.append(ad_text_asset)
+                        
+                    for text in new_ads.get("descriptions", [])[:4]:
+                        ad_text_asset = client.get_type("AdTextAsset")
+                        ad_text_asset.text = text[:90]
+                        ad.responsive_search_ad.descriptions.append(ad_text_asset)
+                        
+                    ad_group_ad_service.mutate_ad_group_ads(customer_id=CUSTOMER_ID, operations=[ad_group_ad_operation])
+                    logging.info(f"Anúncio RSA criado com sucesso como pausado no Google Ads da campanha {campaign_id}.")
+            except Exception as e:
+                logging.error(f"Erro ao criar anúncio RSA no Google Ads: {e}")
             
     for kw in paused:
         add_to_learning_memory("winning_keywords", f"[Pausada/Evitada] {kw}")
