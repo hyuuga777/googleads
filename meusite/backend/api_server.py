@@ -3849,6 +3849,79 @@ def get_campaign_ai_analysis(campaign_id):
     
     keywords, ads, audiences = _get_mock_campaign_details(campaign_id, bounce_rate, hidden_waste)
 
+    # Buscar termos de busca reais (ou simulados) da campanha para passar à análise da IA
+    search_terms_to_analyze = []
+    client = get_ads_client()
+    if client:
+        try:
+            ads_service = client.get_service("GoogleAdsService")
+            query = f"""
+                SELECT
+                  search_term_view.search_term,
+                  metrics.clicks,
+                  metrics.impressions,
+                  metrics.cost_micros,
+                  metrics.conversions
+                FROM search_term_view
+                WHERE campaign.id = {campaign_id}
+                  AND segments.date DURING LAST_30_DAYS
+            """
+            response = ads_service.search(customer_id=CUSTOMER_ID, query=query)
+            for row in response:
+                search_terms_to_analyze.append({
+                    "term": row.search_term_view.search_term,
+                    "clicks": int(row.metrics.clicks),
+                    "impressions": int(row.metrics.impressions),
+                    "cost": round(float(row.metrics.cost_micros) / 1e6, 2),
+                    "conversions": int(row.metrics.conversions)
+                })
+        except Exception as e:
+            logging.error(f"Erro ao buscar termos de pesquisa para a analise de IA: {e}")
+
+    if not search_terms_to_analyze:
+        # Fallback para termos simulados baseados na campanha
+        if str(campaign_id) == "23542530230": # Pesquisa-Auto
+            search_terms_to_analyze = [
+                {"term": "automacao de whatsapp para empresas", "clicks": 120, "impressions": 850, "cost": 420.00, "conversions": 12},
+                {"term": "sistema de automacao comercial", "clicks": 90, "impressions": 600, "cost": 315.00, "conversions": 6},
+                {"term": "como enviar whatsapp em massa gratis", "clicks": 30, "impressions": 450, "cost": 105.00, "conversions": 0},
+                {"term": "robo para whatsapp gratis", "clicks": 25, "impressions": 350, "cost": 87.50, "conversions": 0},
+                {"term": "curso de automacao de processos", "clicks": 20, "impressions": 280, "cost": 70.00, "conversions": 0},
+                {"term": "automacao de marketing digital", "clicks": 45, "impressions": 380, "cost": 157.50, "conversions": 3},
+                {"term": "plataforma de automacao de leads", "clicks": 55, "impressions": 480, "cost": 192.50, "conversions": 4}
+            ]
+        elif str(campaign_id) == "23952678122": # tiktok
+            search_terms_to_analyze = [
+                {"term": "fazer propaganda no tiktok", "clicks": 85, "impressions": 1200, "cost": 722.50, "conversions": 4},
+                {"term": "gestor de trafego tiktok", "clicks": 55, "impressions": 800, "cost": 467.50, "conversions": 3},
+                {"term": "dancinhas famosas do tiktok", "clicks": 25, "impressions": 300, "cost": 212.50, "conversions": 0},
+                {"term": "como ganhar dinheiro assistindo tiktok", "clicks": 15, "impressions": 400, "cost": 127.50, "conversions": 0},
+                {"term": "musicas em alta tiktok", "clicks": 20, "impressions": 350, "cost": 170.00, "conversions": 0},
+                {"term": "visualizacoes gratis tiktok", "clicks": 18, "impressions": 290, "cost": 153.00, "conversions": 0},
+                {"term": "anunciar no tiktok valor", "clicks": 35, "impressions": 420, "cost": 297.50, "conversions": 2}
+            ]
+        else: # Site-Pesquisa (23547202690)
+            search_terms_to_analyze = [
+                {"term": "criacao de sites profissionais", "clicks": 120, "impressions": 800, "cost": 360.00, "conversions": 15},
+                {"term": "criar site profissional", "clicks": 95, "impressions": 720, "cost": 285.00, "conversions": 12},
+                {"term": "desenvolvimento de landing page", "clicks": 80, "impressions": 650, "cost": 240.00, "conversions": 8},
+                {"term": "como criar site gratis wix", "clicks": 35, "impressions": 500, "cost": 105.00, "conversions": 0},
+                {"term": "fazer site gratis no google", "clicks": 30, "impressions": 450, "cost": 90.00, "conversions": 0},
+                {"term": "como criar um site sozinho gratis", "clicks": 25, "impressions": 350, "cost": 75.00, "conversions": 0},
+                {"term": "wix entrar", "clicks": 20, "impressions": 280, "cost": 60.00, "conversions": 0},
+                {"term": "wordpress entrar", "clicks": 18, "impressions": 260, "cost": 54.00, "conversions": 0},
+                {"term": "empresa de criacao de sites", "clicks": 45, "impressions": 310, "cost": 135.00, "conversions": 5},
+                {"term": "agencia de web design", "clicks": 40, "impressions": 500, "cost": 120.00, "conversions": 3},
+                {"term": "123 sites login", "clicks": 1, "impressions": 10, "cost": 2.50, "conversions": 0},
+                {"term": "orbit pages", "clicks": 1, "impressions": 5, "cost": 3.20, "conversions": 0},
+                {"term": "grate pages", "clicks": 1, "impressions": 4, "cost": 2.80, "conversions": 0},
+                {"term": "webnode entrar", "clicks": 2, "impressions": 8, "cost": 4.10, "conversions": 0},
+                {"term": "odoo criar site", "clicks": 1, "impressions": 3, "cost": 5.00, "conversions": 0},
+                {"term": "criar loja nuvemshop", "clicks": 1, "impressions": 15, "cost": 4.50, "conversions": 0},
+                {"term": "criação de sites canoas", "clicks": 0, "impressions": 5, "cost": 0.00, "conversions": 0},
+                {"term": "criação de sites em alphaville", "clicks": 0, "impressions": 4, "cost": 0.00, "conversions": 0}
+            ]
+
     openai_key = ""
     competitors = []
     if os.path.exists(STRATEGIES_FILE):
@@ -3864,7 +3937,7 @@ def get_campaign_ai_analysis(campaign_id):
     if openai_key:
         try:
             analysis = AiCampaignAnalyzer.run_full_campaign_analysis(
-                target_camp, keywords, ads, audiences, competitors, bounce_rate, hidden_waste, openai_key
+                target_camp, search_terms_to_analyze, ads, audiences, competitors, bounce_rate, hidden_waste, openai_key
             )
             return jsonify({"status": "success", "analysis": analysis})
         except Exception as e:
@@ -3942,7 +4015,21 @@ def get_campaign_ai_analysis(campaign_id):
             "issue": "Desperdício com termos de busca informais e tutoriais gratuitos.",
             "impact": "<strong>Onde está errado:</strong> Cliques provenientes de usuários buscando criar sites de graça ou tutoriais de Wix/Wordpress consumindo R$ 150.00 sem gerar leads.<br><strong>O que melhorar:</strong> Negativar palavras-chave informais como 'gratis', 'como fazer' e termos institucionais de concorrentes gratuitos (Wix, Canva).<br><strong>Exemplo:</strong> Buscas por 'como criar site gratis wix' gerando cliques pagos que não se transformam em clientes corporativos."
         })
-        pause_kws = ["como criar site gratis wix", "fazer site gratis no google", "como criar um site sozinho gratis", "wix entrar", "wordpress entrar"]
+        pause_kws = [
+            "como criar site gratis wix", 
+            "fazer site gratis no google", 
+            "como criar um site sozinho gratis", 
+            "wix entrar", 
+            "wordpress entrar",
+            "123 sites login",
+            "orbit pages",
+            "grate pages",
+            "webnode entrar",
+            "odoo criar site",
+            "criar loja nuvemshop",
+            "criação de sites canoas",
+            "criação de sites em alphaville"
+        ]
 
     if str(campaign_id) == "23542530230": # Pesquisa-Auto
         new_kws = ["empresa de automacao comercial", "sistemas de automacao b2b", "consultoria de automacao whatsapp"]
