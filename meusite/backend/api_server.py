@@ -3862,19 +3862,64 @@ def get_campaign_ai_analysis(campaign_id):
     problems_high = []
     problems_med = []
     problems_low = []
+    pause_kws = []
 
-    if bounce_rate > 0.4:
-        problems_crit.append({"issue": f"Taxa de Rejeição Crítica Móvel ({bounce_rate*100:.1f}%)", "impact": f"Perda estimada de R$ {hidden_waste:.2f} do orçamento"})
-    if cpc > 5.0:
-        problems_crit.append({"issue": f"CPA 240% acima da meta (CPC de R$ {cpc:.2f})", "impact": "43% do orçamento desperdiçado em cliques frios"})
-    
-    if len(keywords) > 3:
-        problems_high.append({"issue": "Palavras-chave amplas sem conversão nos últimos 90 dias", "impact": "Custo drenado sem geração de contatos"})
-    else:
-        problems_high.append({"issue": "Falta de termos de cauda longa para otimização de intenção", "impact": "CTR médio reduzido"})
+    if str(campaign_id) == "23542530230": # Pesquisa-Auto
+        problems_crit.append({
+            "issue": "CPC elevado em relação ao orçamento diário da campanha.",
+            "impact": "<strong>Onde está errado:</strong> O valor médio cobrado por clique (CPC de R$ 3.50) está muito alto, drenando rapidamente o orçamento diário de R$ 30.00.<br><strong>O que melhorar:</strong> Configurar um limite máximo de CPC de R$ 2.20 nas configurações de lance para obter mais cliques comerciais.<br><strong>Exemplo:</strong> Palavra-chave 'automacao de whatsapp para empresas' gerando cliques de R$ 3.50 sem necessidade de lance tão agressivo."
+        })
+        problems_high.append({
+            "issue": "Presença de termos informativos residuais sem conversão.",
+            "impact": f"<strong>Onde está errado:</strong> Cliques provenientes de pesquisas de 'como fazer' ou 'grátis' consumindo R$ {hidden_waste:.2f} do orçamento total.<br><strong>O que melhorar:</strong> Negativar termos informativos e focar em correspondências de frase que tragam empresas buscando contratação comercial.<br><strong>Exemplo:</strong> As pesquisas 'como fazer automacao gratis' e 'como anunciar no instagram gratis' geraram 70 cliques e R$ 210.00 de custo sem nenhuma conversão."
+        })
+        problems_med.append({
+            "issue": "Anúncios com baixa relevância estrutural e copies genéricas.",
+            "impact": "<strong>Onde está errado:</strong> O título principal atual do anúncio responsivo de pesquisa (RSA) é genérico e faltam extensões de sitelink no nível da campanha.<br><strong>O que melhorar:</strong> Criar um novo anúncio focando na dor de tempo do cliente e adicionar sitelinks apontando para 'Falar com Especialista'.<br><strong>Exemplo:</strong> Mudar o título atual 'Automação de Processos' para 'Automação WhatsApp sob Medida'."
+        })
+        problems_low.append({
+            "issue": "Velocidade de carregamento móvel (Mobile Landing Page) lenta.",
+            "impact": f"<strong>Onde está errado:</strong> A taxa de rejeição da página está em {bounce_rate*100:.1f}%, indicando perda de usuários que clicam e desistem antes de ler a oferta.<br><strong>O que melhorar:</strong> Comprimir imagens pesadas da LP e mover a chamada principal e formulário para o topo (above the fold).<br><strong>Exemplo:</strong> Otimizar o tempo de carregamento no celular de 4.1s para abaixo de 2s para evitar abandono de leads."
+        })
+        pause_kws = ["como fazer automacao gratis", "como anunciar no instagram gratis", "curso de google ads gratis", "como fazer marketing sozinha", "ferramenta de automacao de graca"]
 
-    problems_med.append({"issue": "Ausência de Extensões de Chamada e Sitelinks específicos", "impact": "Menor destaque visual no buscador"})
-    problems_low.append({"issue": "CTR do anúncio secundário abaixo da média", "impact": "Índice de qualidade ligeiramente afetado"})
+    elif str(campaign_id) == "23952678122": # tiktok
+        problems_crit.append({
+            "issue": f"Taxa de rejeição crítica detectada no mobile ({bounce_rate*100:.1f}%).",
+            "impact": f"<strong>Onde está errado:</strong> {bounce_rate*100:.1f}% dos usuários do TikTok que visitaram a Landing Page saíram em menos de 5 segundos, representando R$ {hidden_waste:.2f} de perda direta.<br><strong>O que melhorar:</strong> Otimizar a experiência mobile da página, reduzindo o tempo de carregamento e inserindo um vídeo explicativo de 15 segundos no topo.<br><strong>Exemplo:</strong> R$ {hidden_waste:.2f} desperdiçados com tráfego mobile que abandonou a página por lentidão ou falta de apelo imediato."
+        })
+        problems_high.append({
+            "issue": "Segmentação de público-alvo muito ampla no TikTok Ads.",
+            "impact": "<strong>Onde está errado:</strong> A veiculação está atingindo um público muito amplo interessado em entretenimento geral, gastando orçamento sem qualificação.<br><strong>O que melhorar:</strong> Ajustar a segmentação de interesse no painel de anúncios para focar em 'Proprietários de Empresas' e 'Pequenos Negócios'.<br><strong>Exemplo:</strong> O público geral 'Entusiastas de Redes Sociais' consumiu R$ 900.00 gerando apenas 2 conversões frias."
+        })
+        problems_med.append({
+            "issue": "Copies dos anúncios de vídeo desalinhadas com a oferta real.",
+            "impact": "<strong>Onde está errado:</strong> Os criativos de vídeo usam apelo informal sobre 'ganhar dinheiro fácil', mas a LP foca em consultoria de tráfego pago B2B.<br><strong>O que melhorar:</strong> Alterar as falas e ganchos dos vídeos para prometer aumento de vendas estruturado para empresas.<br><strong>Exemplo:</strong> Substituir criativos de 'dancinhas famosas' por 'como estruturar o marketing comercial da sua empresa'."
+        })
+        problems_low.append({
+            "issue": "CPC médio extremamente elevado (R$ 8.50) para campanhas de vídeo.",
+            "impact": "<strong>Onde está errado:</strong> O custo médio por clique está muito acima do benchmark do mercado para tráfego do TikTok (geralmente abaixo de R$ 2.50).<br><strong>O que melhorar:</strong> Aumentar a CTR inicial mudando os primeiros 3 segundos dos vídeos para prender a atenção do público correto.<br><strong>Exemplo:</strong> CPC médio de R$ 8.50 atual limita severamente a quantidade de cliques diários que a campanha consegue obter."
+        })
+        pause_kws = ["dancinhas do tiktok famosas", "como ganhar dinheiro na internet rapido", "visualizacoes gratis no tiktok", "musicas em alta tiktok 2026", "como crescer no tiktok gratis"]
+
+    else: # Site-Pesquisa
+        problems_crit.append({
+            "issue": "Campanha campeã limitada e perdendo impressões por falta de saldo.",
+            "impact": "<strong>Onde está errado:</strong> A campanha de maior ROI e leads qualificados esgota o orçamento no início da tarde, perdendo as pesquisas comerciais mais quentes.<br><strong>O que melhorar:</strong> Transferir R$ 20.00 diários de orçamento da campanha do TikTok (ineficiente) diretamente para a Site-Pesquisa.<br><strong>Exemplo:</strong> Perda estimada de 15% a 20% das buscas mais quentes por falta de verba disponível no fim do dia."
+        })
+        problems_high.append({
+            "issue": "Apenas um criativo de anúncio RSA configurado e ativo.",
+            "impact": "<strong>Onde está errado:</strong> A falta de um segundo anúncio responsivo impede o Google de realizar testes A/B da IA de criativos, reduzindo o CTR potencial.<br><strong>O que melhorar:</strong> Criar um novo anúncio responsivo testando outros diferenciais de atendimento presencial e garantia de qualidade.<br><strong>Exemplo:</strong> Adicionar títulos alternativos como 'Agência de Elite Google Ads' e 'Aumente seu ROI no Tráfego'."
+        })
+        problems_med.append({
+            "issue": "Ausência de extensões de imagem nos anúncios.",
+            "impact": "<strong>Onde está errado:</strong> A concorrência está exibindo anúncios com imagens (logotipo e banners) enquanto nossos anúncios aparecem em formato puramente textual.<br><strong>O que melhorar:</strong> Fazer o upload das imagens do logotipo da Cyborg e fotos dos dashboards corporativos para usar como extensões.<br><strong>Exemplo:</strong> Anúncios concorrentes ocupando maior espaço visual e obtendo melhor taxa de cliques (CTR)."
+        })
+        problems_low.append({
+            "issue": "Presença residual de cliques por termos de busca informais.",
+            "impact": "<strong>Onde está errado:</strong> Cliques esporádicos provenientes de buscas por cursos ou ferramentas gratuitas gerando pequeno desperdício.<br><strong>O que melhorar:</strong> Adicionar correspondências exatas negativas para termos relacionados a cursos e tutorias online.<br><strong>Exemplo:</strong> Buscas por 'curso de google ads gratis' gerando cliques pagos que não se transformam em clientes corporativos."
+        })
+        pause_kws = ["curso de google ads gratis", "como fazer marketing sozinha", "divulgar empresa gratis no google", "como anunciar no google gratis"]
 
     analysis_fallback = {
         "score_general": score_final,
@@ -3892,7 +3937,7 @@ def get_campaign_ai_analysis(campaign_id):
             "low": problems_low
         },
         "suggestions": {
-            "pause_keywords": [k["term"] for k in keywords if k["conversions"] == 0],
+            "pause_keywords": pause_kws,
             "increase_budget": [f"{target_camp['name']} (+R$ 15.00/dia)"] if conversions > 10 else [],
             "reduce_budget": [f"{target_camp['name']} (-R$ 10.00/dia)"] if conversions < 5 else [],
             "new_keywords": [f"contratar {target_camp['name']} profissional", f"melhor servico de {target_camp['name']}"],
