@@ -414,7 +414,8 @@ def get_status():
         "google_ads_api": "CONNECTED" if client else "SIMULATED",
         "google_ads_available": GOOGLE_ADS_AVAILABLE,
         "customer_id": CUSTOMER_ID,
-        "openai_api": get_openai_status()
+        "openai_api": get_openai_status(),
+        "version": "v1.2-filter-negatives"
     })
 
 # Programmatic 60-day mock data database
