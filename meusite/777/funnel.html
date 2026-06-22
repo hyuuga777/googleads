@@ -61,11 +61,14 @@
                     <a href="googleads_dashboard.html" class="sidebar-link" id="nav-overview">
                         <span class="icon">📊</span> Visão
                     </a>
+                    <a href="ai_dashboard.html" class="sidebar-link" id="nav-executive">
+                        <span class="icon">🤖</span> Executivo
+                    </a>
                     <a href="campaigns.html" class="sidebar-link" id="nav-campaigns">
                         <span class="icon">🚀</span> Campanhas
                     </a>
                     <a href="strategies.html" class="sidebar-link" id="nav-strategies">
-                        <span class="icon">🧠</span> Estratégias
+                        <span class="icon">♟️</span> Estratégias
                     </a>
                     <a href="funnel.html" class="sidebar-link active-link" id="nav-funnel">
                         <span class="icon">🎯</span> Funil
@@ -75,6 +78,9 @@
                     </a>
                     <a href="approvals.html" class="sidebar-link" id="nav-approvals">
                         <span class="icon">🔔</span> Insights
+                    </a>
+                    <a href="cerebro.html" class="sidebar-link" id="nav-cerebro">
+                        <span class="icon">🧠</span> Cérebro
                     </a>
                 </nav>
             </div>
@@ -102,6 +108,10 @@
             </div>
             
             <div class="header-actions">
+                <div class="status-badge" id="openai-status-badge" style="margin-right: 10px;">
+                    <div class="status-dot"></div>
+                    <span id="openai-status-text">Verificando...</span>
+                </div>
                 <div class="status-badge" id="api-status-badge">
                     <div class="status-dot"></div>
                     <span id="api-status-text">Verificando...</span>
@@ -272,7 +282,7 @@
     </div>
 </div>
 
-<script src="config.js"></script>
+<script src="config.js?v=2"></script>
 <script>
 
     const API_BASE = (window.CYBORG_CONFIG && window.CYBORG_CONFIG.api_url) ? window.CYBORG_CONFIG.api_url : "http://127.0.0.1:5000/api";
@@ -363,11 +373,53 @@
                 dot.style.backgroundColor = "#ffb300";
                 dot.style.boxShadow = "0 0 10px #ffb300";
             }
+            
+            // OpenAI status update
+            const oaiBadge = document.getElementById('openai-status-badge');
+            const oaiDot = document.querySelector('#openai-status-badge .status-dot');
+            const oaiText = document.getElementById('openai-status-text');
+            if (oaiBadge && oaiDot && oaiText) {
+                if (data.openai_api === "CONNECTED") {
+                    oaiText.textContent = "OpenAI Conectado";
+                    oaiText.style.color = "#00ff66";
+                    oaiDot.style.backgroundColor = "#00ff66";
+                    oaiDot.style.boxShadow = "0 0 10px #00ff66";
+                    oaiBadge.style.borderColor = "rgba(0, 255, 102, 0.25)";
+                    oaiBadge.style.background = "rgba(0, 255, 102, 0.05)";
+                } else if (data.openai_api === "ERROR") {
+                    oaiText.textContent = "Erro OpenAI";
+                    oaiText.style.color = "var(--pink)";
+                    oaiDot.style.backgroundColor = "var(--pink)";
+                    oaiDot.style.boxShadow = "0 0 10px var(--pink)";
+                    oaiBadge.style.borderColor = "rgba(255, 0, 85, 0.25)";
+                    oaiBadge.style.background = "rgba(255, 0, 85, 0.05)";
+                } else {
+                    oaiText.textContent = "OpenAI Desconectado";
+                    oaiText.style.color = "#888";
+                    oaiDot.style.backgroundColor = "#777";
+                    oaiDot.style.boxShadow = "0 0 10px #777";
+                    oaiBadge.style.borderColor = "rgba(255, 255, 255, 0.1)";
+                    oaiBadge.style.background = "rgba(255, 255, 255, 0.03)";
+                }
+            }
         } catch (err) {
             document.getElementById('api-status-text').textContent = "Backend Offline";
             const dot = document.querySelector('#api-status-badge .status-dot');
-            dot.style.backgroundColor = "var(--pink)";
-            dot.style.boxShadow = "0 0 10px var(--pink)";
+            if (dot) {
+                dot.style.backgroundColor = "var(--pink)";
+                dot.style.boxShadow = "0 0 10px var(--pink)";
+            }
+            const oaiBadge = document.getElementById('openai-status-badge');
+            const oaiDot = document.querySelector('#openai-status-badge .status-dot');
+            const oaiText = document.getElementById('openai-status-text');
+            if (oaiBadge && oaiDot && oaiText) {
+                oaiText.textContent = "OpenAI Offline";
+                oaiText.style.color = "var(--pink)";
+                oaiDot.style.backgroundColor = "var(--pink)";
+                oaiDot.style.boxShadow = "0 0 10px var(--pink)";
+                oaiBadge.style.borderColor = "rgba(255, 0, 85, 0.25)";
+                oaiBadge.style.background = "rgba(255, 0, 85, 0.05)";
+            }
         }
     }
 
@@ -500,6 +552,6 @@
     }
 
 </script>
-<script defer src="matrix_dashboard.js"></script>
+<script defer src="matrix_dashboard.js?v=2"></script>
 </body>
 </html>

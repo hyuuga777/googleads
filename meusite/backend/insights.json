@@ -4,56 +4,107 @@
     "campaign_id": "23952678122",
     "campaign_name": "tiktok",
     "action": "PAUSE_KEYWORD",
-    "target": "dan\u00e7a do tiktok gratis",
-    "details": "A palavra-chave possui CPC muito alto (R$ 8,50) com zero convers\u00f5es nos \u00faltimos 7 dias. A pausa evitar\u00e1 desperd\u00edcio de verba.",
-    "savings_est": "R$ 120,00/m\u00eas",
-    "status": "APPROVED"
+    "target": "dança do tiktok gratis",
+    "details": "A palavra-chave possui CPC muito alto (R$ 8,50) com zero conversões nos últimos 7 dias. A pausa evitará desperdício de verba.",
+    "savings_est": "R$ 120,00/mês",
+    "status": "APPROVED",
+    "ia_review": {
+      "google_approval_score": 95,
+      "conversion_probability": 88,
+      "policy_violations": [
+        "Nenhuma"
+      ],
+      "clarity_rating": "Excelente",
+      "cta_present": true,
+      "exaggerated_promises": [
+        "Nenhum"
+      ],
+      "reapproval_risk": "Baixo",
+      "rewrite_suggestions": [
+        "Conformidade verificada."
+      ]
+    }
   },
   {
     "id": "ins_002",
     "campaign_id": "23547202690",
     "campaign_name": "Site-Pesquisa",
     "action": "INCREASE_BUDGET",
-    "target": "Or\u00e7amento de R$ 50,00 para R$ 65,00",
-    "details": "CPA de R$ 22,40 est\u00e1 abaixo do limite m\u00ednimo definido de R$ 30,00. Excelente oportunidade de escala de leads.",
+    "target": "Orçamento de R$ 50,00 para R$ 65,00",
+    "details": "CPA de R$ 22,40 está abaixo do limite mínimo definido de R$ 30,00. Excelente oportunidade de escala de leads.",
     "savings_est": "+25% Leads",
-    "status": "PENDING"
+    "status": "PENDING",
+    "ia_review": {
+      "google_approval_score": 95,
+      "conversion_probability": 88,
+      "policy_violations": [
+        "Nenhuma"
+      ],
+      "clarity_rating": "Excelente",
+      "cta_present": true,
+      "exaggerated_promises": [
+        "Nenhum"
+      ],
+      "reapproval_risk": "Baixo",
+      "rewrite_suggestions": [
+        "Conformidade verificada."
+      ]
+    }
   },
   {
     "id": "ins_003",
     "campaign_id": "23542530230",
     "campaign_name": "Pesquisa-Auto",
     "action": "REDUCE_BID",
-    "target": "cria\u00e7\u00e3o de site r\u00e1pido",
-    "details": "CPC m\u00e9dio de R$ 6,10 nesta palavra-chave excede o limite m\u00e1ximo configurado (R$ 5,00) nas estrat\u00e9gias da IA.",
-    "savings_est": "Redu\u00e7\u00e3o CPC",
-    "status": "APPROVED"
-  },
-  {
-    "id": "ins_ia_23542530230_cpc_high",
-    "campaign_id": "23542530230",
-    "campaign_name": "Pesquisa-Auto",
-    "action": "PAUSE_KEYWORD",
-    "target": "Otimizar CPC em Pesquisa-Auto",
-    "details": "O CPC m\u00e9dio de R$ 2.02 excede o limite de seguran\u00e7a configurado (R$ 1.50).",
-    "savings_est": "R$ 0.00/m\u00eas",
-    "status": "PENDING",
-    "bounce_rate": 0.0,
-    "hidden_waste": 0.0,
-    "report_md": "### \ud83d\udd0d Relat\u00f3rio Cir\u00fargico de Performance \u2014 Pesquisa-Auto\n\n#### \ud83d\uded1 Desperd\u00edcio Oculto Detectado: **R$ 0.00**\n* **M\u00e9trica da Falha**: **0.0%** dos cliques vindos do Google Ads abandonaram a landing page em menos de 5 segundos (rejei\u00e7\u00e3o total).\n* **Dinheiro no Lixo**: Estimamos que **R$ 0.00** (do total de R$ 28.33 investidos) foram gastos em rob\u00f4s ou tr\u00e1fego desqualificado.\n\n#### \u2699\ufe0f Erro Estrutural Identificado\n* **Canibaliza\u00e7\u00e3o & Inten\u00e7\u00e3o**: O \u00e2ngulo da p\u00e1gina atual est\u00e1 alinhado com o objetivo 'Leads Whatsapp'.\n* **Fric\u00e7\u00e3o M\u00f3vel**: A maioria das rejei\u00e7\u00f5es r\u00e1pidas ocorreu em dispositivos m\u00f3veis. Verifique se o carregamento est\u00e1 r\u00e1pido e se n\u00e3o h\u00e1 barreiras visuais de navega\u00e7\u00e3o.\n\n#### \ud83e\udde0 An\u00e1lise Comportamental do Consumidor\n* **Avatar Alvo**: O p\u00fablico-alvo tem dores claras como *\"Falta de confian\u00e7a no profissional, burocracia para contratar Landpages, dor de dente/problema urgente.\"* e deseja *\"Resolver o problema r\u00e1pido, atendimento humanizado e pre\u00e7o justo por Landpages.\"*.\n* **Obje\u00e7\u00e3o de Pre\u00e7o/Entrega**: O clique demonstra alto interesse, mas os concorrentes diretos (*Nenhum informado*) est\u00e3o operando com ofertas mais agressivas de funil.\n\n#### \ud83d\udca1 Novas Ideias de Copies & Criativos Persuasivos (Cialdini)\n1. **Gatilho de Reciprocidade**:\n   > *\"Ag\u00eancia Cyborg: Solicite uma Auditoria Gratuita de suas campanhas de Ads e descubra o ralo por onde seu dinheiro est\u00e1 escorrendo.\"*\n2. **Gatilho de Prova Social**:\n   > *\"Mais de 150 empresas j\u00e1 superaram a dor de 'Falta de confian\u00e7a no profissional, burocracia para contratar Landpages, dor de dente/problema urgente.' e validaram nosso m\u00e9todo de an\u00fancios inteligentes.\"*\n3. **Gatilho de Autoridade**:\n   > *\"Especialistas Cyborg: O m\u00e9todo validado cientificamente que blindou a verba de marketing para 25 a 55 anos.\"*\n"
+    "target": "criação de site rápido",
+    "details": "CPC médio de R$ 6,10 nesta palavra-chave excede o limite máximo configurado (R$ 5,00) nas estratégias da IA.",
+    "savings_est": "Redução CPC",
+    "status": "APPROVED",
+    "ia_review": {
+      "google_approval_score": 95,
+      "conversion_probability": 88,
+      "policy_violations": [
+        "Nenhuma"
+      ],
+      "clarity_rating": "Excelente",
+      "cta_present": true,
+      "exaggerated_promises": [
+        "Nenhum"
+      ],
+      "reapproval_risk": "Baixo",
+      "rewrite_suggestions": [
+        "Conformidade verificada."
+      ]
+    }
   },
   {
     "id": "ins_ia_23542530230_cpa_high",
     "campaign_id": "23542530230",
     "campaign_name": "Pesquisa-Auto",
     "action": "ADJUST_BUDGET",
-    "target": "Reduzir or\u00e7amento de R$ 17.77 para R$ 15.99",
-    "details": "CPA real de R$ 28.33 superou o CPA Alvo m\u00e1ximo de R$ 15.00.",
-    "savings_est": "R$ 0.00/m\u00eas",
+    "target": "Reduzir orçamento de R$ 17.77 para R$ 15.99",
+    "details": "CPA real de R$ 28.33 superou o CPA Alvo máximo de R$ 20.00.",
+    "savings_est": "R$ 0.00/mês",
     "status": "APPROVED",
     "bounce_rate": 0.0,
     "hidden_waste": 0.0,
-    "report_md": "### \ud83d\udd0d Relat\u00f3rio Cir\u00fargico de Performance \u2014 Pesquisa-Auto\n\n#### \ud83d\uded1 Desperd\u00edcio Oculto Detectado: **R$ 0.00**\n* **M\u00e9trica da Falha**: **0.0%** dos cliques vindos do Google Ads abandonaram a landing page em menos de 5 segundos (rejei\u00e7\u00e3o total).\n* **Dinheiro no Lixo**: Estimamos que **R$ 0.00** (do total de R$ 28.33 investidos) foram gastos em rob\u00f4s ou tr\u00e1fego desqualificado.\n\n#### \u2699\ufe0f Erro Estrutural Identificado\n* **Canibaliza\u00e7\u00e3o & Inten\u00e7\u00e3o**: O \u00e2ngulo da p\u00e1gina atual est\u00e1 alinhado com o objetivo 'Leads Whatsapp'.\n* **Fric\u00e7\u00e3o M\u00f3vel**: A maioria das rejei\u00e7\u00f5es r\u00e1pidas ocorreu em dispositivos m\u00f3veis. Verifique se o carregamento est\u00e1 r\u00e1pido e se n\u00e3o h\u00e1 barreiras visuais de navega\u00e7\u00e3o.\n\n#### \ud83e\udde0 An\u00e1lise Comportamental do Consumidor\n* **Avatar Alvo**: O p\u00fablico-alvo tem dores claras como *\"Falta de confian\u00e7a no profissional, burocracia para contratar Landpages, dor de dente/problema urgente.\"* e deseja *\"Resolver o problema r\u00e1pido, atendimento humanizado e pre\u00e7o justo por Landpages.\"*.\n* **Obje\u00e7\u00e3o de Pre\u00e7o/Entrega**: O clique demonstra alto interesse, mas os concorrentes diretos (*Nenhum informado*) est\u00e3o operando com ofertas mais agressivas de funil.\n\n#### \ud83d\udca1 Novas Ideias de Copies & Criativos Persuasivos (Cialdini)\n1. **Gatilho de Reciprocidade**:\n   > *\"Ag\u00eancia Cyborg: Solicite uma Auditoria Gratuita de suas campanhas de Ads e descubra o ralo por onde seu dinheiro est\u00e1 escorrendo.\"*\n2. **Gatilho de Prova Social**:\n   > *\"Mais de 150 empresas j\u00e1 superaram a dor de 'Falta de confian\u00e7a no profissional, burocracia para contratar Landpages, dor de dente/problema urgente.' e validaram nosso m\u00e9todo de an\u00fancios inteligentes.\"*\n3. **Gatilho de Autoridade**:\n   > *\"Especialistas Cyborg: O m\u00e9todo validado cientificamente que blindou a verba de marketing para 25 a 55 anos.\"*\n"
+    "report_md": "### 🔍 Relatório Cirúrgico de Performance — Pesquisa-Auto\n\n#### 💸 Análise de Lucratividade & Retorno (ROI)\n* 🚨 **CPA Estourado (Campanha Não Lucrativa)**: Esta campanha consumiu **R$ 28.33** para gerar apenas **1** conversão(ões). O Custo por Aquisição (CPA) real de **R$ 28.33** superou a meta definida de **R$ 20.00**. **Esta campanha não gerou retorno financeiro positivo e operou com prejuízo financeiro**.\n\n#### 🛑 Desperdício Oculto Detectado: **R$ 0.00**\n* **Métrica da Falha**: **0.0%** dos cliques vindos do Google Ads abandonaram a landing page em menos de 5 segundos (rejeição total).\n* **Dinheiro no Lixo**: Estimamos que **R$ 0.00** (do total de R$ 28.33 investidos) foram gastos em robôs ou tráfego desqualificado.\n\n#### ⚙️ Erro Estrutural Identificado\n* **Canibalização & Intenção**: O ângulo da página atual está alinhado com o objetivo 'Leads Whatsapp'.\n* **Fricção Móvel**: A maioria das rejeições rápidas ocorreu em dispositivos móveis. Verifique se o carregamento está rápido e se não há barreiras visuais de navegação.\n\n#### 🧠 Análise Comportamental do Consumidor\n* **Avatar Alvo**: O público-alvo tem dores claras como *\"Dificuldade em resolver questões legais, insegurança sobre direitos.\"* e deseja *\"Busca por orientação clara e soluções rápidas para problemas jurídicos.\"*.\n* **Objeção de Preço/Entrega**: O clique demonstra alto interesse, mas os concorrentes diretos (*https://concorrente1.com.br, https://concorrente2.com.br, https://concorrente3.com.br*) estão operando com ofertas mais agressivas de funil.\n\n#### 💡 Novas Ideias de Copies & Criativos Persuasivos (Cialdini)\n1. **Gatilho de Reciprocidade**:\n   > *\"Agência Cyborg: Solicite uma Auditoria Gratuita de suas campanhas de Ads e descubra o ralo por onde seu dinheiro está escorrendo.\"*\n2. **Gatilho de Prova Social**:\n   > *\"Mais de 150 empresas já superaram a dor de 'Dificuldade em resolver questões legais, insegurança sobre direitos.' e validaram nosso método de anúncios inteligentes.\"*\n3. **Gatilho de Autoridade**:\n   > *\"Especialistas Cyborg: O método validado cientificamente que blindou a verba de marketing para 25 a 55 anos.\"*\n",
+    "ia_review": {
+      "google_approval_score": 82,
+      "conversion_probability": 75,
+      "policy_violations": [
+        "Risco de promessa exagerada ou termos superlativos."
+      ],
+      "clarity_rating": "Boa",
+      "cta_present": true,
+      "exaggerated_promises": [
+        "Promessa de ganho fixo sem justificativa clara."
+      ],
+      "reapproval_risk": "Médio",
+      "rewrite_suggestions": [
+        "Revisar pontuação e adicionar link alternativo de CTA."
+      ]
+    }
   },
   {
     "id": "ins_ia_23547202690_cpc_high",
@@ -61,25 +112,57 @@
     "campaign_name": "Site-Pesquisa",
     "action": "PAUSE_KEYWORD",
     "target": "Otimizar CPC em Site-Pesquisa",
-    "details": "O CPC m\u00e9dio de R$ 6.22 excede o limite de seguran\u00e7a configurado (R$ 1.50).",
-    "savings_est": "R$ 0.00/m\u00eas",
+    "details": "O CPC médio de R$ 6.22 excede o limite de segurança configurado (R$ 4.00).",
+    "savings_est": "R$ 0.00/mês",
     "status": "PENDING",
     "bounce_rate": 0.0,
     "hidden_waste": 0.0,
-    "report_md": "### \ud83d\udd0d Relat\u00f3rio Cir\u00fargico de Performance \u2014 Site-Pesquisa\n\n#### \ud83d\uded1 Desperd\u00edcio Oculto Detectado: **R$ 0.00**\n* **M\u00e9trica da Falha**: **0.0%** dos cliques vindos do Google Ads abandonaram a landing page em menos de 5 segundos (rejei\u00e7\u00e3o total).\n* **Dinheiro no Lixo**: Estimamos que **R$ 0.00** (do total de R$ 37.31 investidos) foram gastos em rob\u00f4s ou tr\u00e1fego desqualificado.\n\n#### \u2699\ufe0f Erro Estrutural Identificado\n* **Canibaliza\u00e7\u00e3o & Inten\u00e7\u00e3o**: O \u00e2ngulo da p\u00e1gina atual est\u00e1 alinhado com o objetivo 'Leads Whatsapp'.\n* **Fric\u00e7\u00e3o M\u00f3vel**: A maioria das rejei\u00e7\u00f5es r\u00e1pidas ocorreu em dispositivos m\u00f3veis. Verifique se o carregamento est\u00e1 r\u00e1pido e se n\u00e3o h\u00e1 barreiras visuais de navega\u00e7\u00e3o.\n\n#### \ud83e\udde0 An\u00e1lise Comportamental do Consumidor\n* **Avatar Alvo**: O p\u00fablico-alvo tem dores claras como *\"Falta de confian\u00e7a no profissional, burocracia para contratar Landpages, dor de dente/problema urgente.\"* e deseja *\"Resolver o problema r\u00e1pido, atendimento humanizado e pre\u00e7o justo por Landpages.\"*.\n* **Obje\u00e7\u00e3o de Pre\u00e7o/Entrega**: O clique demonstra alto interesse, mas os concorrentes diretos (*Nenhum informado*) est\u00e3o operando com ofertas mais agressivas de funil.\n\n#### \ud83d\udca1 Novas Ideias de Copies & Criativos Persuasivos (Cialdini)\n1. **Gatilho de Reciprocidade**:\n   > *\"Ag\u00eancia Cyborg: Solicite uma Auditoria Gratuita de suas campanhas de Ads e descubra o ralo por onde seu dinheiro est\u00e1 escorrendo.\"*\n2. **Gatilho de Prova Social**:\n   > *\"Mais de 150 empresas j\u00e1 superaram a dor de 'Falta de confian\u00e7a no profissional, burocracia para contratar Landpages, dor de dente/problema urgente.' e validaram nosso m\u00e9todo de an\u00fancios inteligentes.\"*\n3. **Gatilho de Autoridade**:\n   > *\"Especialistas Cyborg: O m\u00e9todo validado cientificamente que blindou a verba de marketing para 25 a 55 anos.\"*\n"
+    "report_md": "### 🔍 Relatório Cirúrgico de Performance — Site-Pesquisa\n\n#### 💸 Análise de Lucratividade & Retorno (ROI)\n* 🚨 **CPA Estourado (Campanha Não Lucrativa)**: Esta campanha consumiu **R$ 37.31** para gerar apenas **1** conversão(ões). O Custo por Aquisição (CPA) real de **R$ 37.31** superou a meta definida de **R$ 20.00**. **Esta campanha não gerou retorno financeiro positivo e operou com prejuízo financeiro**.\n\n#### 🛑 Desperdício Oculto Detectado: **R$ 0.00**\n* **Métrica da Falha**: **0.0%** dos cliques vindos do Google Ads abandonaram a landing page em menos de 5 segundos (rejeição total).\n* **Dinheiro no Lixo**: Estimamos que **R$ 0.00** (do total de R$ 37.31 investidos) foram gastos em robôs ou tráfego desqualificado.\n\n#### ⚙️ Erro Estrutural Identificado\n* **Canibalização & Intenção**: O ângulo da página atual está alinhado com o objetivo 'Leads Whatsapp'.\n* **Fricção Móvel**: A maioria das rejeições rápidas ocorreu em dispositivos móveis. Verifique se o carregamento está rápido e se não há barreiras visuais de navegação.\n\n#### 🧠 Análise Comportamental do Consumidor\n* **Avatar Alvo**: O público-alvo tem dores claras como *\"Dificuldade em resolver questões legais, insegurança sobre direitos.\"* e deseja *\"Busca por orientação clara e soluções rápidas para problemas jurídicos.\"*.\n* **Objeção de Preço/Entrega**: O clique demonstra alto interesse, mas os concorrentes diretos (*https://concorrente1.com.br, https://concorrente2.com.br, https://concorrente3.com.br*) estão operando com ofertas mais agressivas de funil.\n\n#### 💡 Novas Ideias de Copies & Criativos Persuasivos (Cialdini)\n1. **Gatilho de Reciprocidade**:\n   > *\"Agência Cyborg: Solicite uma Auditoria Gratuita de suas campanhas de Ads e descubra o ralo por onde seu dinheiro está escorrendo.\"*\n2. **Gatilho de Prova Social**:\n   > *\"Mais de 150 empresas já superaram a dor de 'Dificuldade em resolver questões legais, insegurança sobre direitos.' e validaram nosso método de anúncios inteligentes.\"*\n3. **Gatilho de Autoridade**:\n   > *\"Especialistas Cyborg: O método validado cientificamente que blindou a verba de marketing para 25 a 55 anos.\"*\n",
+    "ia_review": {
+      "google_approval_score": 95,
+      "conversion_probability": 88,
+      "policy_violations": [
+        "Nenhuma"
+      ],
+      "clarity_rating": "Excelente",
+      "cta_present": true,
+      "exaggerated_promises": [
+        "Nenhum"
+      ],
+      "reapproval_risk": "Baixo",
+      "rewrite_suggestions": [
+        "Conformidade verificada."
+      ]
+    }
   },
   {
     "id": "ins_ia_23547202690_cpa_high",
     "campaign_id": "23547202690",
     "campaign_name": "Site-Pesquisa",
     "action": "ADJUST_BUDGET",
-    "target": "Reduzir or\u00e7amento de R$ 10.77 para R$ 10.00",
-    "details": "CPA real de R$ 37.31 superou o CPA Alvo m\u00e1ximo de R$ 15.00.",
-    "savings_est": "R$ 0.00/m\u00eas",
+    "target": "Reduzir orçamento de R$ 10.00 para R$ 10.00",
+    "details": "CPA real de R$ 37.31 superou o CPA Alvo máximo de R$ 20.00.",
+    "savings_est": "R$ 0.00/mês",
     "status": "PENDING",
     "bounce_rate": 0.0,
     "hidden_waste": 0.0,
-    "report_md": "### \ud83d\udd0d Relat\u00f3rio Cir\u00fargico de Performance \u2014 Site-Pesquisa\n\n#### \ud83d\uded1 Desperd\u00edcio Oculto Detectado: **R$ 0.00**\n* **M\u00e9trica da Falha**: **0.0%** dos cliques vindos do Google Ads abandonaram a landing page em menos de 5 segundos (rejei\u00e7\u00e3o total).\n* **Dinheiro no Lixo**: Estimamos que **R$ 0.00** (do total de R$ 37.31 investidos) foram gastos em rob\u00f4s ou tr\u00e1fego desqualificado.\n\n#### \u2699\ufe0f Erro Estrutural Identificado\n* **Canibaliza\u00e7\u00e3o & Inten\u00e7\u00e3o**: O \u00e2ngulo da p\u00e1gina atual est\u00e1 alinhado com o objetivo 'Leads Whatsapp'.\n* **Fric\u00e7\u00e3o M\u00f3vel**: A maioria das rejei\u00e7\u00f5es r\u00e1pidas ocorreu em dispositivos m\u00f3veis. Verifique se o carregamento est\u00e1 r\u00e1pido e se n\u00e3o h\u00e1 barreiras visuais de navega\u00e7\u00e3o.\n\n#### \ud83e\udde0 An\u00e1lise Comportamental do Consumidor\n* **Avatar Alvo**: O p\u00fablico-alvo tem dores claras como *\"Falta de confian\u00e7a no profissional, burocracia para contratar Landpages, dor de dente/problema urgente.\"* e deseja *\"Resolver o problema r\u00e1pido, atendimento humanizado e pre\u00e7o justo por Landpages.\"*.\n* **Obje\u00e7\u00e3o de Pre\u00e7o/Entrega**: O clique demonstra alto interesse, mas os concorrentes diretos (*Nenhum informado*) est\u00e3o operando com ofertas mais agressivas de funil.\n\n#### \ud83d\udca1 Novas Ideias de Copies & Criativos Persuasivos (Cialdini)\n1. **Gatilho de Reciprocidade**:\n   > *\"Ag\u00eancia Cyborg: Solicite uma Auditoria Gratuita de suas campanhas de Ads e descubra o ralo por onde seu dinheiro est\u00e1 escorrendo.\"*\n2. **Gatilho de Prova Social**:\n   > *\"Mais de 150 empresas j\u00e1 superaram a dor de 'Falta de confian\u00e7a no profissional, burocracia para contratar Landpages, dor de dente/problema urgente.' e validaram nosso m\u00e9todo de an\u00fancios inteligentes.\"*\n3. **Gatilho de Autoridade**:\n   > *\"Especialistas Cyborg: O m\u00e9todo validado cientificamente que blindou a verba de marketing para 25 a 55 anos.\"*\n"
+    "report_md": "### 🔍 Relatório Cirúrgico de Performance — Site-Pesquisa\n\n#### 💸 Análise de Lucratividade & Retorno (ROI)\n* 🚨 **CPA Estourado (Campanha Não Lucrativa)**: Esta campanha consumiu **R$ 37.31** para gerar apenas **1** conversão(ões). O Custo por Aquisição (CPA) real de **R$ 37.31** superou a meta definida de **R$ 20.00**. **Esta campanha não gerou retorno financeiro positivo e operou com prejuízo financeiro**.\n\n#### 🛑 Desperdício Oculto Detectado: **R$ 0.00**\n* **Métrica da Falha**: **0.0%** dos cliques vindos do Google Ads abandonaram a landing page em menos de 5 segundos (rejeição total).\n* **Dinheiro no Lixo**: Estimamos que **R$ 0.00** (do total de R$ 37.31 investidos) foram gastos em robôs ou tráfego desqualificado.\n\n#### ⚙️ Erro Estrutural Identificado\n* **Canibalização & Intenção**: O ângulo da página atual está alinhado com o objetivo 'Leads Whatsapp'.\n* **Fricção Móvel**: A maioria das rejeições rápidas ocorreu em dispositivos móveis. Verifique se o carregamento está rápido e se não há barreiras visuais de navegação.\n\n#### 🧠 Análise Comportamental do Consumidor\n* **Avatar Alvo**: O público-alvo tem dores claras como *\"Dificuldade em resolver questões legais, insegurança sobre direitos.\"* e deseja *\"Busca por orientação clara e soluções rápidas para problemas jurídicos.\"*.\n* **Objeção de Preço/Entrega**: O clique demonstra alto interesse, mas os concorrentes diretos (*https://concorrente1.com.br, https://concorrente2.com.br, https://concorrente3.com.br*) estão operando com ofertas mais agressivas de funil.\n\n#### 💡 Novas Ideias de Copies & Criativos Persuasivos (Cialdini)\n1. **Gatilho de Reciprocidade**:\n   > *\"Agência Cyborg: Solicite uma Auditoria Gratuita de suas campanhas de Ads e descubra o ralo por onde seu dinheiro está escorrendo.\"*\n2. **Gatilho de Prova Social**:\n   > *\"Mais de 150 empresas já superaram a dor de 'Dificuldade em resolver questões legais, insegurança sobre direitos.' e validaram nosso método de anúncios inteligentes.\"*\n3. **Gatilho de Autoridade**:\n   > *\"Especialistas Cyborg: O método validado cientificamente que blindou a verba de marketing para 25 a 55 anos.\"*\n",
+    "ia_review": {
+      "google_approval_score": 82,
+      "conversion_probability": 75,
+      "policy_violations": [
+        "Risco de promessa exagerada ou termos superlativos."
+      ],
+      "clarity_rating": "Boa",
+      "cta_present": true,
+      "exaggerated_promises": [
+        "Promessa de ganho fixo sem justificativa clara."
+      ],
+      "reapproval_risk": "Médio",
+      "rewrite_suggestions": [
+        "Revisar pontuação e adicionar link alternativo de CTA."
+      ]
+    }
   },
   {
     "id": "ins_ia_23952678122_cpc_high",
@@ -87,24 +170,27 @@
     "campaign_name": "tiktok",
     "action": "PAUSE_KEYWORD",
     "target": "Otimizar CPC em tiktok",
-    "details": "O CPC m\u00e9dio de R$ 4.90 excede o limite de seguran\u00e7a configurado (R$ 1.50).",
-    "savings_est": "R$ 6.37/m\u00eas",
+    "details": "O CPC médio de R$ 4.90 excede o limite de segurança configurado (R$ 4.00).",
+    "savings_est": "R$ 6.37/mês",
     "status": "PENDING",
     "bounce_rate": 0.65,
     "hidden_waste": 15.92,
-    "report_md": "### \ud83d\udd0d Relat\u00f3rio Cir\u00fargico de Performance \u2014 tiktok\n\n#### \ud83d\uded1 Desperd\u00edcio Oculto Detectado: **R$ 15.92**\n* **M\u00e9trica da Falha**: **65.0%** dos cliques vindos do Google Ads abandonaram a landing page em menos de 5 segundos (rejei\u00e7\u00e3o total).\n* **Dinheiro no Lixo**: Estimamos que **R$ 15.92** (do total de R$ 24.49 investidos) foram gastos em rob\u00f4s ou tr\u00e1fego desqualificado.\n\n#### \u2699\ufe0f Erro Estrutural Identificado\n* **Canibaliza\u00e7\u00e3o & Inten\u00e7\u00e3o**: O \u00e2ngulo da p\u00e1gina atual est\u00e1 alinhado com o objetivo 'Leads Whatsapp'.\n* **Fric\u00e7\u00e3o M\u00f3vel**: A maioria das rejei\u00e7\u00f5es r\u00e1pidas ocorreu em dispositivos m\u00f3veis. Verifique se o carregamento est\u00e1 r\u00e1pido e se n\u00e3o h\u00e1 barreiras visuais de navega\u00e7\u00e3o.\n\n#### \ud83e\udde0 An\u00e1lise Comportamental do Consumidor\n* **Avatar Alvo**: O p\u00fablico-alvo tem dores claras como *\"Falta de confian\u00e7a no profissional, burocracia para contratar Landpages, dor de dente/problema urgente.\"* e deseja *\"Resolver o problema r\u00e1pido, atendimento humanizado e pre\u00e7o justo por Landpages.\"*.\n* **Obje\u00e7\u00e3o de Pre\u00e7o/Entrega**: O clique demonstra alto interesse, mas os concorrentes diretos (*Nenhum informado*) est\u00e3o operando com ofertas mais agressivas de funil.\n\n#### \ud83d\udca1 Novas Ideias de Copies & Criativos Persuasivos (Cialdini)\n1. **Gatilho de Reciprocidade**:\n   > *\"Ag\u00eancia Cyborg: Solicite uma Auditoria Gratuita de suas campanhas de Ads e descubra o ralo por onde seu dinheiro est\u00e1 escorrendo.\"*\n2. **Gatilho de Prova Social**:\n   > *\"Mais de 150 empresas j\u00e1 superaram a dor de 'Falta de confian\u00e7a no profissional, burocracia para contratar Landpages, dor de dente/problema urgente.' e validaram nosso m\u00e9todo de an\u00fancios inteligentes.\"*\n3. **Gatilho de Autoridade**:\n   > *\"Especialistas Cyborg: O m\u00e9todo validado cientificamente que blindou a verba de marketing para 25 a 55 anos.\"*\n"
-  },
-  {
-    "id": "ins_ia_23952678122_no_conv",
-    "campaign_id": "23952678122",
-    "campaign_name": "tiktok",
-    "action": "ADJUST_BUDGET",
-    "target": "Reduzir or\u00e7amento de R$ 17.00 para R$ 15.30",
-    "details": "Gasto de R$ 24.49 sem convers\u00f5es excedeu o toler\u00e1vel de R$ 22.50.",
-    "savings_est": "R$ 12.24",
-    "status": "PENDING",
-    "bounce_rate": 0.65,
-    "hidden_waste": 15.92,
-    "report_md": "### \ud83d\udd0d Relat\u00f3rio Cir\u00fargico de Performance \u2014 tiktok\n\n#### \ud83d\uded1 Desperd\u00edcio Oculto Detectado: **R$ 15.92**\n* **M\u00e9trica da Falha**: **65.0%** dos cliques vindos do Google Ads abandonaram a landing page em menos de 5 segundos (rejei\u00e7\u00e3o total).\n* **Dinheiro no Lixo**: Estimamos que **R$ 15.92** (do total de R$ 24.49 investidos) foram gastos em rob\u00f4s ou tr\u00e1fego desqualificado.\n\n#### \u2699\ufe0f Erro Estrutural Identificado\n* **Canibaliza\u00e7\u00e3o & Inten\u00e7\u00e3o**: O \u00e2ngulo da p\u00e1gina atual est\u00e1 alinhado com o objetivo 'Leads Whatsapp'.\n* **Fric\u00e7\u00e3o M\u00f3vel**: A maioria das rejei\u00e7\u00f5es r\u00e1pidas ocorreu em dispositivos m\u00f3veis. Verifique se o carregamento est\u00e1 r\u00e1pido e se n\u00e3o h\u00e1 barreiras visuais de navega\u00e7\u00e3o.\n\n#### \ud83e\udde0 An\u00e1lise Comportamental do Consumidor\n* **Avatar Alvo**: O p\u00fablico-alvo tem dores claras como *\"Falta de confian\u00e7a no profissional, burocracia para contratar Landpages, dor de dente/problema urgente.\"* e deseja *\"Resolver o problema r\u00e1pido, atendimento humanizado e pre\u00e7o justo por Landpages.\"*.\n* **Obje\u00e7\u00e3o de Pre\u00e7o/Entrega**: O clique demonstra alto interesse, mas os concorrentes diretos (*Nenhum informado*) est\u00e3o operando com ofertas mais agressivas de funil.\n\n#### \ud83d\udca1 Novas Ideias de Copies & Criativos Persuasivos (Cialdini)\n1. **Gatilho de Reciprocidade**:\n   > *\"Ag\u00eancia Cyborg: Solicite uma Auditoria Gratuita de suas campanhas de Ads e descubra o ralo por onde seu dinheiro est\u00e1 escorrendo.\"*\n2. **Gatilho de Prova Social**:\n   > *\"Mais de 150 empresas j\u00e1 superaram a dor de 'Falta de confian\u00e7a no profissional, burocracia para contratar Landpages, dor de dente/problema urgente.' e validaram nosso m\u00e9todo de an\u00fancios inteligentes.\"*\n3. **Gatilho de Autoridade**:\n   > *\"Especialistas Cyborg: O m\u00e9todo validado cientificamente que blindou a verba de marketing para 25 a 55 anos.\"*\n"
+    "report_md": "### 🔍 Relatório Cirúrgico de Performance — tiktok\n\n#### 💸 Análise de Lucratividade & Retorno (ROI)\n* ⚠️ **Campanha com Prejuízo Total**: Foram investidos **R$ 24.49** e nenhuma conversão foi gerada. A campanha está drenando verba sem trazer leads ou vendas, operando com retorno zero (prejuízo absoluto).\n\n#### 🛑 Desperdício Oculto Detectado: **R$ 15.92**\n* **Métrica da Falha**: **65.0%** dos cliques vindos do Google Ads abandonaram a landing page em menos de 5 segundos (rejeição total).\n* **Dinheiro no Lixo**: Estimamos que **R$ 15.92** (do total de R$ 24.49 investidos) foram gastos em robôs ou tráfego desqualificado.\n\n#### ⚙️ Erro Estrutural Identificado\n* **Canibalização & Intenção**: O ângulo da página atual está alinhado com o objetivo 'Leads Whatsapp'.\n* **Fricção Móvel**: A maioria das rejeições rápidas ocorreu em dispositivos móveis. Verifique se o carregamento está rápido e se não há barreiras visuais de navegação.\n\n#### 🧠 Análise Comportamental do Consumidor\n* **Avatar Alvo**: O público-alvo tem dores claras como *\"Dificuldade em resolver questões legais, insegurança sobre direitos.\"* e deseja *\"Busca por orientação clara e soluções rápidas para problemas jurídicos.\"*.\n* **Objeção de Preço/Entrega**: O clique demonstra alto interesse, mas os concorrentes diretos (*https://concorrente1.com.br, https://concorrente2.com.br, https://concorrente3.com.br*) estão operando com ofertas mais agressivas de funil.\n\n#### 💡 Novas Ideias de Copies & Criativos Persuasivos (Cialdini)\n1. **Gatilho de Reciprocidade**:\n   > *\"Agência Cyborg: Solicite uma Auditoria Gratuita de suas campanhas de Ads e descubra o ralo por onde seu dinheiro está escorrendo.\"*\n2. **Gatilho de Prova Social**:\n   > *\"Mais de 150 empresas já superaram a dor de 'Dificuldade em resolver questões legais, insegurança sobre direitos.' e validaram nosso método de anúncios inteligentes.\"*\n3. **Gatilho de Autoridade**:\n   > *\"Especialistas Cyborg: O método validado cientificamente que blindou a verba de marketing para 25 a 55 anos.\"*\n",
+    "ia_review": {
+      "google_approval_score": 95,
+      "conversion_probability": 88,
+      "policy_violations": [
+        "Nenhuma"
+      ],
+      "clarity_rating": "Excelente",
+      "cta_present": true,
+      "exaggerated_promises": [
+        "Nenhum"
+      ],
+      "reapproval_risk": "Baixo",
+      "rewrite_suggestions": [
+        "Conformidade verificada."
+      ]
+    }
   }
 ]

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyborg Google Ads — Cérebro da IA</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="googleads_dashboard.css">
+    <style>
+        .cerebro-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .editor-textarea {
+            width: 100%;
+            height: 550px;
+            background: rgba(5, 5, 8, 0.85);
+            border: 1px solid var(--purple);
+            box-shadow: inset 0 0 15px rgba(157, 0, 255, 0.1), 0 0 10px rgba(157, 0, 255, 0.05);
+            border-radius: 8px;
+            color: #adffcb;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.88rem;
+            line-height: 1.6;
+            padding: 20px;
+            resize: vertical;
+            outline: none;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        .editor-textarea:focus {
+            border-color: var(--cyan);
+            box-shadow: inset 0 0 15px rgba(0, 243, 255, 0.1), 0 0 15px rgba(0, 243, 255, 0.2);
+            color: #fff;
+        }
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .save-status-msg {
+            font-size: 0.8rem;
+            display: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            line-height: 1.4;
+        }
+        .save-status-msg.success {
+            background: rgba(0, 255, 102, 0.06);
+            border: 1px dashed rgba(0, 255, 102, 0.3);
+            color: #00ff66;
+        }
+        .save-status-msg.error {
+            background: rgba(255, 0, 85, 0.06);
+            border: 1px dashed rgba(255, 0, 85, 0.3);
+            color: var(--pink);
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="matrix-canvas"></canvas>
+<div class="matrix-overlay"></div>
+
+<div class="ambient-glow-1"></div>
+<div class="ambient-glow-2"></div>
+
+<div id="login-section" class="login-wrapper">
+    <div class="login-card">
+        <div class="login-logo">
+            <h1>CYBORG ORCHESTRATOR</h1>
+            <p>AI Google Ads Engine Controller</p>
+        </div>
+        
+        <div class="login-terminal">
+            [SYSTEM] AGENT ORCHESTRATOR STATUS: ONLINE<br>
+            [SYSTEM] AQUIETANDO MOTOR DE IA... DIGITE A CHAVE DO ORQUESTRADOR PARA LIBERAR MODIFICAÇÕES.
+        </div>
+
+        <div id="error-msg" class="error-box">[!] CHAVE DE ACESSO INVÁLIDA.</div>
+
+        <form onsubmit="handleLogin(event)">
+            <div class="input-group">
+                <label for="password">Chave de Orquestração</label>
+                <input type="password" id="password" class="holo-input" placeholder="••••••••" required autocomplete="off">
+            </div>
+            <button type="submit" class="cyber-btn">Autenticar Operador</button>
+        </form>
+    </div>
+</div>
+
+<div id="dashboard-section" class="dashboard-wrapper">
+
+    <!-- Sidebar Lateral -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <img src="logo.png" alt="Logo" class="sidebar-logo">
+        </div>
+        
+        <div class="sidebar-menu">
+            <div class="menu-group">
+                <div class="menu-heading">OPERACIONAL</div>
+                <nav class="sidebar-nav">
+                    <a href="googleads_dashboard.html" class="sidebar-link" id="nav-overview">
+                        <span class="icon">📊</span> Visão
+                    </a>
+                    <a href="ai_dashboard.html" class="sidebar-link" id="nav-executive">
+                        <span class="icon">🤖</span> Executivo
+                    </a>
+                    <a href="campaigns.html" class="sidebar-link" id="nav-campaigns">
+                        <span class="icon">🚀</span> Campanhas
+                    </a>
+                    <a href="strategies.html" class="sidebar-link" id="nav-strategies">
+                        <span class="icon">♟️</span> Estratégias
+                    </a>
+                    <a href="funnel.html" class="sidebar-link" id="nav-funnel">
+                        <span class="icon">🎯</span> Funil
+                    </a>
+                    <a href="technical.html" class="sidebar-link" id="nav-technical">
+                        <span class="icon">🛠️</span> SEO
+                    </a>
+                    <a href="approvals.html" class="sidebar-link" id="nav-approvals">
+                        <span class="icon">🔔</span> Insights
+                    </a>
+                    <a href="cerebro.html" class="sidebar-link active-link" id="nav-cerebro">
+                        <span class="icon">🧠</span> Cérebro
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="menu-group">
+                <div class="menu-heading">ADMINISTRATIVO</div>
+                <nav class="sidebar-nav">
+                    <a href="dashboard.html" class="sidebar-link" id="nav-admin">
+                        <span class="icon">📈</span> Admin
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <div class="main-content">
+        <header class="app-header">
+            <div style="display: flex; align-items: center;">
+                <button class="sidebar-toggle" id="sidebar-toggle-btn">☰</button>
+                <div>
+                    <h1 style="font-family: var(--font-title); font-size: 1.3rem; margin: 0; background: var(--cyber-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Diretrizes do Cérebro de IA</h1>
+                    <span style="font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-top: 3px;">Configuração / Cérebro</span>
+                </div>
+            </div>
+            
+            <div class="header-actions">
+                <div class="status-badge" id="openai-status-badge" style="margin-right: 10px;">
+                    <div class="status-dot"></div>
+                    <span id="openai-status-text">Verificando...</span>
+                </div>
+                <div class="status-badge" id="api-status-badge">
+                    <div class="status-dot"></div>
+                    <span id="api-status-text">Verificando...</span>
+                </div>
+                <button onclick="handleLogout()" class="logout-btn">Desconectar</button>
+            </div>
+        </header>
+
+        <main class="main-container">
+            <div class="cyber-box">
+                <h2 class="box-title"><span class="indicator purple"></span>Estrategista de IA: Master Prompt & Comportamento</h2>
+                <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5;">
+                    Edite as diretrizes e regras comportamentais estruturadas no arquivo <code>cerebroads.md</code>. O motor de orquestração consome estas regras na OpenAI para auditar campanhas, sugerir lances de CPA/CPC, pausar palavras-chave com prejuízo e formular anúncios RSA adaptados para geração de leads.
+                </p>
+
+                <div class="cerebro-container">
+                    <textarea id="cerebro-editor" class="editor-textarea" placeholder="# GOOGLE ADS AI BRAIN v1.0..."></textarea>
+                    
+                    <div class="action-bar">
+                        <div style="display: flex; gap: 10px;">
+                            <button class="cyber-btn" onclick="saveCerebro()" id="save-btn">
+                                💾 Salvar Alterações
+                            </button>
+                            <button class="cyber-btn" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #fff;" onclick="restoreDefault()" id="restore-btn">
+                                🔄 Restaurar Padrão Local
+                            </button>
+                        </div>
+                        <div id="save-status" class="save-status-msg"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div> <!-- .main-content -->
+</div> <!-- .dashboard-wrapper -->
+
+<div class="notification-toast" id="toast">
+    <div class="toast-icon"></div>
+    <div class="toast-message">
+        <h4 id="toast-title">Notificação</h4>
+        <p id="toast-body">Mensagem de sistema</p>
+    </div>
+</div>
+
+<script src="config.js?v=2"></script>
+<script>
+    const API_BASE = (window.CYBORG_CONFIG && window.CYBORG_CONFIG.api_url) ? window.CYBORG_CONFIG.api_url : "http://127.0.0.1:5000/api";
+
+    async function sha256(message) {
+        const msgBuffer = new TextEncoder().encode(message);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function handleLogin(e) {
+        e.preventDefault();
+        const pass = document.getElementById('password').value;
+        const hash = await sha256(pass);
+        const correctHash = 'fc1b7a9976fa0826a827f334c30925963eb27dbc37048fddaeedf20a5edc1ab4';
+        if (hash === correctHash) {
+            sessionStorage.setItem('cyborg_googleads_auth', 'true');
+            showNotification("Acesso Autorizado", "Carregando diretrizes do Cérebro...", true);
+            initDashboard();
+        } else {
+            const errBox = document.getElementById('error-msg');
+            errBox.textContent = '[!] CHAVE INCORRETA. ACESSO NÃO AUTORIZADO.';
+            errBox.style.display = 'block';
+            showNotification("Acesso Negado", "Chave do orquestrador incorreta.", false);
+        }
+    }
+
+    function handleLogout() {
+        sessionStorage.removeItem('cyborg_googleads_auth');
+        if (window.location.pathname.endsWith('.php')) {
+            window.location.href = 'googleads_dashboard.php?action=logout';
+        } else {
+            location.reload();
+        }
+    }
+
+    function initDashboard() {
+        const authenticated = sessionStorage.getItem('cyborg_googleads_auth') === 'true';
+        if (!authenticated) {
+            document.getElementById('login-section').style.display = 'flex';
+            document.getElementById('dashboard-section').style.display = 'none';
+        } else {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('dashboard-section').style.display = 'flex';
+            checkApiStatus();
+            loadCerebro();
+            setInterval(checkApiStatus, 15000);
+        }
+    }
+
+    function showNotification(title, message, isSuccess = true) {
+        const toast = document.getElementById('toast');
+        document.getElementById('toast-title').textContent = title;
+        document.getElementById('toast-body').textContent = message;
+        const icon = toast.querySelector('.toast-icon');
+        if (isSuccess) {
+            toast.style.borderColor = "var(--cyan)";
+            toast.style.boxShadow = "var(--neon-shadow)";
+            icon.style.backgroundColor = "var(--cyan)";
+            icon.style.boxShadow = "0 0 10px var(--cyan)";
+        } else {
+            toast.style.borderColor = "var(--pink)";
+            toast.style.boxShadow = "0 0 15px rgba(255, 0, 85, 0.4)";
+            icon.style.backgroundColor = "var(--pink)";
+            icon.style.boxShadow = "0 0 10px var(--pink)";
+        }
+        toast.classList.add('show');
+        setTimeout(() => { toast.classList.remove('show'); }, 4500);
+    }
+
+    async function checkApiStatus() {
+        try {
+            const res = await fetch(`${API_BASE}/status`);
+            const data = await res.json();
+            const dot = document.querySelector('#api-status-badge .status-dot');
+            const text = document.getElementById('api-status-text');
+            if (data.google_ads_api === "CONNECTED") {
+                text.textContent = "Google Ads Conectado";
+                text.style.color = "var(--cyan)";
+                dot.style.backgroundColor = "var(--cyan)";
+                dot.style.boxShadow = "0 0 10px var(--cyan)";
+            } else {
+                text.textContent = "Modo de Simulação";
+                text.style.color = "#ffb300";
+                dot.style.backgroundColor = "#ffb300";
+                dot.style.boxShadow = "0 0 10px #ffb300";
+            }
+            
+            const oaiBadge = document.getElementById('openai-status-badge');
+            const oaiDot = document.querySelector('#openai-status-badge .status-dot');
+            const oaiText = document.getElementById('openai-status-text');
+            if (oaiBadge && oaiDot && oaiText) {
+                if (data.openai_api === "CONNECTED") {
+                    oaiText.textContent = "OpenAI Conectado";
+                    oaiText.style.color = "#00ff66";
+                    oaiDot.style.backgroundColor = "#00ff66";
+                    oaiDot.style.boxShadow = "0 0 10px #00ff66";
+                    oaiBadge.style.borderColor = "rgba(0, 255, 102, 0.25)";
+                    oaiBadge.style.background = "rgba(0, 255, 102, 0.05)";
+                } else if (data.openai_api === "ERROR") {
+                    oaiText.textContent = "Erro OpenAI";
+                    oaiText.style.color = "var(--pink)";
+                    oaiDot.style.backgroundColor = "var(--pink)";
+                    oaiDot.style.boxShadow = "0 0 10px var(--pink)";
+                    oaiBadge.style.borderColor = "rgba(255, 0, 85, 0.25)";
+                    oaiBadge.style.background = "rgba(255, 0, 85, 0.05)";
+                } else {
+                    oaiText.textContent = "OpenAI Desconectado";
+                    oaiText.style.color = "#888";
+                    oaiDot.style.backgroundColor = "#777";
+                    oaiDot.style.boxShadow = "0 0 10px #777";
+                    oaiBadge.style.borderColor = "rgba(255, 255, 255, 0.1)";
+                    oaiBadge.style.background = "rgba(255, 255, 255, 0.03)";
+                }
+            }
+        } catch (err) {
+            document.getElementById('api-status-text').textContent = "Backend Offline";
+            const dot = document.querySelector('#api-status-badge .status-dot');
+            if (dot) {
+                dot.style.backgroundColor = "var(--pink)";
+                dot.style.boxShadow = "0 0 10px var(--pink)";
+            }
+        }
+    }
+
+    async function loadCerebro() {
+        const editor = document.getElementById('cerebro-editor');
+        const status = document.getElementById('save-status');
+        
+        status.style.display = 'block';
+        status.className = 'save-status-msg';
+        status.style.color = 'var(--cyan)';
+        status.textContent = 'Carregando diretrizes do Cérebro...';
+        
+        try {
+            const res = await fetch(`${API_BASE}/cerebro`);
+            const data = await res.json();
+            
+            if (data.status === "success") {
+                editor.value = data.content;
+                status.style.display = 'none';
+            } else {
+                status.className = 'save-status-msg error';
+                status.textContent = `Erro ao carregar: ${data.message}`;
+            }
+        } catch (err) {
+            console.warn("Erro de conexão ao carregar Cérebro. Usando fallback de simulação local.");
+            status.className = 'save-status-msg error';
+            status.textContent = "Modo offline: usando prompt de simulação de backup.";
+            editor.value = `# GOOGLE ADS AI BRAIN v1.0\n\n## MASTER PROMPT - GOOGLE ADS PRO INTELLIGENCE ENGINE\n\nVocê é o Google Ads AI Brain, um estrategista de performance sênior focado em leads para serviços...`;
+        }
+    }
+
+    async function saveCerebro() {
+        const editor = document.getElementById('cerebro-editor');
+        const content = editor.value;
+        const status = document.getElementById('save-status');
+        const saveBtn = document.getElementById('save-btn');
+        
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Salvando...';
+        status.style.display = 'block';
+        status.className = 'save-status-msg';
+        status.style.color = '#00f3ff';
+        status.textContent = 'Gravando diretrizes e atualizando contexto de IA...';
+
+        try {
+            const res = await fetch(`${API_BASE}/cerebro`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ content: content })
+            });
+            const data = await res.json();
+            
+            saveBtn.disabled = false;
+            saveBtn.textContent = '💾 Salvar Alterações';
+            
+            if (data.status === "success") {
+                status.className = 'save-status-msg success';
+                status.textContent = data.message;
+                showNotification("Cérebro Atualizado", "As novas diretrizes foram salvas e calibradas com sucesso!", true);
+                setTimeout(() => { status.style.display = 'none'; }, 5000);
+            } else {
+                status.className = 'save-status-msg error';
+                status.textContent = `Erro ao salvar: ${data.message}`;
+                showNotification("Erro ao Salvar", "Não foi possível gravar as alterações do Cérebro.", false);
+            }
+        } catch (err) {
+            console.error("Erro de conexão ao salvar:", err);
+            saveBtn.disabled = false;
+            saveBtn.textContent = '💾 Salvar Alterações';
+            status.className = 'save-status-msg error';
+            status.textContent = "Erro de conexão: impossível salvar no servidor.";
+            showNotification("Falha de Rede", "Erro ao comunicar com o servidor da API.", false);
+        }
+    }
+
+    function restoreDefault() {
+        if (confirm("Deseja realmente restaurar o Cérebro de IA para o prompt padrão?")) {
+            const defaultPrompt = `# GOOGLE ADS AI BRAIN v1.0\n\n## MASTER PROMPT - GOOGLE ADS PRO INTELLIGENCE ENGINE\n\nVocê é o Google Ads AI Brain, um estrategista de performance de nível mundial especializado em geração de leads para empresas de serviços.\n\nSeu objetivo principal é aumentar:\n* Receita\n* Lucro\n* Leads Qualificados\n* Taxa de Conversão\n* ROAS\n* ROI\n\nEnquanto reduz:\n* CPA\n* CPC\n* Desperdício\n* Cliques irrelevantes\n* Tráfego ruim\n* Leads sem qualidade\n\n---\n\n# FILOSOFIA PRINCIPAL\n\nNunca analise métricas isoladamente. Analise sempre o funil completo:\nOrigem do tráfego → Clique → Landing Page → Lead → Qualificação → Venda → Receita`;
+            document.getElementById('cerebro-editor').value = defaultPrompt;
+            saveCerebro();
+        }
+    }
+
+    // Inicialização ao carregar
+    window.addEventListener('DOMContentLoaded', () => {
+        initDashboard();
+        
+        // Mobile sidebar toggle
+        document.getElementById('sidebar-toggle-btn')?.addEventListener('click', () => {
+            document.querySelector('.sidebar').classList.toggle('open');
+        });
+        
+        // Click outside mobile sidebar to close it
+        document.addEventListener('click', (e) => {
+            const sidebar = document.querySelector('.sidebar');
+            const toggleBtn = document.getElementById('sidebar-toggle-btn');
+            if (sidebar && sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target !== toggleBtn) {
+                sidebar.classList.remove('open');
+            }
+        });
+
+        // Dynamic extension switcher
+        if (window.location.pathname.endsWith('.php')) {
+            document.querySelectorAll('.sidebar-nav a').forEach(link => {
+                const url = new URL(link.href, window.location.href);
+                if (url.pathname.endsWith('.html')) {
+                    url.pathname = url.pathname.replace('.html', '.php');
+                    link.href = url.pathname + url.search;
+                }
+            });
+        }
+    });
+</script>
+
+<script src="matrix_dashboard.js"></script>
+</body>
+</html>

@@ -1,21 +1,21 @@
 {
-  "target_cpa": 15.0,
+  "target_cpa": 20.0,
   "min_cpa": 30.0,
   "min_budget": 10.0,
   "max_budget": 1000.0,
   "adjustment_rate": 0.1,
-  "max_cpc": 1.5,
+  "max_cpc": 4.0,
   "rules_enabled": true,
   "avatar_profile": {
-    "dores": "Falta de confian\u00e7a no profissional, burocracia para contratar Landpages, dor de dente/problema urgente.",
-    "desejos": "Resolver o problema r\u00e1pido, atendimento humanizado e pre\u00e7o justo por Landpages.",
+    "dores": "Dificuldade em resolver quest\u00f5es legais, inseguran\u00e7a sobre direitos.",
+    "desejos": "Busca por orienta\u00e7\u00e3o clara e solu\u00e7\u00f5es r\u00e1pidas para problemas jur\u00eddicos.",
     "idade": "25 a 55 anos",
-    "comportamento": "Buscam atendimento imediato via WhatsApp, valorizam facilidade de agendamento."
+    "comportamento": "Pessoas que utilizam o WhatsApp para comunica\u00e7\u00e3o e servi\u00e7os."
   },
   "persuasion_angle": "",
-  "competitors": "Nenhum informado",
+  "competitors": "https://concorrente1.com.br, https://concorrente2.com.br, https://concorrente3.com.br",
   "campaign_objective": "leads_whatsapp",
-  "daily_budget": 10.0,
+  "daily_budget": 80.0,
   "ai_questions": [
     {
       "id": "q_bounce_23952678122",
@@ -24,7 +24,7 @@
       "answer": ""
     }
   ],
-  "monthly_budget": 300.0,
+  "monthly_budget": 2400.0,
   "auto_approve": true,
   "active_rules": [
     "cpc_limit",
@@ -33,10 +33,12 @@
     "auto_correct_seo"
   ],
   "intent_keywords": [
-    "contratar Landpages",
-    "Landpages perto de mim",
-    "or\u00e7amento Landpages",
-    "empresa de Landpages",
-    "melhor Landpages em minha regi\u00e3o"
-  ]
+    "advogado Porto Alegre",
+    "consultoria jur\u00eddica",
+    "direito de fam\u00edlia",
+    "defesa legal",
+    "consultar advogado"
+  ],
+  "custom_prompt": "",
+  "openai_api_key": ""
 }

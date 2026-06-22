@@ -425,11 +425,14 @@
                     <a href="googleads_dashboard.html" class="sidebar-link" id="nav-overview">
                         <span class="icon">📊</span> Visão
                     </a>
+                    <a href="ai_dashboard.html" class="sidebar-link" id="nav-executive">
+                        <span class="icon">🤖</span> Executivo
+                    </a>
                     <a href="campaigns.html" class="sidebar-link" id="nav-campaigns">
                         <span class="icon">🚀</span> Campanhas
                     </a>
                     <a href="strategies.html" class="sidebar-link" id="nav-strategies">
-                        <span class="icon">🧠</span> Estratégias
+                        <span class="icon">♟️</span> Estratégias
                     </a>
                     <a href="funnel.html" class="sidebar-link" id="nav-funnel">
                         <span class="icon">🎯</span> Funil
@@ -439,6 +442,9 @@
                     </a>
                     <a href="approvals.html" class="sidebar-link" id="nav-approvals">
                         <span class="icon">🔔</span> Insights
+                    </a>
+                    <a href="cerebro.html" class="sidebar-link" id="nav-cerebro">
+                        <span class="icon">🧠</span> Cérebro
                     </a>
                 </nav>
             </div>
@@ -584,7 +590,7 @@
     </div> <!-- Fim .main-content -->
 </div> <!-- Fim #dashboard-section -->
 
-<script src="config.js"></script>
+<script src="config.js?v=2"></script>
 <script>
     const API_BASE = (window.CYBORG_CONFIG && window.CYBORG_CONFIG.api_url) ? window.CYBORG_CONFIG.api_url : "http://127.0.0.1:5000/api";
     let timelineChart = null;
@@ -1018,6 +1024,6 @@
         `).join('');
     }
 </script>
-<script defer src="matrix_dashboard.js"></script>
+<script defer src="matrix_dashboard.js?v=2"></script>
 </body>
 </html>

@@ -24,6 +24,39 @@
 <div class="ambient-glow-1"></div>
 <div class="ambient-glow-2"></div>
 
+<!-- SVG Turbulence Filter for Electric Border -->
+<svg class="svg-container" style="position: absolute; width: 0; height: 0; pointer-events: none;">
+  <defs>
+    <filter id="turbulent-displace" color-interpolation-filters="sRGB" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="2" result="noise1" seed="1" />
+      <feOffset in="noise1" dx="0" dy="0" result="offsetNoise1">
+        <animate attributeName="dy" values="700; 0" dur="6s" repeatCount="indefinite" calcMode="linear" />
+      </feOffset>
+
+      <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="2" result="noise2" seed="1" />
+      <feOffset in="noise2" dx="0" dy="0" result="offsetNoise2">
+        <animate attributeName="dy" values="0; -700" dur="6s" repeatCount="indefinite" calcMode="linear" />
+      </feOffset>
+
+      <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="2" result="noise1" seed="2" />
+      <feOffset in="noise1" dx="0" dy="0" result="offsetNoise3">
+        <animate attributeName="dx" values="490; 0" dur="6s" repeatCount="indefinite" calcMode="linear" />
+      </feOffset>
+
+      <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="2" result="noise2" seed="2" />
+      <feOffset in="noise2" dx="0" dy="0" result="offsetNoise4">
+        <animate attributeName="dx" values="0; -490" dur="6s" repeatCount="indefinite" calcMode="linear" />
+      </feOffset>
+
+      <feComposite in="offsetNoise1" in2="offsetNoise2" result="part1" />
+      <feComposite in="offsetNoise3" in2="offsetNoise4" result="part2" />
+      <feBlend in="part1" in2="part2" mode="color-dodge" result="combinedNoise" />
+
+      <feDisplacementMap in="SourceGraphic" in2="combinedNoise" scale="30" xChannelSelector="R" yChannelSelector="B" />
+    </filter>
+  </defs>
+</svg>
+
 <div id="login-section" class="login-wrapper">
     <div class="login-card">
         <div class="login-logo">
@@ -63,11 +96,14 @@
                     <a href="googleads_dashboard.html" class="sidebar-link" id="nav-overview">
                         <span class="icon">📊</span> Visão
                     </a>
+                    <a href="ai_dashboard.html" class="sidebar-link" id="nav-executive">
+                        <span class="icon">🤖</span> Executivo
+                    </a>
                     <a href="campaigns.html" class="sidebar-link active-link" id="nav-campaigns">
                         <span class="icon">🚀</span> Campanhas
                     </a>
                     <a href="strategies.html" class="sidebar-link" id="nav-strategies">
-                        <span class="icon">🧠</span> Estratégias
+                        <span class="icon">♟️</span> Estratégias
                     </a>
                     <a href="funnel.html" class="sidebar-link" id="nav-funnel">
                         <span class="icon">🎯</span> Funil
@@ -77,6 +113,9 @@
                     </a>
                     <a href="approvals.html" class="sidebar-link" id="nav-approvals">
                         <span class="icon">🔔</span> Insights
+                    </a>
+                    <a href="cerebro.html" class="sidebar-link" id="nav-cerebro">
+                        <span class="icon">🧠</span> Cérebro
                     </a>
                 </nav>
             </div>
@@ -104,6 +143,10 @@
             </div>
             
             <div class="header-actions">
+                <div class="status-badge" id="openai-status-badge" style="margin-right: 10px;">
+                    <div class="status-dot"></div>
+                    <span id="openai-status-text">Verificando...</span>
+                </div>
                 <div class="status-badge" id="api-status-badge">
                     <div class="status-dot"></div>
                     <span id="api-status-text">Verificando...</span>
@@ -130,11 +173,12 @@
                                 <th>CPC</th>
                                 <th>CTR</th>
                                 <th>Ações</th>
+                                <th>IA</th>
                             </tr>
                         </thead>
                         <tbody id="campaigns-table-body">
                             <tr>
-                                <td colspan="9" style="text-align: center; padding: 40px 0; color: var(--text-secondary);">
+                                <td colspan="10" style="text-align: center; padding: 40px 0; color: var(--text-secondary);">
                                     <div class="spinner"></div> Carregando campanhas do Google Ads...
                                 </td>
                             </tr>
@@ -155,7 +199,7 @@
     </div>
 </div>
 
-<script src="config.js"></script>
+<script src="config.js?v=2"></script>
 <script>
 
     const API_BASE = (window.CYBORG_CONFIG && window.CYBORG_CONFIG.api_url) ? window.CYBORG_CONFIG.api_url : "http://127.0.0.1:5000/api";
@@ -246,11 +290,53 @@
                 dot.style.backgroundColor = "#ffb300";
                 dot.style.boxShadow = "0 0 10px #ffb300";
             }
+            
+            // OpenAI status update
+            const oaiBadge = document.getElementById('openai-status-badge');
+            const oaiDot = document.querySelector('#openai-status-badge .status-dot');
+            const oaiText = document.getElementById('openai-status-text');
+            if (oaiBadge && oaiDot && oaiText) {
+                if (data.openai_api === "CONNECTED") {
+                    oaiText.textContent = "OpenAI Conectado";
+                    oaiText.style.color = "#00ff66";
+                    oaiDot.style.backgroundColor = "#00ff66";
+                    oaiDot.style.boxShadow = "0 0 10px #00ff66";
+                    oaiBadge.style.borderColor = "rgba(0, 255, 102, 0.25)";
+                    oaiBadge.style.background = "rgba(0, 255, 102, 0.05)";
+                } else if (data.openai_api === "ERROR") {
+                    oaiText.textContent = "Erro OpenAI";
+                    oaiText.style.color = "var(--pink)";
+                    oaiDot.style.backgroundColor = "var(--pink)";
+                    oaiDot.style.boxShadow = "0 0 10px var(--pink)";
+                    oaiBadge.style.borderColor = "rgba(255, 0, 85, 0.25)";
+                    oaiBadge.style.background = "rgba(255, 0, 85, 0.05)";
+                } else {
+                    oaiText.textContent = "OpenAI Desconectado";
+                    oaiText.style.color = "#888";
+                    oaiDot.style.backgroundColor = "#777";
+                    oaiDot.style.boxShadow = "0 0 10px #777";
+                    oaiBadge.style.borderColor = "rgba(255, 255, 255, 0.1)";
+                    oaiBadge.style.background = "rgba(255, 255, 255, 0.03)";
+                }
+            }
         } catch (err) {
             document.getElementById('api-status-text').textContent = "Backend Offline";
             const dot = document.querySelector('#api-status-badge .status-dot');
-            dot.style.backgroundColor = "var(--pink)";
-            dot.style.boxShadow = "0 0 10px var(--pink)";
+            if (dot) {
+                dot.style.backgroundColor = "var(--pink)";
+                dot.style.boxShadow = "0 0 10px var(--pink)";
+            }
+            const oaiBadge = document.getElementById('openai-status-badge');
+            const oaiDot = document.querySelector('#openai-status-badge .status-dot');
+            const oaiText = document.getElementById('openai-status-text');
+            if (oaiBadge && oaiDot && oaiText) {
+                oaiText.textContent = "OpenAI Offline";
+                oaiText.style.color = "var(--pink)";
+                oaiDot.style.backgroundColor = "var(--pink)";
+                oaiDot.style.boxShadow = "0 0 10px var(--pink)";
+                oaiBadge.style.borderColor = "rgba(255, 0, 85, 0.25)";
+                oaiBadge.style.background = "rgba(255, 0, 85, 0.05)";
+            }
         }
     }
 
@@ -317,23 +403,30 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>
-                        <a href="${reportFile}?id=${camp.id}" class="campaign-name-clickable" style="text-decoration: none;">${camp.name}</a>
-                        ${alertHtml}
+                        <div class="campaign-name-wrapper">
+                            <a href="${reportFile}?id=${camp.id}" class="campaign-name-clickable" style="text-decoration: none;">${camp.name}</a>
+                            ${alertHtml}
+                        </div>
                     </td>
                     <td>
-                        <span class="status-pill ${statusClass}">${statusLabel}</span>
+                        <span class="status-pill ${statusClass}"><span class="status-pulse-dot"></span>${statusLabel}</span>
                     </td>
-                    <td style="font-family: monospace; font-weight: bold; color: #fff;">
+                    <td class="cell-currency">
                         R$ ${camp.budget.toLocaleString('pt-BR', {minimumFractionDigits: 2})}
                     </td>
-                    <td style="font-family: monospace;">${camp.clicks.toLocaleString('pt-BR')}</td>
-                    <td style="font-family: monospace;">R$ ${camp.cost.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
-                    <td style="font-family: monospace;">${camp.conversions}</td>
-                    <td style="font-family: monospace; color: var(--cyan);">R$ ${camp.cpc.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
-                    <td style="font-family: monospace;">${camp.ctr}%</td>
+                    <td class="cell-number">${camp.clicks.toLocaleString('pt-BR')}</td>
+                    <td class="cell-currency">R$ ${camp.cost.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
+                    <td class="cell-number">${camp.conversions}</td>
+                    <td class="cell-currency" style="color: var(--cyan) !important;">R$ ${camp.cpc.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
+                    <td class="cell-ctr">${camp.ctr}%</td>
                     <td>
-                        <button class="btn-small-action" onclick="toggleCampaignStatus('${camp.id}', '${camp.status}')">
+                        <button class="btn-small-action ${camp.status === 'ENABLED' ? 'btn-pause' : 'btn-activate'}" onclick="toggleCampaignStatus('${camp.id}', '${camp.status}')">
                             ${camp.status === 'ENABLED' ? 'Pausar' : 'Ativar'}
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn-small-action btn-ai" onclick="openAiModal('${camp.id}', '${camp.name}')">
+                            🤖 Análise IA
                         </button>
                     </td>
                 `;
@@ -401,23 +494,30 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>
-                        <a href="${reportFile}?id=${camp.id}" class="campaign-name-clickable" style="text-decoration: none;">${camp.name}</a>
-                        ${alertHtml}
+                        <div class="campaign-name-wrapper">
+                            <a href="${reportFile}?id=${camp.id}" class="campaign-name-clickable" style="text-decoration: none;">${camp.name}</a>
+                            ${alertHtml}
+                        </div>
                     </td>
                     <td>
-                        <span class="status-pill ${statusClass}">${statusLabel}</span>
+                        <span class="status-pill ${statusClass}"><span class="status-pulse-dot"></span>${statusLabel}</span>
                     </td>
-                    <td style="font-family: monospace; font-weight: bold; color: #fff;">
+                    <td class="cell-currency">
                         R$ ${camp.budget.toLocaleString('pt-BR', {minimumFractionDigits: 2})}
                     </td>
-                    <td style="font-family: monospace;">${camp.clicks.toLocaleString('pt-BR')}</td>
-                    <td style="font-family: monospace;">R$ ${camp.cost.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
-                    <td style="font-family: monospace;">${camp.conversions}</td>
-                    <td style="font-family: monospace; color: var(--cyan);">R$ ${camp.cpc.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
-                    <td style="font-family: monospace;">${camp.ctr}%</td>
+                    <td class="cell-number">${camp.clicks.toLocaleString('pt-BR')}</td>
+                    <td class="cell-currency">R$ ${camp.cost.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
+                    <td class="cell-number">${camp.conversions}</td>
+                    <td class="cell-currency" style="color: var(--cyan) !important;">R$ ${camp.cpc.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
+                    <td class="cell-ctr">${camp.ctr}%</td>
                     <td>
-                        <button class="btn-small-action" onclick="toggleCampaignStatus('${camp.id}', '${camp.status}')">
+                        <button class="btn-small-action ${camp.status === 'ENABLED' ? 'btn-pause' : 'btn-activate'}" onclick="toggleCampaignStatus('${camp.id}', '${camp.status}')">
                             ${camp.status === 'ENABLED' ? 'Pausar' : 'Ativar'}
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn-small-action btn-ai" onclick="openAiModal('${camp.id}', '${camp.name}')">
+                            🤖 Análise IA
                         </button>
                     </td>
                 `;
@@ -469,7 +569,364 @@
         }
     }
 
+    // --- AI ANALYSIS SYSTEM LOGIC ---
+    let currentAiCampaignId = null;
+    let currentAiSuggestions = null;
+
+    function openAiModal(campaignId, campaignName) {
+        currentAiCampaignId = campaignId;
+        const modal = document.getElementById('campaign-ai-modal');
+        modal.style.display = 'flex';
+        modal.classList.add('active');
+        
+        document.getElementById('ai-modal-campaign-name').textContent = `ANÁLISE DE IA — ${campaignName}`;
+        document.getElementById('ai-modal-campaign-id').textContent = `ID: ${campaignId}`;
+        
+        document.getElementById('ai-modal-loading').style.display = 'flex';
+        document.getElementById('ai-modal-results').style.display = 'none';
+        document.getElementById('ai-apply-btn').style.display = 'none';
+        
+        const statusEl = document.getElementById('ai-loading-status');
+        const termEl = document.getElementById('ai-loading-terminal');
+        termEl.innerHTML = "[SYSTEM] Inicializando módulo de diagnóstico...<br>";
+        
+        const logs = [
+            "[SYSTEM] Coletando dados estruturais da campanha...",
+            "[SYSTEM] Carregando métricas de performance (Cliques, CPC, Conversões, CTR)...",
+            "[SYSTEM] Buscando palavras-chave e termos de pesquisa associados...",
+            "[SYSTEM] Recuperando criativos e extensões da campanha...",
+            "[SYSTEM] Mapeando comportamento de dispositivos e geolocalização...",
+            "[SYSTEM] Chamando OpenAI gpt-4o-mini para auditoria estrutural...",
+            "[SYSTEM] IA compilando nota geral e separando severidade de erros..."
+        ];
+        
+        let i = 0;
+        const interval = setInterval(() => {
+            if (i < logs.length) {
+                termEl.innerHTML += `${logs[i]}<br>`;
+                termEl.scrollTop = termEl.scrollHeight;
+                statusEl.textContent = logs[i];
+                i++;
+            } else {
+                clearInterval(interval);
+            }
+        }, 400);
+
+        fetch(`${API_BASE}/campaigns/${campaignId}/ai_analysis`)
+            .then(res => res.json())
+            .then(data => {
+                clearInterval(interval);
+                if (data.status === "success" && data.analysis) {
+                    renderAiAnalysis(data.analysis);
+                } else {
+                    showNotification("Erro", "Falha ao gerar relatório de IA.", false);
+                    closeAiModal();
+                }
+            })
+            .catch(err => {
+                clearInterval(interval);
+                console.error("Erro na análise IA:", err);
+                showNotification("Erro", "Erro ao conectar com servidor de IA.", false);
+                closeAiModal();
+            });
+    }
+
+    function renderAiAnalysis(analysis) {
+        document.getElementById('ai-modal-loading').style.display = 'none';
+        document.getElementById('ai-modal-results').style.display = 'block';
+        document.getElementById('ai-apply-btn').style.display = 'inline-block';
+        
+        currentAiSuggestions = analysis.suggestions;
+        
+        // General Score
+        const score = analysis.score_general || 0;
+        document.getElementById('ai-score-val').textContent = score;
+        
+        // Progress circle svg animation
+        const ring = document.getElementById('ai-score-ring');
+        const circumference = 2 * Math.PI * 50;
+        const offset = circumference - (score / 100) * circumference;
+        ring.style.strokeDashoffset = offset;
+        
+        // Set circle color based on score
+        if (score >= 80) ring.style.stroke = "var(--success)";
+        else if (score >= 60) ring.style.stroke = "var(--cyan)";
+        else if (score >= 40) ring.style.stroke = "#ff9f00";
+        else ring.style.stroke = "var(--pink)";
+        
+        // Sub-bars
+        const scores = analysis.scores || {};
+        const struct = scores.structure || 0;
+        const kws = scores.keywords || 0;
+        const ads = scores.ads || 0;
+        const convs = scores.conversions || 0;
+        const opt = scores.optimization || 0;
+        
+        document.getElementById('score-val-struct').textContent = `${struct}%`;
+        document.getElementById('score-bar-struct').style.width = `${struct}%`;
+        
+        document.getElementById('score-val-kws').textContent = `${kws}%`;
+        document.getElementById('score-bar-kws').style.width = `${kws}%`;
+        
+        document.getElementById('score-val-ads').textContent = `${ads}%`;
+        document.getElementById('score-bar-ads').style.width = `${ads}%`;
+        
+        document.getElementById('score-val-convs').textContent = `${convs}%`;
+        document.getElementById('score-bar-convs').style.width = `${convs}%`;
+        
+        document.getElementById('score-val-opt').textContent = `${opt}%`;
+        document.getElementById('score-bar-opt').style.width = `${opt}%`;
+        
+        // Problems
+        const problemsContainer = document.getElementById('ai-problems-list');
+        problemsContainer.innerHTML = '';
+        
+        const probObj = analysis.problems || {};
+        const categories = [
+            { key: 'critical', title: '🚨 Crítico', class: 'critical' },
+            { key: 'high', title: '⚠️ Alto', class: 'high' },
+            { key: 'medium', title: '🔍 Médio', class: 'medium' },
+            { key: 'low', title: 'ℹ️ Baixo', class: 'low' }
+        ];
+        
+        let hasProblems = false;
+        categories.forEach(cat => {
+            const list = probObj[cat.key] || [];
+            if (list.length > 0) {
+                hasProblems = true;
+                const groupDiv = document.createElement('div');
+                groupDiv.className = `problem-group ${cat.class}`;
+                
+                let header = `<div class="problem-header ${cat.class}">${cat.title}</div>`;
+                let itemsHtml = '';
+                list.forEach(p => {
+                    itemsHtml += `
+                        <div class="problem-item">
+                            • <strong>${p.issue}</strong>
+                            <span class="impact-desc">${p.impact}</span>
+                        </div>
+                    `;
+                });
+                groupDiv.innerHTML = header + itemsHtml;
+                problemsContainer.appendChild(groupDiv);
+            }
+        });
+        
+        if (!hasProblems) {
+            problemsContainer.innerHTML = `<div style="text-align: center; color: var(--text-secondary); padding: 20px;">Nenhum problema detectado pela IA. Excelente estrutura!</div>`;
+        }
+        
+        // Suggestions
+        const suggContainer = document.getElementById('ai-suggestions-panel');
+        suggContainer.innerHTML = '';
+        
+        const sugg = analysis.suggestions || {};
+        
+        const cardsData = [
+            {
+                title: '🛑 Pausar e Negativar',
+                items: (sugg.pause_keywords || []).map(kw => `Pausar palavra-chave: "${kw}"`)
+            },
+            {
+                title: '💰 Orçamentos e Lances',
+                items: [
+                    ...(sugg.increase_budget || []).map(b => `Aumentar orçamento: ${b}`),
+                    ...(sugg.reduce_budget || []).map(b => `Reduzir orçamento: ${b}`),
+                    ...(sugg.bid_strategies || [])
+                ]
+            },
+            {
+                title: '🆕 Palavras e Públicos',
+                items: [
+                    ...((sugg.new_keywords || []).map(kw => `Adicionar palavra-chave: "${kw}"`)),
+                    ...((sugg.new_audiences || []).map(aud => `Adicionar público: ${aud}`))
+                ]
+            },
+            {
+                title: '✍️ Copy e Anúncios',
+                items: [
+                    ...((sugg.new_ads?.headlines || []).map(h => `Título: "${h}"`)),
+                    ...((sugg.new_ads?.descriptions || []).map(d => `Descrição: "${d}"`))
+                ].slice(0, 5)
+            }
+        ];
+        
+        cardsData.forEach(card => {
+            if (card.items.length > 0) {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'suggestion-card';
+                cardDiv.innerHTML = `
+                    <h4>${card.title}</h4>
+                    <ul>
+                        ${card.items.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                `;
+                suggContainer.appendChild(cardDiv);
+            }
+        });
+        
+        if (suggContainer.children.length === 0) {
+            suggContainer.innerHTML = `<div style="text-align: center; color: var(--text-secondary); grid-column: 1 / -1; padding: 20px;">Nenhuma sugestão necessária.</div>`;
+        }
+    }
+
+    function closeAiModal() {
+        const modal = document.getElementById('campaign-ai-modal');
+        modal.classList.remove('active');
+        setTimeout(() => { modal.style.display = 'none'; }, 300);
+    }
+
+    async function applyAiSuggestions() {
+        if (!currentAiCampaignId || !currentAiSuggestions) return;
+        
+        showNotification("Processando", "Aplicando otimizações via IA autônoma...", true);
+        const applyBtn = document.getElementById('ai-apply-btn');
+        applyBtn.disabled = true;
+        applyBtn.textContent = "Aplicando...";
+        
+        try {
+            const res = await fetch(`${API_BASE}/campaigns/${currentAiCampaignId}/apply_ai_suggestions`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ suggestions: currentAiSuggestions })
+            });
+            const data = await res.json();
+            if (data.status === "success") {
+                showNotification("Otimizado", "As alterações sugeridas foram aplicadas com sucesso!", true);
+                closeAiModal();
+                loadCampaigns();
+            } else {
+                showNotification("Erro", "Erro ao aplicar otimizações.", false);
+            }
+        } catch (err) {
+            console.error("Erro ao aplicar otimizações:", err);
+            showNotification("Erro", "Erro de conexão ao aplicar otimizações.", false);
+        } finally {
+            applyBtn.disabled = false;
+            applyBtn.textContent = "Aplicar Alterações";
+        }
+    }
+    // --- END AI ANALYSIS LOGIC ---
+
 </script>
-<script defer src="matrix_dashboard.js"></script>
+
+<!-- Modal Fullscreen de Análise IA -->
+<div class="cyber-modal-overlay fullscreen-overlay" id="campaign-ai-modal" style="display: none; align-items: center; justify-content: center;">
+    <div class="cyber-modal fullscreen-modal electric-modal">
+        <!-- Electric Border Elements -->
+        <div class="electric-modal-border-outer">
+            <div class="electric-modal-main-card"></div>
+        </div>
+        <div class="electric-modal-glow-layer-1"></div>
+        <div class="electric-modal-glow-layer-2"></div>
+        <div class="electric-modal-overlay-1"></div>
+        <div class="electric-modal-overlay-2"></div>
+        <div class="electric-modal-background-glow"></div>
+
+        <!-- Content wrapper positioned above glow layers -->
+        <div class="modal-content-wrapper" style="position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; width: 100%;">
+            <div class="modal-header-container">
+                <div class="modal-title">
+                    <h2 id="ai-modal-campaign-name">ANÁLISE DE IA — Campanha</h2>
+                    <span class="campaign-id-badge" id="ai-modal-campaign-id">ID: ---</span>
+                </div>
+                <button class="modal-close-btn" onclick="closeAiModal()">×</button>
+            </div>
+            
+            <div class="cyber-modal-body">
+                <!-- Loading State -->
+                <div id="ai-modal-loading" class="loading-modal-state">
+                    <div class="loading-modal-spinner"></div>
+                    <div id="ai-loading-status">[SYSTEM] Acessando OpenAI API...</div>
+                    <div id="ai-loading-terminal" style="font-family: monospace; font-size: 0.72rem; color: var(--text-secondary); width: 80%; text-align: left; max-height: 150px; overflow-y: auto; background: rgba(0,0,0,0.3); padding: 10px; border: 1px solid rgba(255,255,255,0.05); margin-top: 10px;">
+                        [SYSTEM] Inicializando módulo de diagnóstico...<br>
+                        [SYSTEM] Lendo métricas de performance da campanha...<br>
+                    </div>
+                </div>
+                
+                <!-- Result State -->
+                <div id="ai-modal-results" style="display: none;">
+                    <!-- Row 1: Scores & Problems -->
+                    <div class="score-layout">
+                        <!-- Gauge Score Card -->
+                        <div class="score-card-gauge">
+                            <div class="score-circle">
+                                <svg class="score-circle-svg">
+                                    <circle class="score-circle-bg" cx="60" cy="60" r="50"></circle>
+                                    <circle class="score-circle-progress" cx="60" cy="60" r="50" stroke-dasharray="314.16" stroke-dashoffset="314.16" id="ai-score-ring"></circle>
+                                </svg>
+                                <span class="score-number" id="ai-score-val">0</span>
+                            </div>
+                            <span class="score-title">Score Final</span>
+                            
+                            <div class="score-sub-bars">
+                                <div class="score-sub-bar-item">
+                                    <div class="score-sub-bar-header">
+                                        <span>Estrutura</span>
+                                        <span id="score-val-struct">0%</span>
+                                    </div>
+                                    <div class="score-bar-bg"><div class="score-bar-fill" id="score-bar-struct" style="width: 0%;"></div></div>
+                                </div>
+                                <div class="score-sub-bar-item">
+                                    <div class="score-sub-bar-header">
+                                        <span>Palavras-chave</span>
+                                        <span id="score-val-kws">0%</span>
+                                    </div>
+                                    <div class="score-bar-bg"><div class="score-bar-fill" id="score-bar-kws" style="width: 0%;"></div></div>
+                                </div>
+                                <div class="score-sub-bar-item">
+                                    <div class="score-sub-bar-header">
+                                        <span>Anúncios</span>
+                                        <span id="score-val-ads">0%</span>
+                                    </div>
+                                    <div class="score-bar-bg"><div class="score-bar-fill" id="score-bar-ads" style="width: 0%;"></div></div>
+                                </div>
+                                <div class="score-sub-bar-item">
+                                    <div class="score-sub-bar-header">
+                                        <span>Conversões</span>
+                                        <span id="score-val-convs">0%</span>
+                                    </div>
+                                    <div class="score-bar-bg"><div class="score-bar-fill" id="score-bar-convs" style="width: 0%;"></div></div>
+                                </div>
+                                <div class="score-sub-bar-item">
+                                    <div class="score-sub-bar-header">
+                                        <span>Otimização</span>
+                                        <span id="score-val-opt">0%</span>
+                                    </div>
+                                    <div class="score-bar-bg"><div class="score-bar-fill" id="score-bar-opt" style="width: 0%;"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Problems List Box -->
+                        <div class="cyber-box" style="margin-bottom: 0; padding: 20px;">
+                            <h3 class="box-title" style="font-size: 0.9rem;"><span class="indicator"></span>Diagnóstico do Sistema</h3>
+                            <div class="problems-list-container" id="ai-problems-list" style="max-height: 250px; overflow-y: auto;">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Row 2: Detailed Suggestions -->
+                    <div class="cyber-box" style="padding: 20px; margin-top: 10px;">
+                        <h3 class="box-title" style="font-size: 0.9rem;"><span class="indicator"></span>Sugestões da IA de Otimização</h3>
+                        <div class="suggestions-panel" id="ai-suggestions-panel">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cyber-modal-buttons">
+                <button class="cyber-btn" onclick="closeAiModal()" style="border-color: rgba(255,255,255,0.15); color: var(--text-secondary); background: transparent;">Cancelar</button>
+                <button class="cyber-btn" id="ai-apply-btn" onclick="applyAiSuggestions()" style="background: rgba(0, 243, 255, 0.15); border-color: var(--cyan); color: #fff; display: none;">Aplicar Alterações</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script defer src="matrix_dashboard.js?v=2"></script>
 </body>
 </html>

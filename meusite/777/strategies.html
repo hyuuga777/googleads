@@ -63,11 +63,14 @@
                     <a href="googleads_dashboard.html" class="sidebar-link" id="nav-overview">
                         <span class="icon">📊</span> Visão
                     </a>
+                    <a href="ai_dashboard.html" class="sidebar-link" id="nav-executive">
+                        <span class="icon">🤖</span> Executivo
+                    </a>
                     <a href="campaigns.html" class="sidebar-link" id="nav-campaigns">
                         <span class="icon">🚀</span> Campanhas
                     </a>
                     <a href="strategies.html" class="sidebar-link active-link" id="nav-strategies">
-                        <span class="icon">🧠</span> Estratégias
+                        <span class="icon">♟️</span> Estratégias
                     </a>
                     <a href="funnel.html" class="sidebar-link" id="nav-funnel">
                         <span class="icon">🎯</span> Funil
@@ -77,6 +80,9 @@
                     </a>
                     <a href="approvals.html" class="sidebar-link" id="nav-approvals">
                         <span class="icon">🔔</span> Insights
+                    </a>
+                    <a href="cerebro.html" class="sidebar-link" id="nav-cerebro">
+                        <span class="icon">🧠</span> Cérebro
                     </a>
                 </nav>
             </div>
@@ -104,6 +110,10 @@
             </div>
             
             <div class="header-actions">
+                <div class="status-badge" id="openai-status-badge" style="margin-right: 10px;">
+                    <div class="status-dot"></div>
+                    <span id="openai-status-text">Verificando...</span>
+                </div>
                 <div class="status-badge" id="api-status-badge">
                     <div class="status-dot"></div>
                     <span id="api-status-text">Verificando...</span>
@@ -121,12 +131,22 @@
                 <form id="ai-planner-form" class="strategy-form" onsubmit="generateCampaignStrategy(event)" style="margin-bottom: 0;">
                     <div class="form-section">
                         <div class="form-row">
+                            <label for="planner_company">Nome da Empresa <span class="accent">*</span></label>
+                            <input type="text" id="planner_company" class="form-input" placeholder="ex: Clínica OdontoCyborg" required>
+                        </div>
+                        <div class="form-row">
                             <label for="planner_title">Título do Anúncio / Serviço <span class="accent">*</span></label>
                             <input type="text" id="planner_title" class="form-input" placeholder="ex: Clínica Odontológica em São Paulo" required>
                         </div>
-                        <div class="form-row">
+                        <div class="form-row" style="grid-column: span 2;">
                             <label for="planner_url">URL do Site / Landing Page <span class="accent">*</span></label>
                             <input type="url" id="planner_url" class="form-input" placeholder="ex: https://meusite.com.br" required>
+                        </div>
+                        <div class="form-row" style="grid-column: span 2; display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
+                            <label style="font-size:0.72rem; text-transform: uppercase; color: var(--text-secondary); font-weight: bold; letter-spacing: 0.05em;">Sites dos Concorrentes (Opcional)</label>
+                            <input type="url" id="planner_competitor_1" class="form-input" placeholder="Concorrente 1 (ex: https://concorrente1.com.br)" style="padding: 8px; font-size:0.8rem;">
+                            <input type="url" id="planner_competitor_2" class="form-input" placeholder="Concorrente 2 (ex: https://concorrente2.com.br)" style="padding: 8px; font-size:0.8rem;">
+                            <input type="url" id="planner_competitor_3" class="form-input" placeholder="Concorrente 3 (ex: https://concorrente3.com.br)" style="padding: 8px; font-size:0.8rem;">
                         </div>
                     </div>
                     
@@ -147,77 +167,156 @@
                         📋 Dossiê Estratégico da IA Cyborg
                     </h3>
                     
-                    <div class="strategy-form">
-                        <!-- Coluna 1: Diagnóstico e Segmentação -->
-                        <div class="form-section">
-                            <div class="budget-bar-group" style="background: rgba(0, 243, 255, 0.02); border-color: rgba(0, 243, 255, 0.15);">
-                                <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--cyan); display: block; margin-bottom: 5px;">Objetivo Detectado</span>
-                                <p id="result-objective" style="font-size: 1.05rem; color: #fff; font-weight: bold;">Leads via WhatsApp</p>
-                            </div>
-                            
-                            <div class="budget-bar-group" style="background: rgba(157, 0, 255, 0.02); border-color: rgba(157, 0, 255, 0.15); margin-top: 15px;">
-                                <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: #d199ff; display: block; margin-bottom: 5px;">Segmentação Geográfica Recomendada</span>
-                                <p id="result-geo-rec" style="font-size: 1.05rem; color: #fff; font-weight: bold; margin-bottom: 8px;">LOCAL / RAIO ESPECÍFICO</p>
-                                <p id="result-geo-explanation" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4;"></p>
-                            </div>
-                            
-                            <div class="budget-bar-group" style="margin-top: 15px;">
-                                <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); display: block; margin-bottom: 8px;">Palavras-Chave de Intenção Sugeridas</span>
-                                <div id="result-keywords-container" style="display: flex; flex-wrap: wrap; gap: 8px;">
-                                    <!-- Badges -->
+                    <!-- Sub-abas -->
+                    <div class="sub-tabs-container" style="display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 8px;">
+                        <button type="button" class="sub-tab-btn active" onclick="switchSubTab('subtab-business')" id="btn-subtab-business">💼 Negócio & Concorrência</button>
+                        <button type="button" class="sub-tab-btn" onclick="switchSubTab('subtab-avatar')" id="btn-subtab-avatar">👤 Avatar & ICP</button>
+                        <button type="button" class="sub-tab-btn" onclick="switchSubTab('subtab-funnel')" id="btn-subtab-funnel">📈 Funil & Orçamento</button>
+                        <button type="button" class="sub-tab-btn" onclick="switchSubTab('subtab-creative')" id="btn-subtab-creative">✍️ Criativos & Anúncios</button>
+                    </div>
+
+                    <!-- Sub-aba 1: Negócio & Concorrência -->
+                    <div class="sub-tab-content active" id="subtab-business">
+                        <div class="strategy-form">
+                            <div class="form-section">
+                                <div class="budget-bar-group" style="background: rgba(0, 243, 255, 0.01); border-color: rgba(0, 243, 255, 0.15); padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                                    <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--cyan); display: block; margin-bottom: 5px;">Análise do Site / Empresa</span>
+                                    <p id="res-business-site" style="font-size: 0.88rem; color: #fff; line-height: 1.5; margin-bottom: 0;">Lendo site...</p>
                                 </div>
-                                <span style="font-size: 0.72rem; color: var(--text-secondary); display: block; margin-top: 10px; font-style: italic;">
-                                    *Preenchidas automaticamente no painel abaixo.
-                                </span>
+                                <div class="budget-bar-group" style="background: rgba(157, 0, 255, 0.01); border-color: rgba(157, 0, 255, 0.15); padding: 15px; border-radius: 6px;">
+                                    <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: #d199ff; display: block; margin-bottom: 5px;">Análise dos Concorrentes</span>
+                                    <p id="res-business-competitors" style="font-size: 0.88rem; color: #fff; line-height: 1.5; margin-bottom: 0;">Lendo concorrentes...</p>
+                                </div>
+                            </div>
+                            <div class="form-section">
+                                <div class="budget-bar-group" style="background: rgba(255, 255, 255, 0.01); border-color: rgba(255, 255, 255, 0.08); padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                                    <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); display: block; margin-bottom: 5px;">Proposta de Valor</span>
+                                    <p id="res-business-value-prop" style="font-size: 0.88rem; color: #fff; line-height: 1.5; margin-bottom: 0;"></p>
+                                </div>
+                                <div class="budget-bar-group" style="background: rgba(0, 243, 255, 0.01); border-color: rgba(0, 243, 255, 0.15); padding: 15px; border-radius: 6px;">
+                                    <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--cyan); display: block; margin-bottom: 5px;">Canais Recomendados</span>
+                                    <p id="res-business-channels" style="font-size: 0.88rem; color: #fff; line-height: 1.5; margin-bottom: 0;"></p>
+                                </div>
                             </div>
                         </div>
-                        
-                        <!-- Coluna 2: Avatar do Cliente e Sugestão de Anúncios -->
-                        <div class="form-section">
-                            <div class="budget-bar-group" style="background: rgba(255, 255, 255, 0.01);">
-                                <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); display: block; margin-bottom: 5px;">Dores do Avatar</span>
-                                <p id="result-avatar-dores" style="font-size: 0.88rem; color: #fff; line-height: 1.4; margin-bottom: 12px;"></p>
-                                <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); display: block; margin-bottom: 5px;">Desejos do Avatar</span>
-                                <p id="result-avatar-desejos" style="font-size: 0.88rem; color: #fff; line-height: 1.4;"></p>
+                    </div>
+
+                    <!-- Sub-aba 2: Avatar & ICP -->
+                    <div class="sub-tab-content" id="subtab-avatar">
+                        <div class="strategy-form">
+                            <div class="form-section">
+                                <div class="budget-bar-group" style="background: rgba(255, 255, 255, 0.01); border-color: rgba(255, 255, 255, 0.08); padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                                    <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); display: block; margin-bottom: 5px;">Ideal Customer Profile (ICP)</span>
+                                    <p id="res-avatar-icp" style="font-size: 0.88rem; color: #fff; line-height: 1.5; margin-bottom: 0;">Carregando ICP...</p>
+                                </div>
+                                <div class="budget-bar-group" style="background: rgba(255, 255, 255, 0.01); border-color: rgba(255, 255, 255, 0.08); padding: 15px; border-radius: 6px;">
+                                    <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); display: block; margin-bottom: 5px;">Jornada do Cliente</span>
+                                    <p id="res-avatar-journey" style="font-size: 0.88rem; color: #fff; line-height: 1.5; margin-bottom: 0;"></p>
+                                </div>
+                            </div>
+                            <div class="form-section">
+                                <div class="budget-bar-group" style="background: rgba(255, 0, 85, 0.01); border-color: rgba(255, 0, 85, 0.12); padding: 15px; border-radius: 6px;">
+                                    <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--pink); display: block; margin-bottom: 5px;">Avatar Ideal</span>
+                                    <div style="font-size: 0.85rem; line-height: 1.6; color: #fff;">
+                                        <p style="margin-bottom: 8px;"><strong>Cargo/Perfil:</strong> <span id="res-avatar-role" style="color: var(--cyan);"></span></p>
+                                        <p style="margin-bottom: 8px;"><strong>Dores:</strong> <span id="res-avatar-dores"></span></p>
+                                        <p style="margin-bottom: 8px;"><strong>Desejos:</strong> <span id="res-avatar-desejos"></span></p>
+                                        <p style="margin-bottom: 0;"><strong>Objeções:</strong> <span id="res-avatar-objections" style="color: var(--pink);"></span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sub-aba 3: Funil & Orçamento -->
+                    <div class="sub-tab-content" id="subtab-funnel">
+                        <div class="strategy-form">
+                            <div class="form-section">
+                                <div class="budget-bar-group" style="background: rgba(0, 243, 255, 0.01); border-color: rgba(0, 243, 255, 0.15); padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                                    <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--cyan); display: block; margin-bottom: 5px;">Estratégia de Aquisição</span>
+                                    <p id="res-funnel-strategy" style="font-size: 0.88rem; color: #fff; line-height: 1.5; margin-bottom: 0;">Carregando estratégia...</p>
+                                </div>
+                                <div class="budget-bar-group" style="background: rgba(157, 0, 255, 0.01); border-color: rgba(157, 0, 255, 0.15); padding: 15px; border-radius: 6px;">
+                                    <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: #d199ff; display: block; margin-bottom: 5px;">Estrutura de Campanha Recomendada</span>
+                                    <p id="res-funnel-structure" style="font-size: 0.88rem; color: #fff; line-height: 1.5; margin-bottom: 0;"></p>
+                                </div>
+                            </div>
+                            <div class="form-section">
+                                <div class="budget-bar-group" style="background: rgba(255, 255, 255, 0.01); border-color: rgba(255, 255, 255, 0.08); padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                                    <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); display: block; margin-bottom: 5px;">Funil de Vendas Completo</span>
+                                    <p id="res-funnel-full" style="font-size: 0.88rem; color: #fff; line-height: 1.5; margin-bottom: 0;"></p>
+                                </div>
+                                <div class="budget-bar-group" style="background: rgba(0, 255, 102, 0.02); border-color: rgba(0, 255, 102, 0.2); padding: 15px; border-radius: 6px;">
+                                    <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: #00ff66; display: block; margin-bottom: 5px;">Orçamento & Distribuição</span>
+                                    <div style="font-size: 0.85rem; line-height: 1.6; color: #fff;">
+                                        <p style="margin-bottom: 8px;"><strong>Orçamento Recomendado:</strong> <span id="res-budget-recommended" style="color: #00ff66; font-weight: bold;"></span></p>
+                                        <p style="margin-bottom: 0;"><strong>Distribuição do Orçamento:</strong> <span id="res-budget-distribution"></span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sub-aba 4: Criativos & Anúncios -->
+                    <div class="sub-tab-content" id="subtab-creative">
+                        <div class="strategy-form">
+                            <div class="form-section">
+                                <div class="budget-bar-group" style="background: rgba(255, 255, 255, 0.01); border-color: rgba(255, 255, 255, 0.08); padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                                    <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); display: block; margin-bottom: 8px;">Palavras-Chave Recomendadas</span>
+                                    <div id="res-keywords-badges" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px;"></div>
+                                    
+                                    <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--pink); display: block; margin-bottom: 8px;">Palavras Negativas Sugeridas</span>
+                                    <div id="res-negatives-badges" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+                                </div>
+                                <div class="budget-bar-group" style="background: rgba(0, 243, 255, 0.01); border-color: rgba(0, 243, 255, 0.15); padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                                    <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--cyan); display: block; margin-bottom: 5px;">Landing Page Ideal</span>
+                                    <p id="res-creative-lp" style="font-size: 0.88rem; color: #fff; line-height: 1.5; margin-bottom: 0;"></p>
+                                </div>
+                                <div class="budget-bar-group" style="background: rgba(255, 255, 255, 0.01); border-color: rgba(255, 255, 255, 0.08); padding: 15px; border-radius: 6px;">
+                                    <span style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); display: block; margin-bottom: 5px;">Extensões Recomendadas</span>
+                                    <p id="res-creative-extensions" style="font-size: 0.88rem; color: #fff; line-height: 1.5; margin-bottom: 0;"></p>
+                                </div>
                             </div>
                             
-                            <div class="budget-bar-group" style="background: rgba(255, 0, 85, 0.01); border-color: rgba(255, 0, 85, 0.15); margin-top: 15px;">
-                                <span style="font-weight: bold; font-size: 0.85rem; text-transform: uppercase; color: var(--pink); display: block; margin-bottom: 8px;">RSA Generator: Headline & Copy suggestions</span>
-                                <div style="font-size: 0.85rem; color: var(--text-secondary);">
-                                    <strong style="color: #fff; display: block; margin-bottom: 8px;">Títulos sugeridos (Headlines - Selecione até 15):</strong>
-                                    <div id="result-ads-headlines" style="display:flex; flex-direction:column; gap:6px; margin-bottom: 15px;"></div>
-                                    
-                                    <strong style="color: #fff; display: block; margin-bottom: 8px;">Descrições sugeridas (Descriptions - Selecione até 4):</strong>
-                                    <div id="result-ads-descriptions" style="display:flex; flex-direction:column; gap:6px; margin-bottom: 15px;"></div>
+                            <div class="form-section">
+                                <div class="budget-bar-group" style="background: rgba(255, 0, 85, 0.01); border-color: rgba(255, 0, 85, 0.15); padding: 15px; border-radius: 6px;">
+                                    <span style="font-weight: bold; font-size: 0.85rem; text-transform: uppercase; color: var(--pink); display: block; margin-bottom: 8px;">RSA Generator: Títulos e Descrições (Rascunho)</span>
+                                    <div style="font-size: 0.85rem; color: var(--text-secondary);">
+                                        <strong style="color: #fff; display: block; margin-bottom: 8px;">Títulos sugeridos (Headlines - Selecione até 15):</strong>
+                                        <div id="result-ads-headlines" style="display:flex; flex-direction:column; gap:6px; margin-bottom: 15px;"></div>
+                                        
+                                        <strong style="color: #fff; display: block; margin-bottom: 8px;">Descrições sugeridas (Descriptions - Selecione até 4):</strong>
+                                        <div id="result-ads-descriptions" style="display:flex; flex-direction:column; gap:6px; margin-bottom: 15px;"></div>
 
-                                    <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top:15px; margin-top:15px; display:grid; grid-template-columns:1fr 1fr; gap:15px;">
-                                        <div class="form-row">
-                                            <label for="ad-sitelinks" style="font-size:0.75rem;">Sitelinks (URLs separadas por vírgula)</label>
-                                            <input type="text" id="ad-sitelinks" class="form-input" style="padding: 6px; font-size:0.8rem;" placeholder="https://site.com/servico, ...">
+                                        <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top:15px; margin-top:15px; display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+                                            <div class="form-row">
+                                                <label for="ad-sitelinks" style="font-size:0.75rem;">Sitelinks (URLs separadas por vírgula)</label>
+                                                <input type="text" id="ad-sitelinks" class="form-input" style="padding: 6px; font-size:0.8rem;" placeholder="https://site.com/servico, ...">
+                                            </div>
+                                            <div class="form-row">
+                                                <label for="ad-utm" style="font-size:0.75rem;">Campanha UTM (utm_campaign)</label>
+                                                <input type="text" id="ad-utm" class="form-input" style="padding: 6px; font-size:0.8rem;" value="cyborg_ai_ads">
+                                            </div>
                                         </div>
-                                        <div class="form-row">
-                                            <label for="ad-utm" style="font-size:0.75rem;">Campanha UTM (utm_campaign)</label>
-                                            <input type="text" id="ad-utm" class="form-input" style="padding: 6px; font-size:0.8rem;" value="cyborg_ai_ads">
+                                        
+                                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:10px;">
+                                            <div class="form-row">
+                                                <label for="ad-image" style="font-size:0.75rem;">URL do Asset de Imagem</label>
+                                                <input type="text" id="ad-image" class="form-input" style="padding: 6px; font-size:0.8rem;" placeholder="https://site.com/image.jpg">
+                                            </div>
+                                            <div class="form-row">
+                                                <label for="ad-logo" style="font-size:0.75rem;">URL do Asset de Logotipo</label>
+                                                <input type="text" id="ad-logo" class="form-input" style="padding: 6px; font-size:0.8rem;" placeholder="https://site.com/logo.png">
+                                            </div>
                                         </div>
-                                    </div>
-                                    
-                                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:10px;">
-                                        <div class="form-row">
-                                            <label for="ad-image" style="font-size:0.75rem;">URL do Asset de Imagem</label>
-                                            <input type="text" id="ad-image" class="form-input" style="padding: 6px; font-size:0.8rem;" placeholder="https://site.com/image.jpg">
-                                        </div>
-                                        <div class="form-row">
-                                            <label for="ad-logo" style="font-size:0.75rem;">URL do Asset de Logotipo</label>
-                                            <input type="text" id="ad-logo" class="form-input" style="padding: 6px; font-size:0.8rem;" placeholder="https://site.com/logo.png">
-                                        </div>
-                                    </div>
 
-                                    <div style="margin-top: 15px; padding: 12px; background: rgba(0, 243, 255, 0.05); border: 1px dashed rgba(0, 243, 255, 0.25); border-radius: 6px; font-size: 0.78rem; line-height: 1.4; color: var(--cyan); margin-bottom: 10px; text-align: left;">
-                                        <strong>ℹ️ Onde encontrar no Google Ads:</strong> O anúncio será criado diretamente dentro da lista de anúncios do Grupo de Anúncios ativo desta campanha com o status <strong>PAUSADO</strong>. Ele não irá para a aba global de "Rascunhos de Campanha" do Google Ads, permitindo que você o revise e ative diretamente na campanha.
-                                    </div>
+                                        <div style="margin-top: 15px; padding: 12px; background: rgba(0, 243, 255, 0.05); border: 1px dashed rgba(0, 243, 255, 0.25); border-radius: 6px; font-size: 0.78rem; line-height: 1.4; color: var(--cyan); margin-bottom: 10px; text-align: left;">
+                                            <strong>ℹ️ Onde encontrar no Google Ads:</strong> O anúncio será criado diretamente no Grupo de Anúncios ativo desta campanha com o status <strong>PAUSADO</strong>.
+                                        </div>
 
-                                    <div style="margin-top: 20px; display:flex; justify-content:flex-end;">
-                                        <button type="button" class="cyber-btn" style="background:linear-gradient(135deg, var(--cyan), var(--purple)); padding: 8px 16px; font-size:0.8rem;" onclick="publishAdDraft()">Publicar Rascunho no Google Ads</button>
+                                        <div style="margin-top: 20px; display:flex; justify-content:flex-end;">
+                                            <button type="button" class="cyber-btn" style="background:linear-gradient(135deg, var(--cyan), var(--purple)); padding: 8px 16px; font-size:0.8rem;" onclick="publishAdDraft()">Publicar Rascunho no Google Ads</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -226,7 +325,7 @@
                 </div>
             </div>
 
-            <div class="cyber-box">
+            <div class="cyber-box" style="display: none;">
                 <h2 class="box-title"><span class="indicator purple"></span>Configurações do Motor de Orquestração</h2>
                 
                 <form id="rules-form" class="strategy-form" onsubmit="saveRules(event)">
@@ -249,6 +348,11 @@
                                 <input type="checkbox" id="rules_enabled">
                                 <span class="slider"></span>
                             </label>
+                        </div>
+                        <div class="form-row" style="grid-column: span 2; margin-top: 15px; margin-bottom: 5px;">
+                            <label for="openai_api_key">Chave de API OpenAI</label>
+                            <input type="password" id="openai_api_key" class="form-input" placeholder="sk-proj-..." autocomplete="off">
+                            <span style="font-size: 0.65rem; color: var(--text-secondary); margin-top: 4px; display: block;">Seu saldo da API OpenAI será utilizado para geração inteligente de campanhas e copies altamente personalizadas.</span>
                         </div>
                     </div>
 
@@ -293,7 +397,7 @@
     </div>
 </div>
 
-<script src="config.js"></script>
+<script src="config.js?v=2"></script>
 <script>
 
     const API_BASE = (window.CYBORG_CONFIG && window.CYBORG_CONFIG.api_url) ? window.CYBORG_CONFIG.api_url : "http://127.0.0.1:5000/api";
@@ -384,11 +488,53 @@
                 dot.style.backgroundColor = "#ffb300";
                 dot.style.boxShadow = "0 0 10px #ffb300";
             }
+            
+            // OpenAI status update
+            const oaiBadge = document.getElementById('openai-status-badge');
+            const oaiDot = document.querySelector('#openai-status-badge .status-dot');
+            const oaiText = document.getElementById('openai-status-text');
+            if (oaiBadge && oaiDot && oaiText) {
+                if (data.openai_api === "CONNECTED") {
+                    oaiText.textContent = "OpenAI Conectado";
+                    oaiText.style.color = "#00ff66";
+                    oaiDot.style.backgroundColor = "#00ff66";
+                    oaiDot.style.boxShadow = "0 0 10px #00ff66";
+                    oaiBadge.style.borderColor = "rgba(0, 255, 102, 0.25)";
+                    oaiBadge.style.background = "rgba(0, 255, 102, 0.05)";
+                } else if (data.openai_api === "ERROR") {
+                    oaiText.textContent = "Erro OpenAI";
+                    oaiText.style.color = "var(--pink)";
+                    oaiDot.style.backgroundColor = "var(--pink)";
+                    oaiDot.style.boxShadow = "0 0 10px var(--pink)";
+                    oaiBadge.style.borderColor = "rgba(255, 0, 85, 0.25)";
+                    oaiBadge.style.background = "rgba(255, 0, 85, 0.05)";
+                } else {
+                    oaiText.textContent = "OpenAI Desconectado";
+                    oaiText.style.color = "#888";
+                    oaiDot.style.backgroundColor = "#777";
+                    oaiDot.style.boxShadow = "0 0 10px #777";
+                    oaiBadge.style.borderColor = "rgba(255, 255, 255, 0.1)";
+                    oaiBadge.style.background = "rgba(255, 255, 255, 0.03)";
+                }
+            }
         } catch (err) {
             document.getElementById('api-status-text').textContent = "Backend Offline";
             const dot = document.querySelector('#api-status-badge .status-dot');
-            dot.style.backgroundColor = "var(--pink)";
-            dot.style.boxShadow = "0 0 10px var(--pink)";
+            if (dot) {
+                dot.style.backgroundColor = "var(--pink)";
+                dot.style.boxShadow = "0 0 10px var(--pink)";
+            }
+            const oaiBadge = document.getElementById('openai-status-badge');
+            const oaiDot = document.querySelector('#openai-status-badge .status-dot');
+            const oaiText = document.getElementById('openai-status-text');
+            if (oaiBadge && oaiDot && oaiText) {
+                oaiText.textContent = "OpenAI Offline";
+                oaiText.style.color = "var(--pink)";
+                oaiDot.style.backgroundColor = "var(--pink)";
+                oaiDot.style.boxShadow = "0 0 10px var(--pink)";
+                oaiBadge.style.borderColor = "rgba(255, 0, 85, 0.25)";
+                oaiBadge.style.background = "rgba(255, 0, 85, 0.05)";
+            }
         }
     }
 
@@ -440,6 +586,7 @@
             document.getElementById('rules_enabled').checked = data.rules_enabled !== false;
             document.getElementById('intent_keywords').value = data.intent_keywords ? data.intent_keywords.join(', ') : '';
             document.getElementById('custom_prompt').value = data.custom_prompt || '';
+            document.getElementById('openai_api_key').value = data.openai_api_key || '';
             
         } catch (err) {
             console.warn("Erro ao carregar regras de IA via API, usando fallback localStorage:", err);
@@ -453,6 +600,7 @@
             document.getElementById('rules_enabled').checked = data.rules_enabled !== false;
             document.getElementById('intent_keywords').value = data.intent_keywords ? data.intent_keywords.join(', ') : '';
             document.getElementById('custom_prompt').value = data.custom_prompt || '';
+            document.getElementById('openai_api_key').value = data.openai_api_key || '';
         }
     }
 
@@ -477,7 +625,8 @@
             adjustment_rate: parseFloat(document.getElementById('adjustment_rate').value) / 100.0,
             rules_enabled: document.getElementById('rules_enabled').checked,
             intent_keywords: keywordsArray,
-            custom_prompt: document.getElementById('custom_prompt').value.trim()
+            custom_prompt: document.getElementById('custom_prompt').value.trim(),
+            openai_api_key: document.getElementById('openai_api_key').value.trim()
         };
 
         try {
@@ -490,6 +639,13 @@
             const data = await res.json();
             if (data.status === "success") {
                 showNotification("Regras Salvas", "Configurações de IA atualizadas com sucesso!", true);
+                if (data.strategies && data.strategies.openai_api_key) {
+                    document.getElementById('openai_api_key').value = data.strategies.openai_api_key;
+                }
+                // Trigger immediate status check to update the badge color
+                if (typeof checkApiStatus === 'function') {
+                    checkApiStatus();
+                }
             } else {
                 showNotification("Erro", "Falha ao gravar regras.", false);
             }
@@ -505,6 +661,22 @@
         }
     }
 
+    function switchSubTab(tabId) {
+        document.querySelectorAll('.sub-tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.sub-tab-content').forEach(content => content.classList.remove('active'));
+        
+        let btnId;
+        if (tabId === 'subtab-business') btnId = 'btn-subtab-business';
+        else if (tabId === 'subtab-avatar') btnId = 'btn-subtab-avatar';
+        else if (tabId === 'subtab-funnel') btnId = 'btn-subtab-funnel';
+        else btnId = 'btn-subtab-creative';
+        
+        const btnEl = document.getElementById(btnId);
+        if (btnEl) btnEl.classList.add('active');
+        const tabEl = document.getElementById(tabId);
+        if (tabEl) tabEl.classList.add('active');
+    }
+
     async function generateCampaignStrategy(event) {
         event.preventDefault();
         
@@ -513,81 +685,33 @@
         btn.textContent = "Analisando...";
         btn.disabled = true;
         
+        const company = document.getElementById('planner_company').value;
         const title = document.getElementById('planner_title').value;
         const url = document.getElementById('planner_url').value;
         const budget = parseFloat(document.getElementById('planner_budget').value);
+        const competitors = [
+            document.getElementById('planner_competitor_1').value.trim(),
+            document.getElementById('planner_competitor_2').value.trim(),
+            document.getElementById('planner_competitor_3').value.trim()
+        ].filter(c => c.length > 0);
         
         try {
             const res = await fetch(`${API_BASE}/generate_campaign_structure`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
+                    company: company,
                     title: title,
                     url: url,
-                    daily_budget: budget
+                    daily_budget: budget,
+                    competitors: competitors
                 })
             });
             
             const data = await res.json();
             if (data.status === "success") {
-                showNotification("Planejamento Gerado", "Métricas e palavras-chave injetadas abaixo!", true);
-                
-                document.getElementById('result-objective').textContent = data.objective_label;
-                document.getElementById('result-geo-rec').textContent = data.geo_recommendation;
-                document.getElementById('result-geo-explanation').textContent = data.geo_explanation;
-                document.getElementById('result-avatar-dores').textContent = data.avatar.dores;
-                document.getElementById('result-avatar-desejos').textContent = data.avatar.desejos;
-                
-                const kwContainer = document.getElementById('result-keywords-container');
-                kwContainer.innerHTML = '';
-                data.intent_keywords.forEach(kw => {
-                    const badge = document.createElement('span');
-                    badge.className = 'status-pill enabled';
-                    badge.style.cursor = 'default';
-                    badge.style.margin = '4px';
-                    badge.textContent = kw;
-                    kwContainer.appendChild(badge);
-                });
-                
-                const hlContainer = document.getElementById('result-ads-headlines');
-                hlContainer.innerHTML = '';
-                data.ad_suggestions.headlines.forEach((hl, idx) => {
-                    const lbl = document.createElement('label');
-                    lbl.style.display = 'flex';
-                    lbl.style.alignItems = 'center';
-                    lbl.style.gap = '8px';
-                    lbl.style.color = '#fff';
-                    lbl.style.margin = '4px 0';
-                    lbl.style.cursor = 'pointer';
-                    lbl.innerHTML = `<input type="checkbox" class="ad-headline-check" value="${hl}" checked> <span style="font-family: monospace;">${hl}</span>`;
-                    hlContainer.appendChild(lbl);
-                });
-                
-                const descContainer = document.getElementById('result-ads-descriptions');
-                descContainer.innerHTML = '';
-                data.ad_suggestions.descriptions.forEach((desc, idx) => {
-                    const lbl = document.createElement('label');
-                    lbl.style.display = 'flex';
-                    lbl.style.alignItems = 'center';
-                    lbl.style.gap = '8px';
-                    lbl.style.color = '#fff';
-                    lbl.style.margin = '4px 0';
-                    lbl.style.cursor = 'pointer';
-                    lbl.innerHTML = `<input type="checkbox" class="ad-description-check" value="${desc}" checked> <span style="font-family: monospace;">${desc}</span>`;
-                    descContainer.appendChild(lbl);
-                });
-                
-                document.getElementById('ai-planner-result').style.display = 'block';
-                
-                document.getElementById('target_cpa').value = data.target_cpa;
-                document.getElementById('min_cpa').value = Math.round(data.target_cpa * 0.7 * 100) / 100;
-                document.getElementById('max_cpc').value = data.max_cpc;
-                document.getElementById('min_budget').value = Math.round(budget * 0.5 * 100) / 100;
-                document.getElementById('max_budget').value = Math.round(budget * 2.0 * 100) / 100;
-                document.getElementById('adjustment_rate').value = 10;
-                document.getElementById('intent_keywords').value = data.intent_keywords.join(', ');
-                
-                document.getElementById('ai-planner-result').scrollIntoView({ behavior: 'smooth' });
+                showNotification("Planejamento Gerado", "Métricas e dossiê estratégico carregados!", true);
+                populateDossier(data, budget);
             } else {
                 showNotification("Erro no Gerador", data.message, false);
             }
@@ -598,11 +722,34 @@
                 objective_label: "Conversões (Leads de WhatsApp)",
                 geo_recommendation: "Brasil (Otimizado por IA)",
                 geo_explanation: "Recomendado focar nas regiões Sul e Sudeste para maximizar a relevância e ticket médio.",
-                avatar: {
-                    dores: "Falta de previsibilidade de vendas e leads desqualificados no comercial.",
-                    desejos: "Ter um canal previsível e automatizado de atração de clientes."
+                company_analysis: {
+                    services: `Serviços especializados em ${title} para o mercado local.`,
+                    differentials: "Atendimento ultra rápido no WhatsApp, especialistas dedicados e preço justo.",
+                    location: "Segmentação local de alta relevância.",
+                    offer: "Auditoria de tráfego grátis para novos clientes.",
+                    audience: "Clientes finais em busca de soluções urgentes na internet."
                 },
+                competitors_analysis: {
+                    positioning: "Concorrentes usam páginas pesadas e formulários muito longos.",
+                    offers: "Geralmente cobram taxas de set-up e contratos sem garantia.",
+                    strategies: "Anúncios genéricos focados em marcas corporativas sem CTA.",
+                    sales_arguments: "Tradição de mercado ou tamanho de equipe."
+                },
+                avatar_ideal: {
+                    cargo: "Consumidor final residencial/comercial ou decisor de contratação",
+                    dores: `Falta de previsibilidade de vendas e leads desqualificados no comercial para ${title}.`,
+                    desejos: "Ter um canal previsível e automatizado de atração de clientes.",
+                    objecoes: "Preço da consulta/serviço, tempo de espera e segurança do profissional."
+                },
+                icp: `Indivíduos ou negócios locais com renda média/alta localizados em grandes centros urbanos e que buscam por ${title} imediatamente.`,
+                value_proposition: `Resolvemos seu problema de ${title} com suporte imediato e preço transparente.`,
+                acquisition_strategy: "Campanha de pesquisa Google focada no fundo do funil, direcionando para LP rápida de alta conversão no WhatsApp.",
+                campaign_structure: "1 Campanha de Pesquisa (Rede de Pesquisa Google) com 3 Grupos de Anúncios (Intenção Direta, Marca, Concorrentes).",
+                funnel_complete: "Descoberta (Busca Google) -> Consideração (LP Persuasiva) -> Conversão (Formulário/WhatsApp) -> Venda (CRM/Contato).",
+                customer_journey: `Cliente sente dor -> Procura por ${title} no celular -> Vê anúncio no topo -> Clica e acessa a Landing Page -> Chama no WhatsApp.`,
+                suggested_channels: "Google Search Ads (80%), Google Maps (10%), Display Remarketing (10%).",
                 intent_keywords: ["agência de marketing", "anunciar no google", "tráfego pago", "gestor de tráfego profissional", "como lotar agenda de clientes"],
+                negative_keywords: ["gratis", "como fazer", "curso", "vagas", "pdf", "barato"],
                 ad_suggestions: {
                     headlines: [
                         "Agência de Marketing de Elite",
@@ -615,11 +762,7 @@
                         "Estrutura Comercial Blindada",
                         "Relatórios Em Tempo Real",
                         "Suporte Especializado 24h",
-                        "ROI Garantido Por Contrato",
-                        "Campanhas Inteligentes",
-                        "Anúncios Que Convertem",
-                        "Gestão de Tráfego de Elite",
-                        "Maximize Seu Faturamento"
+                        "ROI Garantido Por Contrato"
                     ],
                     descriptions: [
                         "Chega de leads frios. Criamos um motor previsível de vendas usando IA.",
@@ -628,72 +771,121 @@
                         "Fale com um dos nossos orquestradores de tráfego cyborg e garanta seu setup gratuito."
                     ]
                 },
+                extensions: "Extensões de Chamada, Extensões de Sitelinks e Snippets Estruturados.",
+                landing_page_ideal: "Página otimizada para mobile com carregamento inferior a 1.8 segundos e botão de WhatsApp em evidência.",
+                recommended_budget: budget * 1.2,
+                budget_distribution: "70% em Palavras-chave Exatas, 20% em Correspondência de Frase, 10% em Remarketing.",
                 target_cpa: 45.00,
                 max_cpc: 4.80
             };
             
-            showNotification("Planejamento Gerado (Local)", "Métricas e palavras-chave injetadas abaixo!", true);
-            
-            document.getElementById('result-objective').textContent = data.objective_label;
-            document.getElementById('result-geo-rec').textContent = data.geo_recommendation;
-            document.getElementById('result-geo-explanation').textContent = data.geo_explanation;
-            document.getElementById('result-avatar-dores').textContent = data.avatar.dores;
-            document.getElementById('result-avatar-desejos').textContent = data.avatar.desejos;
-            
-            const kwContainer = document.getElementById('result-keywords-container');
-            kwContainer.innerHTML = '';
-            data.intent_keywords.forEach(kw => {
-                const badge = document.createElement('span');
-                badge.className = 'status-pill enabled';
-                badge.style.cursor = 'default';
-                badge.style.margin = '4px';
-                badge.textContent = kw;
-                kwContainer.appendChild(badge);
-            });
-            
-            const hlContainer = document.getElementById('result-ads-headlines');
-            hlContainer.innerHTML = '';
-            data.ad_suggestions.headlines.forEach((hl, idx) => {
-                const lbl = document.createElement('label');
-                lbl.style.display = 'flex';
-                lbl.style.alignItems = 'center';
-                lbl.style.gap = '8px';
-                lbl.style.color = '#fff';
-                lbl.style.margin = '4px 0';
-                lbl.style.cursor = 'pointer';
-                lbl.innerHTML = `<input type="checkbox" class="ad-headline-check" value="${hl}" checked> <span style="font-family: monospace;">${hl}</span>`;
-                hlContainer.appendChild(lbl);
-            });
-            
-            const descContainer = document.getElementById('result-ads-descriptions');
-            descContainer.innerHTML = '';
-            data.ad_suggestions.descriptions.forEach((desc, idx) => {
-                const lbl = document.createElement('label');
-                lbl.style.display = 'flex';
-                lbl.style.alignItems = 'center';
-                lbl.style.gap = '8px';
-                lbl.style.color = '#fff';
-                lbl.style.margin = '4px 0';
-                lbl.style.cursor = 'pointer';
-                lbl.innerHTML = `<input type="checkbox" class="ad-description-check" value="${desc}" checked> <span style="font-family: monospace;">${desc}</span>`;
-                descContainer.appendChild(lbl);
-            });
-            
-            document.getElementById('ai-planner-result').style.display = 'block';
-            
-            document.getElementById('target_cpa').value = data.target_cpa;
-            document.getElementById('min_cpa').value = Math.round(data.target_cpa * 0.7 * 100) / 100;
-            document.getElementById('max_cpc').value = data.max_cpc;
-            document.getElementById('min_budget').value = Math.round(budget * 0.5 * 100) / 100;
-            document.getElementById('max_budget').value = Math.round(budget * 2.0 * 100) / 100;
-            document.getElementById('adjustment_rate').value = 10;
-            document.getElementById('intent_keywords').value = data.intent_keywords.join(', ');
-            
-            document.getElementById('ai-planner-result').scrollIntoView({ behavior: 'smooth' });
+            showNotification("Planejamento Gerado (Local)", "Métricas e dossiê estratégico simulados localmente!", true);
+            populateDossier(data, budget);
         } finally {
             btn.textContent = originalText;
             btn.disabled = false;
         }
+    }
+
+    function populateDossier(data, budget) {
+        // Tab 1: Business & Competitors
+        let siteText = `<strong>Serviços:</strong> ${data.company_analysis.services}<br>` +
+                       `<strong>Diferenciais:</strong> ${data.company_analysis.differentials}<br>` +
+                       `<strong>Localização:</strong> ${data.company_analysis.location}<br>` +
+                       `<strong>Oferta:</strong> ${data.company_analysis.offer}<br>` +
+                       `<strong>Público:</strong> ${data.company_analysis.audience}`;
+        document.getElementById('res-business-site').innerHTML = siteText;
+        
+        let compText = `<strong>Posicionamento:</strong> ${data.competitors_analysis.positioning}<br>` +
+                       `<strong>Ofertas:</strong> ${data.competitors_analysis.offers}<br>` +
+                       `<strong>Estratégias:</strong> ${data.competitors_analysis.strategies}<br>` +
+                       `<strong>Argumentos de Venda:</strong> ${data.competitors_analysis.sales_arguments}`;
+        document.getElementById('res-business-competitors').innerHTML = compText;
+        
+        document.getElementById('res-business-value-prop').textContent = data.value_proposition;
+        document.getElementById('res-business-channels').textContent = data.suggested_channels;
+        
+        // Tab 2: Avatar & ICP
+        document.getElementById('res-avatar-icp').textContent = data.icp;
+        document.getElementById('res-avatar-journey').textContent = data.customer_journey;
+        document.getElementById('res-avatar-role').textContent = data.avatar_ideal.cargo;
+        document.getElementById('res-avatar-dores').textContent = data.avatar_ideal.dores;
+        document.getElementById('res-avatar-desejos').textContent = data.avatar_ideal.desejos;
+        document.getElementById('res-avatar-objections').textContent = data.avatar_ideal.objecoes;
+        
+        // Tab 3: Funnel & Budget
+        document.getElementById('res-funnel-strategy').textContent = data.acquisition_strategy;
+        document.getElementById('res-funnel-structure').textContent = data.campaign_structure;
+        document.getElementById('res-funnel-full').textContent = data.funnel_complete;
+        document.getElementById('res-budget-recommended').textContent = `R$ ${data.recommended_budget.toLocaleString('pt-BR', {minimumFractionDigits: 2})}/dia`;
+        document.getElementById('res-budget-distribution').textContent = data.budget_distribution;
+        
+        // Tab 4: Creatives & Ads
+        const kwContainer = document.getElementById('res-keywords-badges');
+        kwContainer.innerHTML = '';
+        data.intent_keywords.forEach(kw => {
+            const badge = document.createElement('span');
+            badge.className = 'status-pill enabled';
+            badge.style.margin = '4px';
+            badge.textContent = kw;
+            kwContainer.appendChild(badge);
+        });
+        
+        const negContainer = document.getElementById('res-negatives-badges');
+        negContainer.innerHTML = '';
+        (data.negative_keywords || []).forEach(kw => {
+            const badge = document.createElement('span');
+            badge.className = 'status-pill paused';
+            badge.style.margin = '4px';
+            badge.textContent = kw;
+            negContainer.appendChild(badge);
+        });
+        
+        document.getElementById('res-creative-lp').textContent = data.landing_page_ideal;
+        document.getElementById('res-creative-extensions').textContent = data.extensions;
+        
+        const hlContainer = document.getElementById('result-ads-headlines');
+        hlContainer.innerHTML = '';
+        data.ad_suggestions.headlines.forEach((hl, idx) => {
+            const lbl = document.createElement('label');
+            lbl.style.display = 'flex';
+            lbl.style.alignItems = 'center';
+            lbl.style.gap = '8px';
+            lbl.style.color = '#fff';
+            lbl.style.margin = '4px 0';
+            lbl.style.cursor = 'pointer';
+            lbl.innerHTML = `<input type="checkbox" class="ad-headline-check" value="${hl}" checked> <span style="font-family: monospace;">${hl}</span>`;
+            hlContainer.appendChild(lbl);
+        });
+        
+        const descContainer = document.getElementById('result-ads-descriptions');
+        descContainer.innerHTML = '';
+        data.ad_suggestions.descriptions.forEach((desc, idx) => {
+            const lbl = document.createElement('label');
+            lbl.style.display = 'flex';
+            lbl.style.alignItems = 'center';
+            lbl.style.gap = '8px';
+            lbl.style.color = '#fff';
+            lbl.style.margin = '4px 0';
+            lbl.style.cursor = 'pointer';
+            lbl.innerHTML = `<input type="checkbox" class="ad-description-check" value="${desc}" checked> <span style="font-family: monospace;">${desc}</span>`;
+            descContainer.appendChild(lbl);
+        });
+        
+        document.getElementById('ai-planner-result').style.display = 'block';
+        
+        document.getElementById('target_cpa').value = data.target_cpa;
+        document.getElementById('min_cpa').value = Math.round(data.target_cpa * 0.7 * 100) / 100;
+        document.getElementById('max_cpc').value = data.max_cpc;
+        document.getElementById('min_budget').value = Math.round(budget * 0.5 * 100) / 100;
+        document.getElementById('max_budget').value = Math.round(budget * 2.0 * 100) / 100;
+        document.getElementById('adjustment_rate').value = 10;
+        document.getElementById('intent_keywords').value = data.intent_keywords.join(', ');
+        
+        // Reset subtab state
+        switchSubTab('subtab-business');
+        
+        document.getElementById('ai-planner-result').scrollIntoView({ behavior: 'smooth' });
     }
 
     async function publishAdDraft() {
@@ -760,6 +952,6 @@
     }
 
 </script>
-<script defer src="matrix_dashboard.js"></script>
+<script defer src="matrix_dashboard.js?v=2"></script>
 </body>
 </html>

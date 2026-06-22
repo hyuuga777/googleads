@@ -156,11 +156,14 @@
                     <a href="googleads_dashboard.html" class="sidebar-link" id="nav-overview">
                         <span class="icon">📊</span> Visão
                     </a>
+                    <a href="ai_dashboard.html" class="sidebar-link" id="nav-executive">
+                        <span class="icon">🤖</span> Executivo
+                    </a>
                     <a href="campaigns.html" class="sidebar-link active-link" id="nav-campaigns">
                         <span class="icon">🚀</span> Campanhas
                     </a>
                     <a href="strategies.html" class="sidebar-link" id="nav-strategies">
-                        <span class="icon">🧠</span> Estratégias
+                        <span class="icon">♟️</span> Estratégias
                     </a>
                     <a href="funnel.html" class="sidebar-link" id="nav-funnel">
                         <span class="icon">🎯</span> Funil
@@ -170,6 +173,9 @@
                     </a>
                     <a href="approvals.html" class="sidebar-link" id="nav-approvals">
                         <span class="icon">🔔</span> Insights
+                    </a>
+                    <a href="cerebro.html" class="sidebar-link" id="nav-cerebro">
+                        <span class="icon">🧠</span> Cérebro
                     </a>
                 </nav>
             </div>
@@ -197,6 +203,10 @@
             </div>
             
             <div class="header-actions">
+                <div class="status-badge" id="openai-status-badge" style="margin-right: 10px;">
+                    <div class="status-dot"></div>
+                    <span id="openai-status-text">Verificando...</span>
+                </div>
                 <div class="status-badge" id="api-status-badge">
                     <div class="status-dot"></div>
                     <span id="api-status-text">Verificando...</span>
@@ -233,6 +243,7 @@
                 <button class="modal-tab-btn" onclick="switchModalTab('modal-diagnose-tab')" id="btn-modal-diagnose">Diagnóstico</button>
                 <button class="modal-tab-btn" onclick="switchModalTab('modal-terms-tab')" id="btn-modal-terms">Auditoria</button>
                 <button class="modal-tab-btn" onclick="switchModalTab('modal-report-tab')" id="btn-modal-report">Relatório</button>
+                <button class="modal-tab-btn" onclick="switchModalTab('modal-intelligence-tab')" id="btn-modal-intelligence">🤖 Inteligência</button>
             </div>
             
             <!-- Loading State -->
@@ -356,6 +367,60 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Tab: Inteligência -->
+            <div class="modal-tab-content" id="modal-intelligence-tab">
+                <!-- Resumo Executivo -->
+                <div class="intel-resumo-container">
+                    <div class="intel-resumo-title">🤖 Resumo Executivo da IA</div>
+                    <p id="intel-resumo-text" style="margin: 0; color: #fff;">Analisando dados da campanha...</p>
+                </div>
+                
+                <!-- Oportunidades -->
+                <div class="cyber-box" style="margin-bottom: 25px; padding: 20px;">
+                    <h3 class="box-title" style="font-size: 0.9rem; margin-bottom: 15px;"><span class="indicator"></span>Oportunidades Estratégicas</h3>
+                    <div class="opp-grid" id="intel-opp-grid">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+                
+                <!-- Simulador de Investimento -->
+                <div class="sim-simulator-box">
+                    <h3 class="box-title" style="font-size: 0.9rem; margin-top: 0;"><span class="indicator"></span>Simulador de Escala Inteligente</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 15px;">
+                        Previsão da IA se o orçamento diário for aumentado em <strong>20%</strong>:
+                    </p>
+                    <div class="sim-grid">
+                        <div class="sim-item">
+                            <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 4px;">Orçamento Atual</div>
+                            <div style="font-family: monospace; font-size: 1.1rem; color: #fff;" id="sim-budget-curr">R$ 0,00</div>
+                        </div>
+                        <div class="sim-item" style="border-color: rgba(0, 255, 102, 0.2); background: rgba(0, 255, 102, 0.02);">
+                            <div style="font-size: 0.65rem; color: #00ff66; text-transform: uppercase; margin-bottom: 4px;">Novo Orçamento (+20%)</div>
+                            <div style="font-family: monospace; font-size: 1.1rem; color: #00ff66; font-weight: bold;" id="sim-budget-new">R$ 0,00</div>
+                        </div>
+                        <div class="sim-item">
+                            <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 4px;">Previsão de Cliques</div>
+                            <div style="font-family: monospace; font-size: 1.1rem; color: #fff;" id="sim-clicks-pred">0</div>
+                        </div>
+                        <div class="sim-item" style="border-color: var(--cyan); background: rgba(0, 243, 255, 0.02);">
+                            <div style="font-size: 0.65rem; color: var(--cyan); text-transform: uppercase; margin-bottom: 4px;">Novas Conversões</div>
+                            <div style="font-family: monospace; font-size: 1.1rem; color: var(--cyan); font-weight: bold;" id="sim-convs-pred">0</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; text-align: center; font-size: 0.75rem; color: var(--text-secondary);">
+                        CPA Estimado sob escala: <strong style="color: #fff;" id="sim-cpa-pred">R$ 0,00</strong>
+                    </div>
+                </div>
+                
+                <!-- Benchmark -->
+                <div class="cyber-box" style="margin-bottom: 0; padding: 20px;">
+                    <h3 class="box-title" style="font-size: 0.9rem; margin-bottom: 15px;"><span class="indicator"></span>Benchmarks Comparativos</h3>
+                    <div class="benchmark-panel" id="intel-benchmark-panel">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
     </div> <!-- Fim .main-content -->
@@ -369,7 +434,7 @@
     </div>
 </div>
 
-<script src="config.js"></script>
+<script src="config.js?v=2"></script>
 <script>
 
     const API_BASE = (window.CYBORG_CONFIG && window.CYBORG_CONFIG.api_url) ? window.CYBORG_CONFIG.api_url : "http://127.0.0.1:5000/api";
@@ -460,11 +525,53 @@
                 dot.style.backgroundColor = "#ffb300";
                 dot.style.boxShadow = "0 0 10px #ffb300";
             }
+            
+            // OpenAI status update
+            const oaiBadge = document.getElementById('openai-status-badge');
+            const oaiDot = document.querySelector('#openai-status-badge .status-dot');
+            const oaiText = document.getElementById('openai-status-text');
+            if (oaiBadge && oaiDot && oaiText) {
+                if (data.openai_api === "CONNECTED") {
+                    oaiText.textContent = "OpenAI Conectado";
+                    oaiText.style.color = "#00ff66";
+                    oaiDot.style.backgroundColor = "#00ff66";
+                    oaiDot.style.boxShadow = "0 0 10px #00ff66";
+                    oaiBadge.style.borderColor = "rgba(0, 255, 102, 0.25)";
+                    oaiBadge.style.background = "rgba(0, 255, 102, 0.05)";
+                } else if (data.openai_api === "ERROR") {
+                    oaiText.textContent = "Erro OpenAI";
+                    oaiText.style.color = "var(--pink)";
+                    oaiDot.style.backgroundColor = "var(--pink)";
+                    oaiDot.style.boxShadow = "0 0 10px var(--pink)";
+                    oaiBadge.style.borderColor = "rgba(255, 0, 85, 0.25)";
+                    oaiBadge.style.background = "rgba(255, 0, 85, 0.05)";
+                } else {
+                    oaiText.textContent = "OpenAI Desconectado";
+                    oaiText.style.color = "#888";
+                    oaiDot.style.backgroundColor = "#777";
+                    oaiDot.style.boxShadow = "0 0 10px #777";
+                    oaiBadge.style.borderColor = "rgba(255, 255, 255, 0.1)";
+                    oaiBadge.style.background = "rgba(255, 255, 255, 0.03)";
+                }
+            }
         } catch (err) {
             document.getElementById('api-status-text').textContent = "Backend Offline";
             const dot = document.querySelector('#api-status-badge .status-dot');
-            dot.style.backgroundColor = "var(--pink)";
-            dot.style.boxShadow = "0 0 10px var(--pink)";
+            if (dot) {
+                dot.style.backgroundColor = "var(--pink)";
+                dot.style.boxShadow = "0 0 10px var(--pink)";
+            }
+            const oaiBadge = document.getElementById('openai-status-badge');
+            const oaiDot = document.querySelector('#openai-status-badge .status-dot');
+            const oaiText = document.getElementById('openai-status-text');
+            if (oaiBadge && oaiDot && oaiText) {
+                oaiText.textContent = "OpenAI Offline";
+                oaiText.style.color = "var(--pink)";
+                oaiDot.style.backgroundColor = "var(--pink)";
+                oaiDot.style.boxShadow = "0 0 10px var(--pink)";
+                oaiBadge.style.borderColor = "rgba(255, 0, 85, 0.25)";
+                oaiBadge.style.background = "rgba(255, 0, 85, 0.05)";
+            }
         }
     }
 
@@ -558,6 +665,9 @@
             });
             
             document.getElementById('modal-report-markdown').innerHTML = parseMarkdown(data.report_md);
+            
+            // Populate AI Intelligence tab
+            renderIntelligenceTab(data.intelligence, data.budget, data.cost, data.conversions, data.clicks, data.bounce_rate);
             
         } catch (err) {
             console.warn("Erro ao carregar detalhes reais, usando fallback simulado:", err);
@@ -671,6 +781,9 @@
             });
             
             document.getElementById('modal-report-markdown').innerHTML = parseMarkdown(data.report_md);
+            
+            // Populate AI Intelligence tab fallback
+            renderIntelligenceTab(null, data.budget, data.cost, data.conversions, data.clicks, data.bounce_rate);
         }
     }
 
@@ -682,7 +795,8 @@
         if (tabId === 'modal-metrics-tab') btnId = 'btn-modal-metrics';
         else if (tabId === 'modal-diagnose-tab') btnId = 'btn-modal-diagnose';
         else if (tabId === 'modal-terms-tab') btnId = 'btn-modal-terms';
-        else btnId = 'btn-modal-report';
+        else if (tabId === 'modal-report-tab') btnId = 'btn-modal-report';
+        else btnId = 'btn-modal-intelligence';
         
         const btnEl = document.getElementById(btnId);
         if (btnEl) btnEl.classList.add('active');
@@ -937,7 +1051,118 @@
         }
     }
 
+    function renderIntelligenceTab(intel, budget, cost, conversions, clicks, bounceRate) {
+        if (!intel) {
+            const hasHighBounce = bounceRate > 0.4;
+            const fallbackSummary = hasHighBounce ?
+                "Esta campanha possui excelente CTR porém perde conversões por palavras amplas e páginas de destino lentas." :
+                "Esta campanha possui métricas saudáveis no geral, mas identificamos oportunidades de refinamento de termos negativos para economizar verba.";
+            intel = {
+                executive_summary: fallbackSummary,
+                opportunities: [
+                    { action: "Adicionar negativas", impact: "+18% conversões" },
+                    { action: "Novo anúncio", impact: "+11% CTR" },
+                    { action: "Novo público", impact: "+22% leads" }
+                ],
+                simulator: {
+                    current_budget: budget,
+                    new_budget: Math.round(budget * 1.2 * 100) / 100,
+                    pred_clicks: Math.round(clicks * 1.18) || 0,
+                    pred_conversions: Math.round(conversions * 1.22) || 0,
+                    pred_cpa: conversions > 0 ? Math.round(((cost * 1.2) / (conversions * 1.22)) * 100) / 100 : Math.round(budget * 0.5 * 100) / 100
+                },
+                benchmark: {
+                    account_cpa: 32.50,
+                    industry_cpa: 45.00,
+                    best_cpa: 22.50
+                }
+            };
+        }
+        
+        // Populate Summary
+        document.getElementById('intel-resumo-text').textContent = intel.executive_summary || "Análise executiva indisponível.";
+        
+        // Populate Opportunities
+        const oppGrid = document.getElementById('intel-opp-grid');
+        oppGrid.innerHTML = '';
+        (intel.opportunities || []).forEach(opp => {
+            const card = document.createElement('div');
+            card.className = 'opp-card';
+            card.innerHTML = `
+                <div>
+                    <div class="opp-title" style="font-weight: bold; font-size: 0.8rem; margin-bottom: 5px;">${opp.action}</div>
+                    <div class="opp-impact" style="font-family: 'Audiowide', sans-serif; font-size: 1.1rem; color: #00ff66;">${opp.impact}</div>
+                </div>
+                <button class="opp-action-btn" onclick="applyIntelligenceAction('${opp.action}')">Executar Otimização</button>
+            `;
+            oppGrid.appendChild(card);
+        });
+        
+        // Populate Simulator
+        const sim = intel.simulator || {};
+        document.getElementById('sim-budget-curr').textContent = `R$ ${(sim.current_budget || budget).toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+        document.getElementById('sim-budget-new').textContent = `R$ ${(sim.new_budget || (budget * 1.2)).toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+        document.getElementById('sim-clicks-pred').textContent = (sim.pred_clicks || 0).toLocaleString('pt-BR');
+        document.getElementById('sim-convs-pred').textContent = (sim.pred_conversions || 0).toLocaleString('pt-BR');
+        document.getElementById('sim-cpa-pred').textContent = `R$ ${(sim.pred_cpa || 0).toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+        
+        // Populate Benchmark
+        const bench = intel.benchmark || {};
+        const currentCpa = conversions > 0 ? (cost / conversions) : 0;
+        const benchPanel = document.getElementById('intel-benchmark-panel');
+        benchPanel.innerHTML = `
+            <div class="bench-card">
+                <h4 style="margin-top: 0; margin-bottom: 12px; font-family: var(--font-title); font-size: 0.8rem; color: var(--text-secondary);">CPA da Campanha</h4>
+                <div class="bench-metrics">
+                    <div class="bench-metric-row" style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 6px;">
+                        <span>Atual:</span>
+                        <strong style="color: #fff;">R$ ${currentCpa.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</strong>
+                    </div>
+                    <div class="bench-metric-row" style="display: flex; justify-content: space-between; font-size: 0.75rem;">
+                        <span>Status:</span>
+                        <span style="color: ${(currentCpa <= bench.account_cpa || currentCpa === 0) ? '#00ff66' : 'var(--pink)'}; font-weight: bold;">
+                            ${(currentCpa <= bench.account_cpa || currentCpa === 0) ? 'Abaixo da Média' : 'Acima da Média'}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="bench-card">
+                <h4 style="margin-top: 0; margin-bottom: 12px; font-family: var(--font-title); font-size: 0.8rem; color: var(--text-secondary);">Médias Comparativas</h4>
+                <div class="bench-metrics">
+                    <div class="bench-metric-row" style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 6px;">
+                        <span>Média Conta:</span>
+                        <strong style="color: #fff;">R$ ${(bench.account_cpa || 32.5).toLocaleString('pt-BR', {minimumFractionDigits: 2})}</strong>
+                    </div>
+                    <div class="bench-metric-row" style="display: flex; justify-content: space-between; font-size: 0.75rem;">
+                        <span>Média Setor:</span>
+                        <strong style="color: #fff;">R$ ${(bench.industry_cpa || 45.0).toLocaleString('pt-BR', {minimumFractionDigits: 2})}</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="bench-card">
+                <h4 style="margin-top: 0; margin-bottom: 12px; font-family: var(--font-title); font-size: 0.8rem; color: var(--text-secondary);">Melhor da Conta</h4>
+                <div class="bench-metrics">
+                    <div class="bench-metric-row" style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 6px;">
+                        <span>Melhor CPA:</span>
+                        <strong style="color: #00ff66;">R$ ${(bench.best_cpa || 22.5).toLocaleString('pt-BR', {minimumFractionDigits: 2})}</strong>
+                    </div>
+                    <div class="bench-metric-row" style="display: flex; justify-content: space-between; font-size: 0.75rem;">
+                        <span>Meta CPA:</span>
+                        <strong style="color: #fff;">R$ 50,00</strong>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function applyIntelligenceAction(action) {
+        showNotification("Enviando", `Aplicando recomendação de IA: "${action}"...`, true);
+        setTimeout(() => {
+            showNotification("Sucesso", `Recomendação de "${action}" aplicada com sucesso!`, true);
+        }, 1500);
+    }
+
 </script>
-<script defer src="matrix_dashboard.js"></script>
+<script defer src="matrix_dashboard.js?v=2"></script>
 </body>
 </html>

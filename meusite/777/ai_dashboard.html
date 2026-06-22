@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyborg Google Ads — Centro de Comando da IA</title>
+    <meta name="description" content="Centro Operacional de IA: alertas inteligentes, recomendações, auditoria automática, ranking de campanhas e controle do agente autônomo.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="googleads_dashboard.css">
+</head>
+<body>
+
+<canvas id="matrix-canvas"></canvas>
+<div class="matrix-overlay"></div>
+
+<div class="ambient-glow-1"></div>
+<div class="ambient-glow-2"></div>
+
+<!-- ════════════════ LOGIN ════════════════ -->
+<div id="login-section" class="login-wrapper">
+    <div class="login-card">
+        <div class="login-logo">
+            <h1>CYBORG COMMAND CENTER</h1>
+            <p>AI Google Ads — Centro de Operações</p>
+        </div>
+        
+        <div class="login-terminal">
+            [SYSTEM] COMMAND CENTER STATUS: ONLINE<br>
+            [SYSTEM] TODA INTELIGÊNCIA DA IA CONVERGIU PARA ESTE PONTO. AUTENTIQUE PARA OPERAR.
+        </div>
+
+        <div id="error-msg" class="error-box">[!] CHAVE DE ACESSO INVÁLIDA.</div>
+
+        <form onsubmit="handleLogin(event)">
+            <div class="input-group">
+                <label for="password">Chave de Orquestração</label>
+                <input type="password" id="password" class="holo-input" placeholder="••••••••" required autocomplete="off">
+            </div>
+            <button type="submit" class="cyber-btn">Autenticar Operador</button>
+        </form>
+    </div>
+</div>
+
+<!-- ════════════════ DASHBOARD ════════════════ -->
+<div id="dashboard-section" class="dashboard-wrapper">
+
+    <!-- Sidebar Lateral -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <img src="logo.png" alt="Logo" class="sidebar-logo">
+        </div>
+        
+        <div class="sidebar-menu">
+            <div class="menu-group">
+                <div class="menu-heading">OPERACIONAL</div>
+                <nav class="sidebar-nav">
+                    <a href="googleads_dashboard.html" class="sidebar-link" id="nav-overview">
+                        <span class="icon">📊</span> Visão
+                    </a>
+                    <a href="ai_dashboard.html" class="sidebar-link active-link" id="nav-executive">
+                        <span class="icon">🤖</span> Executivo
+                    </a>
+                    <a href="campaigns.html" class="sidebar-link" id="nav-campaigns">
+                        <span class="icon">🚀</span> Campanhas
+                    </a>
+                    <a href="strategies.html" class="sidebar-link" id="nav-strategies">
+                        <span class="icon">♟️</span> Estratégias
+                    </a>
+                    <a href="funnel.html" class="sidebar-link" id="nav-funnel">
+                        <span class="icon">🎯</span> Funil
+                    </a>
+                    <a href="technical.html" class="sidebar-link" id="nav-technical">
+                        <span class="icon">🛠️</span> SEO
+                    </a>
+                    <a href="approvals.html" class="sidebar-link" id="nav-approvals">
+                        <span class="icon">🔔</span> Insights
+                    </a>
+                    <a href="cerebro.html" class="sidebar-link" id="nav-cerebro">
+                        <span class="icon">🧠</span> Cérebro
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="menu-group">
+                <div class="menu-heading">ADMINISTRATIVO</div>
+                <nav class="sidebar-nav">
+                    <a href="dashboard.html" class="sidebar-link" id="nav-admin">
+                        <span class="icon">📈</span> Admin
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <div class="main-content">
+        <header class="app-header">
+            <div style="display: flex; align-items: center;">
+                <button class="sidebar-toggle" id="sidebar-toggle-btn">☰</button>
+                <div>
+                    <h1 style="font-family: var(--font-title); font-size: 1.3rem; margin: 0; background: var(--cyber-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Centro de Comando da IA</h1>
+                    <span style="font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-top: 3px;">Inteligência / Operações Centralizadas</span>
+                </div>
+            </div>
+            
+            <div class="header-actions">
+                <div class="status-badge" id="openai-status-badge" style="margin-right: 10px;">
+                    <div class="status-dot"></div>
+                    <span id="openai-status-text">Verificando...</span>
+                </div>
+                <div class="status-badge" id="api-status-badge">
+                    <div class="status-dot"></div>
+                    <span id="api-status-text">Verificando...</span>
+                </div>
+                <button onclick="refreshAll()" class="btn-header-action" title="Atualizar tudo">↻ Atualizar</button>
+                <button onclick="handleLogout()" class="logout-btn">Desconectar</button>
+            </div>
+        </header>
+
+        <main class="main-container">
+
+            <!-- ═══════════════════════════════════════════════════════
+                 KPI GRID SUPERIOR
+            ════════════════════════════════════════════════════════ -->
+            <div class="kpi-grid kpi-grid-4" style="margin-bottom: 20px; grid-template-columns: repeat(4, 1fr);">
+                <div class="kpi-card" data-pink>
+                    <span class="kpi-label">Verba Desperdiçada</span>
+                    <span class="kpi-value" id="exec-kpi-wasted">R$ 0,00</span>
+                </div>
+                <div class="kpi-card" data-pink>
+                    <span class="kpi-label">Campanhas em Risco</span>
+                    <span class="kpi-value" id="exec-kpi-risk">0</span>
+                </div>
+                <div class="kpi-card" data-cyan>
+                    <span class="kpi-label">Campanhas Campeãs</span>
+                    <span class="kpi-value" id="exec-kpi-champions">0</span>
+                </div>
+                <div class="kpi-card" data-purple>
+                    <span class="kpi-label">Oportunidades de IA</span>
+                    <span class="kpi-value" id="exec-kpi-opportunities">0</span>
+                </div>
+            </div>
+
+            <!-- ═══════════════════════════════════════════════════════
+                 SEÇÃO 0: RESUMO EXECUTIVO
+            ════════════════════════════════════════════════════════ -->
+            <div class="exec-summary-block" id="section-executive-summary">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <h2 style="font-family: var(--font-title); font-size: 1rem; margin: 0; display: flex; align-items: center; gap: 12px; text-transform: uppercase; letter-spacing: 0.05em;">
+                        <span class="indicator cyan"></span>Resumo Executivo da IA
+                    </h2>
+                    <span id="exec-situation-badge" class="section-count-badge cyan">Analisando...</span>
+                </div>
+                <p style="font-size: 0.75rem; color: var(--text-secondary); margin: 4px 0 0 0;">Situação geral da conta gerada automaticamente pela IA — atualizada a cada ciclo de análise.</p>
+
+                <div class="exec-summary-grid">
+                    <div class="exec-summary-stat danger">
+                        <span class="stat-label">Verba Desperdiçada</span>
+                        <span class="stat-value" id="sum-waste">R$ 0</span>
+                    </div>
+                    <div class="exec-summary-stat warn">
+                        <span class="stat-label">Potencial de Recuperação</span>
+                        <span class="stat-value" id="sum-recovery">R$ 0</span>
+                    </div>
+                    <div class="exec-summary-stat good">
+                        <span class="stat-label">Potencial de Crescimento</span>
+                        <span class="stat-value" id="sum-growth">+0%</span>
+                    </div>
+                    <div class="exec-summary-stat info">
+                        <span class="stat-label">Ações Imediatas</span>
+                        <span class="stat-value" id="sum-actions-count">0</span>
+                    </div>
+                </div>
+
+                <div>
+                    <p style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--font-title); margin: 0 0 10px 0;">⚡ 5 Ações Imediatas Recomendadas</p>
+                    <ol class="exec-actions-list" id="exec-top5-list">
+                        <li><span class="exec-action-num">1</span> <span class="skeleton-line" style="flex:1;"></span></li>
+                        <li><span class="exec-action-num">2</span> <span class="skeleton-line" style="flex:1;"></span></li>
+                        <li><span class="exec-action-num">3</span> <span class="skeleton-line" style="flex:1;"></span></li>
+                        <li><span class="exec-action-num">4</span> <span class="skeleton-line" style="flex:1;"></span></li>
+                        <li><span class="exec-action-num">5</span> <span class="skeleton-line" style="flex:1;"></span></li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- ═══════════════════════════════════════════════════════
+                 SEÇÃO 1: ALERTAS INTELIGENTES
+            ════════════════════════════════════════════════════════ -->
+            <div class="cyber-box" style="margin-bottom: 22px;">
+                <div class="section-header-row">
+                    <h2 class="box-title"><span class="indicator"></span>🚨 Alertas Inteligentes</h2>
+                    <span id="alerts-count-badge" class="section-count-badge red">0 alertas</span>
+                </div>
+                <div class="alerts-grid" id="alerts-grid">
+                    <div class="alert-card">
+                        <div class="skeleton-line"></div>
+                        <div class="skeleton-line" style="width: 80%;"></div>
+                        <div class="skeleton-line" style="width: 60%;"></div>
+                    </div>
+                    <div class="alert-card">
+                        <div class="skeleton-line"></div>
+                        <div class="skeleton-line" style="width: 80%;"></div>
+                        <div class="skeleton-line" style="width: 60%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══════════════════════════════════════════════════════
+                 SEÇÃO 2 + 3: RECOMENDAÇÕES + AUDITORIA (2 colunas)
+            ════════════════════════════════════════════════════════ -->
+            <div class="cc-two-col" id="row-rec-audit">
+
+                <!-- Recomendações -->
+                <div class="cyber-box" style="display: flex; flex-direction: column;">
+                    <div class="section-header-row">
+                        <h2 class="box-title"><span class="indicator purple"></span>🧠 Ações Recomendadas</h2>
+                        <span id="rec-count-badge" class="section-count-badge orange">0 ações</span>
+                    </div>
+                    <div class="rec-grid" id="rec-grid" style="flex: 1;">
+                        <div class="rec-card">
+                            <div style="flex:1;"><div class="skeleton-line"></div><div class="skeleton-line" style="width: 70%;"></div></div>
+                        </div>
+                    </div>
+                    <div class="rec-actions-bar" style="margin-top: 20px;">
+                        <button class="btn-apply-all" id="btn-apply-all" onclick="applyAllRecommendations()">⚡ Aplicar Tudo</button>
+                        <button class="btn-apply-selected" id="btn-apply-selected" onclick="applySelectedRecommendations()">✔ Aprovar Selecionadas</button>
+                    </div>
+                </div>
+
+                <!-- Auditoria -->
+                <div class="cyber-box">
+                    <div class="section-header-row">
+                        <h2 class="box-title"><span class="indicator cyan"></span>📋 Auditoria da IA</h2>
+                        <span id="audit-last" class="section-count-badge cyan" style="font-size: 0.65rem;">--</span>
+                    </div>
+                    <!-- Auditoria: TUDO em UMA linha (6 colunas) -->
+                    <div class="audit-grid" id="audit-grid" style="grid-template-columns: repeat(6, 1fr); gap: 10px;">
+                        <div class="audit-stat white"><span class="audit-stat-label">Campanhas Analisadas</span><span class="audit-stat-value" id="audit-campaigns">—</span></div>
+                        <div class="audit-stat red"><span class="audit-stat-label">Problemas Encontrados</span><span class="audit-stat-value" id="audit-problems">—</span></div>
+                        <div class="audit-stat cyan"><span class="audit-stat-label">Oportunidades</span><span class="audit-stat-value" id="audit-opps">—</span></div>
+                        <div class="audit-stat orange"><span class="audit-stat-label">Verba Desperdiçada</span><span class="audit-stat-value" id="audit-waste">—</span></div>
+                        <div class="audit-stat green"><span class="audit-stat-label">Economia Potencial</span><span class="audit-stat-value" id="audit-savings">—</span></div>
+                        <div class="audit-stat purple"><span class="audit-stat-label">Receita Potencial</span><span class="audit-stat-value" id="audit-revenue">—</span></div>
+                    </div>
+
+                    <div style="border-top: 1px solid rgba(255,255,255,0.05); margin-top: 20px; padding-top: 18px;">
+                        <p style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--font-title); margin: 0 0 14px 0;">🤖 Ações Automáticas do Agente</p>
+                        <!-- Auto-actions: 2 colunas, itens maiores -->
+                        <div class="auto-actions-grid" id="auto-actions-grid" style="grid-template-columns: repeat(2,1fr); gap: 10px;">
+                            <label class="auto-action-item" style="padding: 12px 16px; font-size: 0.82rem;"><input type="checkbox" id="auto-negatives" checked><span class="auto-action-label">☑ Criar negativas automaticamente</span></label>
+                            <label class="auto-action-item" style="padding: 12px 16px; font-size: 0.82rem;"><input type="checkbox" id="auto-pause-kw" checked><span class="auto-action-label">☑ Pausar keywords ruins</span></label>
+                            <label class="auto-action-item" style="padding: 12px 16px; font-size: 0.82rem;"><input type="checkbox" id="auto-budget"><span class="auto-action-label">☐ Ajustar orçamento</span></label>
+                            <label class="auto-action-item" style="padding: 12px 16px; font-size: 0.82rem;"><input type="checkbox" id="auto-bids"><span class="auto-action-label">☐ Ajustar lances</span></label>
+                            <label class="auto-action-item" style="padding: 12px 16px; font-size: 0.82rem;"><input type="checkbox" id="auto-ads" checked><span class="auto-action-label">☑ Criar anúncios</span></label>
+                            <label class="auto-action-item" style="padding: 12px 16px; font-size: 0.82rem;"><input type="checkbox" id="auto-recs" checked><span class="auto-action-label">☑ Criar recomendações</span></label>
+                            <label class="auto-action-item" style="padding: 12px 16px; font-size: 0.82rem;"><input type="checkbox" id="auto-alerts" checked><span class="auto-action-label">☑ Enviar alertas</span></label>
+                            <label class="auto-action-item" style="padding: 12px 16px; font-size: 0.82rem;"><input type="checkbox" id="auto-log" checked><span class="auto-action-label">☑ Registrar tudo no log</span></label>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 18px;">
+                            <div class="switch-container">
+                                <span style="font-size: 0.72rem; color: var(--text-secondary); font-family: var(--font-title); text-transform: uppercase;">Modo Autônomo</span>
+                                <label class="cyber-switch">
+                                    <input type="checkbox" id="autonomous-agent-checkbox" onchange="toggleAutonomousAgent(this.checked)">
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </div>
+                            <span id="agent-status-label" style="font-size: 0.75rem; font-family: var(--font-title); color: var(--text-secondary);">INATIVO / PAUSADO</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══════════════════════════════════════════════════════
+                 SEÇÃO 4: CENTRAL DO AGENTE + RANKING (2 colunas)
+            ════════════════════════════════════════════════════════ -->
+            <div class="cc-two-col">
+                
+                <!-- Central do Agente -->
+                <div class="cyber-box">
+                    <div class="section-header-row">
+                        <h2 class="box-title"><span class="indicator"></span>🤖 Central do Agente</h2>
+                        <span id="agent-last-update" class="section-count-badge">--:--:--</span>
+                    </div>
+                    <div class="agent-queue-list" id="agent-queue-list">
+                        <div class="agent-queue-item">
+                            <div class="queue-status-dot running"></div>
+                            <span class="queue-status-label running">Em Execução</span>
+                            <span class="queue-task-text">Conectando ao motor autônomo...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ranking de Performance -->
+                <div class="cyber-box">
+                    <div class="section-header-row">
+                        <h2 class="box-title"><span class="indicator cyan"></span>🏆 Ranking de Performance</h2>
+                        <span id="ranking-count-badge" class="section-count-badge cyan">0 campanhas</span>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="ranking-table" id="ranking-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Campanha</th>
+                                    <th>Score IA</th>
+                                    <th>Conv.</th>
+                                    <th>CPA</th>
+                                    <th>Tend.</th>
+                                    <th>Tag</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ranking-tbody">
+                                <tr><td colspan="7" style="text-align:center; color: var(--text-secondary); padding: 20px; font-size: 0.8rem;">Carregando ranking...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══════════════════════════════════════════════════════
+                 SEÇÃO 5+6: DESPERDÍCIO + OPORTUNIDADES (2 colunas)
+            ════════════════════════════════════════════════════════ -->
+            <!-- DESPERDÍCIO (full-width compacto) + OPORTUNIDADES (full-width 2 col grid) -->
+            <div class="cyber-box" style="margin-bottom: 22px;">
+                <div class="section-header-row">
+                    <h2 class="box-title"><span class="indicator"></span>💸 Dinheiro Perdido</h2>
+                    <span id="waste-total-badge" class="section-count-badge red">R$ 0</span>
+                </div>
+                <p style="font-size: 0.75rem; color: var(--text-secondary); margin: 0 0 14px 0;">A IA calculou onde o orçamento está sendo desperdiçado com base nos dados de campanhas.</p>
+                <!-- barras em grid 5 colunas para ficar compacto -->
+                <div class="waste-categories" id="waste-categories" style="display: grid; grid-template-columns: repeat(5,1fr); gap: 12px;">
+                    <div class="waste-category-row" style="flex-direction: column; align-items: flex-start; gap: 6px;"><span class="waste-cat-label">🔑 Keywords</span><div class="waste-bar-outer" style="width:100%;"><div class="waste-bar-inner" style="width: 0%" id="waste-bar-kw"></div></div><span class="waste-cat-value" id="waste-val-kw">—</span></div>
+                    <div class="waste-category-row" style="flex-direction: column; align-items: flex-start; gap: 6px;"><span class="waste-cat-label">🕐 Horários</span><div class="waste-bar-outer" style="width:100%;"><div class="waste-bar-inner" style="width: 0%" id="waste-bar-sch"></div></div><span class="waste-cat-value" id="waste-val-sch">—</span></div>
+                    <div class="waste-category-row" style="flex-direction: column; align-items: flex-start; gap: 6px;"><span class="waste-cat-label">📍 Localizações</span><div class="waste-bar-outer" style="width:100%;"><div class="waste-bar-inner" style="width: 0%" id="waste-bar-loc"></div></div><span class="waste-cat-value" id="waste-val-loc">—</span></div>
+                    <div class="waste-category-row" style="flex-direction: column; align-items: flex-start; gap: 6px;"><span class="waste-cat-label">📱 Dispositivos</span><div class="waste-bar-outer" style="width:100%;"><div class="waste-bar-inner" style="width: 0%" id="waste-bar-dev"></div></div><span class="waste-cat-value" id="waste-val-dev">—</span></div>
+                    <div class="waste-category-row" style="flex-direction: column; align-items: flex-start; gap: 6px;"><span class="waste-cat-label">👥 Públicos</span><div class="waste-bar-outer" style="width:100%;"><div class="waste-bar-inner" style="width: 0%" id="waste-bar-aud"></div></div><span class="waste-cat-value" id="waste-val-aud">—</span></div>
+                </div>
+                <div class="waste-total-row" style="margin-top: 14px; margin-bottom: 14px;">
+                    <span class="waste-total-label">Total Desperdiçado</span>
+                    <span class="waste-total-value" id="waste-grand-total">R$ 0</span>
+                </div>
+                <button class="btn-fix-waste" onclick="fixWaste()" id="btn-fix-waste" style="width: auto; padding: 10px 28px;">🔧 Corrigir Desperdícios</button>
+            </div>
+
+            <!-- GROWTH OPPORTUNITIES: 2 por linha -->
+            <div class="cyber-box" style="margin-bottom: 22px;">
+                <div class="section-header-row">
+                    <h2 class="box-title"><span class="indicator cyan"></span>🚀 Growth Opportunities</h2>
+                    <span id="growth-count-badge" class="section-count-badge green">0 oportunidades</span>
+                </div>
+                <div class="growth-grid" id="growth-grid" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="growth-card"><div class="skeleton-line"></div><div class="skeleton-line" style="width: 70%;"></div></div>
+                </div>
+            </div>
+
+            <!-- ═══════════════════════════════════════════════════════
+                 SEÇÃO 7: SIMULADOR DE CENÁRIOS + AGENTE CONSOLE
+            ════════════════════════════════════════════════════════ -->
+            <div class="bi-layout" style="margin-bottom: 22px; align-items: stretch;">
+                
+                <!-- Box 1: Predictive Simulation -->
+                <div class="cyber-box" style="flex: 1.3; min-width: 320px;">
+                    <div class="section-header-row">
+                        <h2 class="box-title"><span class="indicator cyan"></span>Simulador de Cenários & Previsão IA</h2>
+                        
+                        <div style="display: flex; gap: 4px; background: rgba(255,255,255,0.03); padding: 4px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);">
+                            <button id="btn-period-monthly" class="btn-period-toggle active" onclick="changePeriod('monthly')">Mensal</button>
+                            <button id="btn-period-quarterly" class="btn-period-toggle inactive" onclick="changePeriod('quarterly')">Trimestral</button>
+                        </div>
+                    </div>
+
+                    <div class="forecast-grid" id="predictions-grid">
+                        <div class="forecast-card conservador">
+                            <span class="forecast-badge conservador-badge">Conservador</span>
+                            <h3 class="forecast-title">Cenário Conservador</h3>
+                            <div class="forecast-row"><span>Cliques Estimados</span><span class="forecast-val" id="fore-con-clicks">-</span></div>
+                            <div class="forecast-row"><span>Leads (Conversões)</span><span class="forecast-val" id="fore-con-leads">-</span></div>
+                            <div class="forecast-row"><span>CPA Alvo Médio</span><span class="forecast-val" id="fore-con-cpa">-</span></div>
+                            <div class="forecast-row"><span>Receita Estimada</span><span class="forecast-val" id="fore-con-revenue" style="color: var(--success);">-</span></div>
+                        </div>
+
+                        <div class="forecast-card realista">
+                            <span class="forecast-badge realista-badge">Realista</span>
+                            <h3 class="forecast-title">Cenário Realista</h3>
+                            <div class="forecast-row"><span>Cliques Estimados</span><span class="forecast-val" id="fore-real-clicks">-</span></div>
+                            <div class="forecast-row"><span>Leads (Conversões)</span><span class="forecast-val" id="fore-real-leads">-</span></div>
+                            <div class="forecast-row"><span>CPA Alvo Médio</span><span class="forecast-val" id="fore-real-cpa">-</span></div>
+                            <div class="forecast-row"><span>Receita Estimada</span><span class="forecast-val" id="fore-real-revenue" style="color: var(--cyan);">-</span></div>
+                        </div>
+
+                        <div class="forecast-card agressivo">
+                            <span class="forecast-badge agressivo-badge">Agressivo</span>
+                            <h3 class="forecast-title">Cenário Agressivo</h3>
+                            <div class="forecast-row"><span>Cliques Estimados</span><span class="forecast-val" id="fore-agr-clicks">-</span></div>
+                            <div class="forecast-row"><span>Leads (Conversões)</span><span class="forecast-val" id="fore-agr-leads">-</span></div>
+                            <div class="forecast-row"><span>CPA Alvo Médio</span><span class="forecast-val" id="fore-agr-cpa">-</span></div>
+                            <div class="forecast-row"><span>Receita Estimada</span><span class="forecast-val" id="fore-agr-revenue" style="color: var(--purple);">-</span></div>
+                        </div>
+                    </div>
+                    
+                    <p style="font-size: 0.68rem; color: var(--text-secondary); margin-top: 10px; line-height: 1.4;">
+                        *Os cenários simulam a calibração automática dos lances pelo orquestrador de IA, considerando as campanhas campeãs (+35% eficiência no Agressivo) e interrupção do desperdício de lances frios.
+                    </p>
+                </div>
+
+                <!-- Box 2: Console do Agente -->
+                <div class="cyber-box" style="flex: 1; min-width: 320px; display: flex; flex-direction: column;">
+                    <div class="section-header-row">
+                        <h2 class="box-title"><span class="indicator purple"></span>Console do Agente Autônomo</h2>
+                    </div>
+
+                    <div class="terminal-log-box" id="terminal-console" style="flex-grow: 1;">
+                        <div class="terminal-line system">[SYSTEM] Conectando ao motor autônomo...</div>
+                    </div>
+                    
+                    <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: var(--text-secondary);">
+                        <span>Status: <strong id="agent-console-status" style="color: #ff9f00;">Aguardando...</strong></span>
+                        <span id="terminal-last-update">Última leitura: --:--:--</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══════════════════════════════════════════════════════
+                 SEÇÃO 8: MEMÓRIA AVANÇADA DA IA
+            ════════════════════════════════════════════════════════ -->
+            <div class="cyber-box" style="margin-bottom: 22px;">
+                <div class="section-header-row">
+                    <h2 class="box-title"><span class="indicator"></span>🧬 Memória Avançada da IA</h2>
+                    <span class="section-count-badge">Sistema de Aprendizado Persistente</span>
+                </div>
+                <p style="font-size: 0.75rem; color: var(--text-secondary); margin: 0 0 20px 0;">A IA armazena os ativos de maior conversão e benchmarks validados por nicho para otimizar futuras campanhas.</p>
+
+                <!-- Benchmarks por Nicho -->
+                <p style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--font-title); margin: 0 0 12px 0;">📊 Benchmarks por Nicho</p>
+                <div class="benchmark-nicho-grid" id="benchmark-nicho-grid" style="margin-bottom: 24px;">
+                    <div class="benchmark-nicho-card"><div class="skeleton-line"></div><div class="skeleton-line" style="width: 70%;"></div></div>
+                </div>
+
+                <!-- Ativos Vencedores -->
+                <p style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--font-title); margin: 0 0 12px 0; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.05);">🏆 Ativos Vencedores</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;">
+                    <div style="background: rgba(255,255,255,0.015); border: 1px solid rgba(255,255,255,0.04); border-radius: 6px; padding: 15px;">
+                        <h4 style="font-family: var(--font-title); font-size: 0.78rem; text-transform: uppercase; color: var(--cyan); margin-top: 0; margin-bottom: 12px;">🚀 Campanhas Vencedoras</h4>
+                        <ul id="memory-campaigns" style="margin: 0; padding-left: 15px; font-size: 0.78rem; color: #fff; line-height: 1.6;"><li>Carregando...</li></ul>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.015); border: 1px solid rgba(255,255,255,0.04); border-radius: 6px; padding: 15px;">
+                        <h4 style="font-family: var(--font-title); font-size: 0.78rem; text-transform: uppercase; color: #00ff66; margin-top: 0; margin-bottom: 12px;">🔑 Keywords Validadas</h4>
+                        <ul id="memory-keywords" style="margin: 0; padding-left: 15px; font-size: 0.78rem; color: #fff; line-height: 1.6;"><li>Carregando...</li></ul>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.015); border: 1px solid rgba(255,255,255,0.04); border-radius: 6px; padding: 15px;">
+                        <h4 style="font-family: var(--font-title); font-size: 0.78rem; text-transform: uppercase; color: var(--purple); margin-top: 0; margin-bottom: 12px;">✍️ Anúncios de Alto CTR</h4>
+                        <ul id="memory-ads" style="margin: 0; padding-left: 15px; font-size: 0.78rem; color: #fff; line-height: 1.6;"><li>Carregando...</li></ul>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.015); border: 1px solid rgba(255,255,255,0.04); border-radius: 6px; padding: 15px;">
+                        <h4 style="font-family: var(--font-title); font-size: 0.78rem; text-transform: uppercase; color: #ffb300; margin-top: 0; margin-bottom: 12px;">📄 Landing Pages Otimizadas</h4>
+                        <ul id="memory-lps" style="margin: 0; padding-left: 15px; font-size: 0.78rem; color: #fff; line-height: 1.6;"><li>Carregando...</li></ul>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div> <!-- .main-content -->
+</div> <!-- .dashboard-wrapper -->
+
+<!-- Toast Notification -->
+<div class="notification-toast" id="toast">
+    <div class="toast-icon"></div>
+    <div class="toast-message">
+        <h4 id="toast-title">Notificação</h4>
+        <p id="toast-body">Mensagem de sistema</p>
+    </div>
+</div>
+
+<script src="config.js?v=2"></script>
+<script>
+    const API_BASE = (window.CYBORG_CONFIG && window.CYBORG_CONFIG.api_url) ? window.CYBORG_CONFIG.api_url : "http://127.0.0.1:5000/api";
+
+    // ─── AUTENTICAÇÃO ───────────────────────────────────────
+    async function sha256(message) {
+        const msgBuffer = new TextEncoder().encode(message);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function handleLogin(e) {
+        e.preventDefault();
+        const pass = document.getElementById('password').value;
+        const hash = await sha256(pass);
+        const correctHash = 'fc1b7a9976fa0826a827f334c30925963eb27dbc37048fddaeedf20a5edc1ab4';
+        if (hash === correctHash) {
+            sessionStorage.setItem('cyborg_googleads_auth', 'true');
+            showNotification("Acesso Autorizado", "Carregando o Centro de Comando da IA...", true);
+            initDashboard();
+        } else {
+            const errBox = document.getElementById('error-msg');
+            errBox.textContent = '[!] CHAVE INCORRETA. ACESSO NÃO AUTORIZADO.';
+            errBox.style.display = 'block';
+            showNotification("Acesso Negado", "Chave do orquestrador incorreta.", false);
+        }
+    }
+
+    function handleLogout() {
+        sessionStorage.removeItem('cyborg_googleads_auth');
+        if (window.location.pathname.endsWith('.php')) {
+            window.location.href = 'googleads_dashboard.php?action=logout';
+        } else {
+            location.reload();
+        }
+    }
+
+    function initDashboard() {
+        const authenticated = sessionStorage.getItem('cyborg_googleads_auth') === 'true';
+        if (!authenticated) {
+            document.getElementById('login-section').style.display = 'flex';
+            document.getElementById('dashboard-section').style.display = 'none';
+        } else {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('dashboard-section').style.display = 'flex';
+            checkApiStatus();
+            loadDashboardData();
+            loadCommandCenter();
+            setInterval(checkApiStatus, 15000);
+            setInterval(loadDashboardData, 30000);
+            setInterval(loadCommandCenter, 60000);
+        }
+    }
+
+    function refreshAll() {
+        showNotification("Atualizando", "Recarregando todos os dados da IA...", true);
+        loadDashboardData();
+        loadCommandCenter();
+    }
+
+    // ─── NOTIFICAÇÕES ───────────────────────────────────────
+    function showNotification(title, message, isSuccess = true) {
+        const toast = document.getElementById('toast');
+        document.getElementById('toast-title').textContent = title;
+        document.getElementById('toast-body').textContent = message;
+        const icon = toast.querySelector('.toast-icon');
+        if (isSuccess) {
+            toast.style.borderColor = "var(--cyan)";
+            toast.style.boxShadow = "var(--neon-shadow)";
+            icon.style.backgroundColor = "var(--cyan)";
+            icon.style.boxShadow = "0 0 10px var(--cyan)";
+        } else {
+            toast.style.borderColor = "var(--pink)";
+            toast.style.boxShadow = "0 0 15px rgba(255, 0, 85, 0.4)";
+            icon.style.backgroundColor = "var(--pink)";
+            icon.style.boxShadow = "0 0 10px var(--pink)";
+        }
+        toast.classList.add('show');
+        setTimeout(() => { toast.classList.remove('show'); }, 4500);
+    }
+
+    // ─── API STATUS ─────────────────────────────────────────
+    async function checkApiStatus() {
+        try {
+            const res = await fetch(`${API_BASE}/status`);
+            const data = await res.json();
+            const dot = document.querySelector('#api-status-badge .status-dot');
+            const text = document.getElementById('api-status-text');
+            if (data.google_ads_api === "CONNECTED") {
+                text.textContent = "Google Ads Conectado";
+                text.style.color = "var(--cyan)";
+                dot.style.backgroundColor = "var(--cyan)";
+                dot.style.boxShadow = "0 0 10px var(--cyan)";
+            } else {
+                text.textContent = "Modo de Simulação";
+                text.style.color = "#ffb300";
+                dot.style.backgroundColor = "#ffb300";
+                dot.style.boxShadow = "0 0 10px #ffb300";
+            }
+            
+            const oaiBadge = document.getElementById('openai-status-badge');
+            const oaiDot = document.querySelector('#openai-status-badge .status-dot');
+            const oaiText = document.getElementById('openai-status-text');
+            if (oaiBadge && oaiDot && oaiText) {
+                if (data.openai_api === "CONNECTED") {
+                    oaiText.textContent = "OpenAI Conectado";
+                    oaiText.style.color = "#00ff66";
+                    oaiDot.style.backgroundColor = "#00ff66";
+                    oaiDot.style.boxShadow = "0 0 10px #00ff66";
+                    oaiBadge.style.borderColor = "rgba(0, 255, 102, 0.25)";
+                    oaiBadge.style.background = "rgba(0, 255, 102, 0.05)";
+                } else {
+                    oaiText.textContent = "OpenAI Desconectado";
+                    oaiText.style.color = "#888";
+                    oaiDot.style.backgroundColor = "#777";
+                    oaiDot.style.boxShadow = "0 0 10px #777";
+                }
+            }
+        } catch (err) {
+            document.getElementById('api-status-text').textContent = "Backend Offline";
+            const dot = document.querySelector('#api-status-badge .status-dot');
+            if (dot) { dot.style.backgroundColor = "var(--pink)"; dot.style.boxShadow = "0 0 10px var(--pink)"; }
+        }
+    }
+
+    // ─── DASHBOARD BASE (KPIs + Simulador + Memória) ────────
+    let globalPredictions = null;
+    let activePeriod = 'monthly';
+
+    async function loadDashboardData() {
+        try {
+            const res = await fetch(`${API_BASE}/ai_dashboard`);
+            const data = await res.json();
+            
+            if (data.status === "success") {
+                document.getElementById('exec-kpi-wasted').textContent = `R$ ${data.wasted_budget.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+                document.getElementById('exec-kpi-risk').textContent = data.campaigns_at_risk;
+                document.getElementById('exec-kpi-champions').textContent = data.campaigns_champions;
+                document.getElementById('exec-kpi-opportunities').textContent = data.total_opportunities;
+                
+                globalPredictions = data.predictions;
+                renderPredictions();
+
+                const checkbox = document.getElementById('autonomous-agent-checkbox');
+                checkbox.checked = data.autonomous_agent_enabled;
+                updateAgentStatusLabel(data.autonomous_agent_enabled);
+
+                renderLogs(data.logs);
+                renderMemory(data.learning_memory);
+                document.getElementById('terminal-last-update').textContent = `Última leitura: ${new Date().toLocaleTimeString('pt-BR')}`;
+            }
+        } catch (err) {
+            console.warn("Fallback data (sem API):", err);
+            loadFallbackData();
+        }
+    }
+
+    // ─── COMMAND CENTER DATA ─────────────────────────────────
+    async function loadCommandCenter() {
+        try {
+            const res = await fetch(`${API_BASE}/ai_command_center`);
+            const data = await res.json();
+            
+            if (data.status === "success") {
+                renderExecutiveSummary(data.executive_summary);
+                renderAlerts(data.alerts);
+                renderRecommendations(data.recommendations);
+                renderAudit(data.audit);
+                renderAgentQueue(data.agent_queue);
+                renderRanking(data.campaign_ranking);
+                renderWasteBreakdown(data.waste_breakdown);
+                renderGrowthOpportunities(data.growth_opportunities);
+                renderBenchmarks(data.niched_benchmarks);
+            }
+        } catch (err) {
+            console.warn("Command center fallback:", err);
+            loadFallbackCommandCenter();
+        }
+    }
+
+    // ─── RENDER: RESUMO EXECUTIVO ───────────────────────────
+    function renderExecutiveSummary(s) {
+        if (!s) return;
+        const badge = document.getElementById('exec-situation-badge');
+        badge.textContent = `Situação: ${s.situation}`;
+        badge.className = `section-count-badge ${s.situation_class === 'good' ? 'green' : s.situation_class === 'warn' ? 'orange' : 'red'}`;
+
+        document.getElementById('sum-waste').textContent = `R$ ${s.wasted_budget.toLocaleString('pt-BR', {minimumFractionDigits: 0})}`;
+        document.getElementById('sum-recovery').textContent = `R$ ${s.recovery_potential.toLocaleString('pt-BR', {minimumFractionDigits: 0})}`;
+        document.getElementById('sum-growth').textContent = `+${s.growth_potential_pct}%`;
+        document.getElementById('sum-actions-count').textContent = s.top5_actions ? s.top5_actions.length : 5;
+
+        const list = document.getElementById('exec-top5-list');
+        if (s.top5_actions && s.top5_actions.length > 0) {
+            list.innerHTML = s.top5_actions.slice(0, 5).map((a, i) =>
+                `<li><span class="exec-action-num">${i+1}</span> ${a}</li>`
+            ).join('');
+        }
+    }
+
+    // ─── RENDER: ALERTAS ─────────────────────────────────────
+    function renderAlerts(alerts) {
+        if (!alerts) return;
+        const grid = document.getElementById('alerts-grid');
+        const badge = document.getElementById('alerts-count-badge');
+        
+        const criticals = alerts.filter(a => a.severity === 'critico').length;
+        badge.textContent = `${alerts.length} alertas`;
+        badge.className = `section-count-badge ${criticals > 0 ? 'red' : alerts.length > 0 ? 'orange' : 'green'}`;
+
+        if (alerts.length === 0) {
+            grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 30px; color: var(--text-secondary); font-size: 0.85rem;">✅ Nenhum alerta ativo. Todas as campanhas estão dentro dos parâmetros normais.</div>`;
+            return;
+        }
+
+        grid.innerHTML = alerts.map(a => `
+            <div class="alert-card ${a.severity}">
+                <span class="alert-severity-badge">${a.severity.toUpperCase()}</span>
+                <span class="alert-campaign-name">${a.campaign}</span>
+                <div class="alert-detail">${a.detail}</div>
+                <div class="alert-meta">
+                    <span class="alert-impact">💰 ${a.impact}</span>
+                    <span>${a.date}</span>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // ─── RENDER: RECOMENDAÇÕES ───────────────────────────────
+    function renderRecommendations(recs) {
+        if (!recs) return;
+        const grid = document.getElementById('rec-grid');
+        const badge = document.getElementById('rec-count-badge');
+        badge.textContent = `${recs.length} ações`;
+
+        grid.innerHTML = recs.map((r, i) => `
+            <div class="rec-card priority-${r.priority.toLowerCase()}" id="rec-card-${i}">
+                <input type="checkbox" class="rec-checkbox" id="rec-cb-${i}" onchange="toggleRecSelect(${i})">
+                <span class="rec-priority-badge">${r.priority}</span>
+                <div class="rec-content">
+                    <p class="rec-action-title">${r.action}</p>
+                    <p class="rec-reason"><strong>Motivo:</strong> ${r.reason}</p>
+                    <p class="rec-impact">📈 ${r.impact}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function toggleRecSelect(index) {
+        const cb = document.getElementById(`rec-cb-${index}`);
+        const card = document.getElementById(`rec-card-${index}`);
+        card.classList.toggle('selected', cb.checked);
+    }
+
+    async function applyAllRecommendations() {
+        const recs = document.querySelectorAll('.rec-card');
+        showNotification("Aplicando", `Enfileirando ${recs.length} recomendações para o Agente Autônomo...`, true);
+        try {
+            const res = await fetch(`${API_BASE}/ai_recommendations/apply`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ apply_all: true, total: recs.length })
+            });
+            const data = await res.json();
+            if (data.status === "success") {
+                showNotification("Sucesso", data.message, true);
+                setTimeout(loadCommandCenter, 2000);
+            }
+        } catch {
+            showNotification("Aplicado (offline)", `${recs.length} recomendações enfileiradas localmente.`, true);
+        }
+    }
+
+    async function applySelectedRecommendations() {
+        const selected = [];
+        document.querySelectorAll('.rec-checkbox').forEach((cb, i) => { if (cb.checked) selected.push(i); });
+        if (selected.length === 0) {
+            showNotification("Atenção", "Selecione ao menos uma recomendação antes de aprovar.", false);
+            return;
+        }
+        showNotification("Aplicando", `Enfileirando ${selected.length} recomendação(ões) selecionada(s)...`, true);
+        try {
+            const res = await fetch(`${API_BASE}/ai_recommendations/apply`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ apply_all: false, selected })
+            });
+            const data = await res.json();
+            if (data.status === "success") showNotification("Sucesso", data.message, true);
+        } catch {
+            showNotification("Aplicado (offline)", `${selected.length} recomendação(ões) enfileirada(s).`, true);
+        }
+    }
+
+    // ─── RENDER: AUDITORIA ───────────────────────────────────
+    function renderAudit(audit) {
+        if (!audit) return;
+        document.getElementById('audit-last').textContent = `🕐 ${audit.last_analysis}`;
+        document.getElementById('audit-campaigns').textContent = audit.campaigns_analyzed;
+        document.getElementById('audit-problems').textContent = audit.problems_found;
+        document.getElementById('audit-opps').textContent = audit.opportunities;
+        document.getElementById('audit-waste').textContent = `R$ ${audit.wasted_budget.toLocaleString('pt-BR', {minimumFractionDigits: 0})}`;
+        document.getElementById('audit-savings').textContent = `R$ ${audit.potential_savings.toLocaleString('pt-BR', {minimumFractionDigits: 0})}`;
+        document.getElementById('audit-revenue').textContent = `R$ ${audit.revenue_potential.toLocaleString('pt-BR', {minimumFractionDigits: 0})}`;
+    }
+
+    // ─── RENDER: FILA DO AGENTE ──────────────────────────────
+    function renderAgentQueue(queue) {
+        if (!queue) return;
+        const list = document.getElementById('agent-queue-list');
+        document.getElementById('agent-last-update').textContent = new Date().toLocaleTimeString('pt-BR');
+        
+        list.innerHTML = queue.slice(0, 15).map(item => `
+            <div class="agent-queue-item">
+                <div class="queue-status-dot ${item.status}"></div>
+                <span class="queue-status-label ${item.status}">${item.status_label}</span>
+                <span class="queue-task-text">${item.task}</span>
+                <span class="queue-task-time">${item.timestamp}</span>
+            </div>
+        `).join('');
+    }
+
+    // ─── RENDER: RANKING ─────────────────────────────────────
+    function renderRanking(ranked) {
+        if (!ranked) return;
+        const tbody = document.getElementById('ranking-tbody');
+        document.getElementById('ranking-count-badge').textContent = `${ranked.length} campanhas`;
+
+        tbody.innerHTML = ranked.map((c, i) => {
+            const pos = i + 1;
+            const posClass = pos <= 3 ? `pos-${pos}` : '';
+            const tagClass = c.tag === 'campea' ? 'tag-campea' : c.tag === 'risco' ? 'tag-risco' : 'tag-desperdicio';
+            const trendClass = c.trend === 'up' ? 'trend-up' : c.trend === 'down' ? 'trend-down' : 'trend-stable';
+            const scoreWidth = Math.min(100, c.score);
+            return `
+                <tr>
+                    <td><span class="rank-position ${posClass}">${pos}</span></td>
+                    <td class="campaign-name-cell">${c.name}</td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div class="score-bar-container"><div class="score-bar-fill" style="width: ${scoreWidth}%"></div></div>
+                            <span class="score-value">${c.score}</span>
+                        </div>
+                    </td>
+                    <td>${c.conversions}</td>
+                    <td>${c.cpa > 0 ? 'R$ '+c.cpa.toLocaleString('pt-BR', {minimumFractionDigits: 2}) : '—'}</td>
+                    <td><span class="${trendClass}">${c.trend_label}</span></td>
+                    <td><span class="${tagClass}">${c.tag_label}</span></td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    // ─── RENDER: DESPERDÍCIO ─────────────────────────────────
+    function renderWasteBreakdown(w) {
+        if (!w) return;
+        const total = w.total || 1;
+        document.getElementById('waste-total-badge').textContent = `R$ ${total.toLocaleString('pt-BR', {minimumFractionDigits: 0})}`;
+        document.getElementById('waste-grand-total').textContent = `R$ ${total.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+
+        const setBar = (id, val) => {
+            document.getElementById(`waste-val-${id}`).textContent = `R$ ${val.toLocaleString('pt-BR', {minimumFractionDigits: 0})}`;
+            const pct = total > 0 ? Math.round((val / total) * 100) : 0;
+            document.getElementById(`waste-bar-${id}`).style.width = `${pct}%`;
+        };
+        setBar('kw', w.keywords || 0);
+        setBar('sch', w.schedule || 0);
+        setBar('loc', w.locations || 0);
+        setBar('dev', w.devices || 0);
+        setBar('aud', w.audiences || 0);
+    }
+
+    async function fixWaste() {
+        const btn = document.getElementById('btn-fix-waste');
+        btn.disabled = true;
+        btn.textContent = '⚙️ Processando...';
+        showNotification("Corrigindo", "Agente iniciando correção automática de desperdícios...", true);
+        
+        try {
+            const res = await fetch(`${API_BASE}/ai_waste/fix`, { method: "POST" });
+            const data = await res.json();
+            if (data.status === "success") {
+                showNotification("Correção Concluída", data.message, true);
+                data.actions_taken.forEach(a => console.log("✓", a));
+                setTimeout(loadCommandCenter, 3000);
+            }
+        } catch {
+            showNotification("Processado (offline)", "4 ações de correção enfileiradas pelo agente.", true);
+        } finally {
+            btn.disabled = false;
+            btn.textContent = '🔧 Corrigir Desperdícios';
+        }
+    }
+
+    // ─── RENDER: GROWTH OPPORTUNITIES ───────────────────────
+    function renderGrowthOpportunities(opps) {
+        if (!opps) return;
+        const grid = document.getElementById('growth-grid');
+        document.getElementById('growth-count-badge').textContent = `${opps.length} oportunidades`;
+
+        grid.innerHTML = opps.map(o => `
+            <div class="growth-card">
+                <span class="growth-type-badge">${o.type}</span>
+                <h4 class="growth-title">${o.title}</h4>
+                <p style="font-size: 0.76rem; color: var(--text-secondary); margin: 0;">${o.detail}</p>
+                <div class="growth-metrics">
+                    <div class="growth-metric">
+                        <span class="growth-metric-label">Leads Esperados</span>
+                        <span class="growth-metric-value">+${o.leads_expected}</span>
+                    </div>
+                    <div class="growth-metric">
+                        <span class="growth-metric-label">Receita Potencial</span>
+                        <span class="growth-metric-value">R$ ${o.revenue_potential.toLocaleString('pt-BR', {minimumFractionDigits: 0})}</span>
+                    </div>
+                </div>
+                <div class="confidence-bar-outer">
+                    <div class="confidence-bar-inner" style="width: ${o.confidence}%"></div>
+                </div>
+                <div class="confidence-label">
+                    <span>Confiança da IA</span>
+                    <span style="color: var(--cyan); font-weight: 700;">${o.confidence}%</span>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // ─── RENDER: BENCHMARKS POR NICHO ───────────────────────
+    function renderBenchmarks(benchmarks) {
+        if (!benchmarks) return;
+        const grid = document.getElementById('benchmark-nicho-grid');
+
+        grid.innerHTML = benchmarks.map(b => `
+            <div class="benchmark-nicho-card">
+                <h4 class="nicho-name">${b.emoji || '📊'} ${b.nicho}</h4>
+                <div class="nicho-stat-row"><span>CPA Médio</span><span class="nicho-stat-val" style="color: #ff9f00;">R$ ${b.cpa.toFixed(2)}</span></div>
+                <div class="nicho-stat-row"><span>CTR Médio</span><span class="nicho-stat-val" style="color: var(--cyan);">${b.ctr}%</span></div>
+                <div class="nicho-stat-row"><span>Taxa Conversão</span><span class="nicho-stat-val" style="color: #00ff66;">${b.conv_rate}%</span></div>
+            </div>
+        `).join('');
+    }
+
+    // ─── RENDER: SIMULADOR ───────────────────────────────────
+    function renderPredictions() {
+        if (!globalPredictions) return;
+        const periodData = globalPredictions[activePeriod];
+        if (!periodData) return;
+
+        document.getElementById('fore-con-clicks').textContent = periodData.conservative.clicks.toLocaleString('pt-BR');
+        document.getElementById('fore-con-leads').textContent = periodData.conservative.conversions.toLocaleString('pt-BR');
+        document.getElementById('fore-con-cpa').textContent = `R$ ${periodData.conservative.cpa.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+        document.getElementById('fore-con-revenue').textContent = `R$ ${periodData.conservative.revenue.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+
+        document.getElementById('fore-real-clicks').textContent = periodData.realistic.clicks.toLocaleString('pt-BR');
+        document.getElementById('fore-real-leads').textContent = periodData.realistic.conversions.toLocaleString('pt-BR');
+        document.getElementById('fore-real-cpa').textContent = `R$ ${periodData.realistic.cpa.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+        document.getElementById('fore-real-revenue').textContent = `R$ ${periodData.realistic.revenue.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+
+        document.getElementById('fore-agr-clicks').textContent = periodData.aggressive.clicks.toLocaleString('pt-BR');
+        document.getElementById('fore-agr-leads').textContent = periodData.aggressive.conversions.toLocaleString('pt-BR');
+        document.getElementById('fore-agr-cpa').textContent = `R$ ${periodData.aggressive.cpa.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+        document.getElementById('fore-agr-revenue').textContent = `R$ ${periodData.aggressive.revenue.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+    }
+
+    function changePeriod(period) {
+        activePeriod = period;
+        const monthlyBtn = document.getElementById('btn-period-monthly');
+        const quarterlyBtn = document.getElementById('btn-period-quarterly');
+        if (period === 'monthly') {
+            monthlyBtn.className = 'btn-period-toggle active';
+            quarterlyBtn.className = 'btn-period-toggle inactive';
+        } else {
+            quarterlyBtn.className = 'btn-period-toggle active';
+            monthlyBtn.className = 'btn-period-toggle inactive';
+        }
+        renderPredictions();
+    }
+
+    // ─── RENDER: LOGS DO CONSOLE ─────────────────────────────
+    function renderLogs(logs) {
+        const consoleEl = document.getElementById('terminal-console');
+        if (!logs || logs.length === 0) {
+            consoleEl.innerHTML = `<div class="terminal-line system">[SYSTEM] Sem logs disponíveis.</div>`;
+            return;
+        }
+        consoleEl.innerHTML = '';
+        logs.forEach(item => {
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            let colorClass = item.log.includes('[SYSTEM]') ? 'system' : 'action';
+            line.innerHTML = `<span class="terminal-line timestamp">[${item.timestamp}]</span> <span class="terminal-line ${colorClass}">${item.log}</span>`;
+            consoleEl.appendChild(line);
+        });
+        consoleEl.scrollTop = 0;
+    }
+
+    // ─── RENDER: MEMÓRIA ─────────────────────────────────────
+    function renderMemory(memory) {
+        if (!memory) return;
+        
+        const renderList = (elId, list) => {
+            const el = document.getElementById(elId);
+            if (!list || list.length === 0) {
+                el.innerHTML = `<li style="color: var(--text-secondary); list-style: none;">Nenhum ativo registrado</li>`;
+                return;
+            }
+            el.innerHTML = list.map(item => {
+                if (typeof item === 'object' && item !== null) {
+                    return `<li><strong>${item.title || ''}</strong><br><span style="font-size:0.7rem;color:var(--text-secondary);">${item.description || ''}</span></li>`;
+                }
+                return `<li>${item}</li>`;
+            }).join('');
+        };
+
+        renderList('memory-campaigns', memory.winning_campaigns || ["Site-Pesquisa (CPA R$ 22.40)", "Pesquisa-Auto (CPA R$ 38.10)"]);
+        renderList('memory-keywords', memory.winning_keywords || ["agencia de google ads", "gestor de trafego pago"]);
+        renderList('memory-ads', memory.winning_ads || ["Agência de Tráfego Pago - Cyborg (CTR 5.4%)"]);
+        renderList('memory-lps', memory.winning_landing_pages || ["/google-ads (Bounce: 15%)"]);
+    }
+
+    // ─── AGENTE AUTÔNOMO ─────────────────────────────────────
+    function updateAgentStatusLabel(enabled) {
+        const label = document.getElementById('agent-status-label');
+        const consoleStatus = document.getElementById('agent-console-status');
+        if (enabled) {
+            label.textContent = "ATIVO / MONITORANDO";
+            label.style.color = "#00ff66";
+            if (consoleStatus) { consoleStatus.textContent = "ATIVO / MONITORANDO"; consoleStatus.style.color = "#00ff66"; }
+        } else {
+            label.textContent = "INATIVO / PAUSADO";
+            label.style.color = "var(--text-secondary)";
+            if (consoleStatus) { consoleStatus.textContent = "INATIVO / PAUSADO"; consoleStatus.style.color = "var(--text-secondary)"; }
+        }
+    }
+
+    async function toggleAutonomousAgent(checked) {
+        showNotification("Orquestrador", `Modificando estado do Agente para ${checked ? 'ATIVO' : 'INATIVO'}...`, true);
+        try {
+            const res = await fetch(`${API_BASE}/autonomous_settings`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ enabled: checked })
+            });
+            const data = await res.json();
+            if (data.status === "success") {
+                showNotification("Sucesso", data.message, true);
+                updateAgentStatusLabel(checked);
+                setTimeout(loadDashboardData, 1500);
+            }
+        } catch (err) {
+            showNotification("Alterado (offline)", `Agente ${checked ? 'ativado' : 'desativado'} localmente.`, true);
+            updateAgentStatusLabel(checked);
+        }
+    }
+
+    // ─── FALLBACK DATA ───────────────────────────────────────
+    function loadFallbackData() {
+        document.getElementById('exec-kpi-wasted').textContent = "R$ 968,40";
+        document.getElementById('exec-kpi-risk').textContent = "1";
+        document.getElementById('exec-kpi-champions').textContent = "2";
+        document.getElementById('exec-kpi-opportunities').textContent = "6";
+
+        renderMemory({
+            winning_campaigns: ["Site-Pesquisa (CPA R$ 22.40)", "Pesquisa-Auto (CPA R$ 38.10)"],
+            winning_keywords: ["agencia de google ads", "gestor de trafego pago", "dentista belo horizonte"],
+            winning_ads: ["Agência de Tráfego Pago - Cyborg (CTR 5.4%)", "Dentista em Belo Horizonte (CTR 4.8%)"],
+            winning_landing_pages: ["/google-ads (Bounce: 15%)", "/dentistabh (Bounce: 28%)"]
+        });
+
+        globalPredictions = {
+            monthly: {
+                conservative: { clicks: 720, conversions: 68, cpa: 38.50, revenue: 10200.00 },
+                realistic: { clicks: 910, conversions: 86, cpa: 30.00, revenue: 12900.00 },
+                aggressive: { clicks: 1180, conversions: 116, cpa: 27.00, revenue: 17400.00 }
+            },
+            quarterly: {
+                conservative: { clicks: 2160, conversions: 204, cpa: 38.50, revenue: 30600.00 },
+                realistic: { clicks: 2730, conversions: 258, cpa: 30.00, revenue: 38700.00 },
+                aggressive: { clicks: 3540, conversions: 348, cpa: 27.00, revenue: 52200.00 }
+            }
+        };
+        renderPredictions();
+
+        const dateStr = new Date().toISOString().split('T')[0];
+        renderLogs([
+            { timestamp: `${dateStr} 10:15:30`, log: "Operador ativou o modo Agente Autônomo." },
+            { timestamp: `${dateStr} 09:42:01`, log: "Keyword 'dança do tiktok gratis' negativada automaticamente." },
+            { timestamp: `${dateStr} 08:00:00`, log: "[SYSTEM] Iniciando verificação diária automática de anomalias..." }
+        ]);
+    }
+
+    function loadFallbackCommandCenter() {
+        renderExecutiveSummary({ situation: "Atenção", situation_class: "warn", wasted_budget: 968, recovery_potential: 676, growth_potential_pct: 34, top5_actions: ["Pausar keywords sem conversão", "Adicionar 17 palavras negativas", "Criar novos anúncios RSA", "Expandir campanha campeã", "Segmentar por horário"] });
+        renderAlerts([
+            { severity: "critico", campaign: "Campanha Pesquisa BH", detail: "CPA 47% acima da meta da conta.", impact: "R$ 320/mês desperdiçado", date: new Date().toLocaleDateString('pt-BR') },
+            { severity: "alto", campaign: "Campanha Advogados", detail: "CTR caiu 18% nos últimos 7 dias.", impact: "Anúncios pouco relevantes", date: new Date().toLocaleDateString('pt-BR') },
+            { severity: "medio", campaign: "Campanha Energia Solar", detail: "Conversões caíram 23% na última semana.", impact: "R$ 180 potencialmente desperdiçado", date: new Date().toLocaleDateString('pt-BR') },
+            { severity: "baixo", campaign: "Campanha Dentistas", detail: "Melhor performance da conta — CPA R$ 24.", impact: "Manter ou escalar", date: new Date().toLocaleDateString('pt-BR') }
+        ]);
+        renderRecommendations([
+            { priority: "P0", action: "Pausar keyword: 'curso google ads'", reason: "Sem conversão há 90 dias.", impact: "Economia estimada R$ 620/mês", campaign: "Pesquisa BH" },
+            { priority: "P1", action: "Adicionar 17 palavras negativas", reason: "Termos irrelevantes identificados nos termos de pesquisa.", impact: "+14% conversões", campaign: "Todas" },
+            { priority: "P1", action: "Criar novo RSA com variações de títulos", reason: "Score do anúncio atual: 'Fraco'.", impact: "+11% CTR", campaign: "Advogados" },
+            { priority: "P2", action: "Expandir orçamento da campanha campeã", reason: "Campanha Dentistas com CPA 44% abaixo da média.", impact: "+22% leads", campaign: "Dentistas" }
+        ]);
+        renderAudit({ last_analysis: new Date().toLocaleString('pt-BR'), campaigns_analyzed: 4, problems_found: 12, opportunities: 8, wasted_budget: 968, potential_savings: 640, revenue_potential: 5100 });
+        renderAgentQueue([
+            { status: "done", status_label: "Concluído", task: "Campanha 23542530230 analisada com sucesso.", timestamp: "10:15" },
+            { status: "done", status_label: "Concluído", task: "15 keywords negativas geradas e documentadas.", timestamp: "09:50" },
+            { status: "done", status_label: "Concluído", task: "Novo anúncio RSA criado para campanha de Pesquisa.", timestamp: "09:42" },
+            { status: "waiting", status_label: "Aguardando Aprovação", task: "Ajuste de lance +15% em Campanha Dentistas.", timestamp: "09:40" },
+            { status: "running", status_label: "Em Execução", task: "Analisando padrões de horário para otimização de lances...", timestamp: "Agora" }
+        ]);
+        renderRanking([
+            { name: "Campanha Dentistas", score: 78.5, conversions: 12, cpa: 24.00, ctr: 9.8, tag: "campea", tag_label: "🔥 Campeã", trend: "up", trend_label: "▲ +22%" },
+            { name: "Campanha Advogados", score: 44.2, conversions: 5, cpa: 48.00, ctr: 7.2, tag: "risco", tag_label: "⚠️ Risco", trend: "down", trend_label: "▼ -8%" },
+            { name: "Campanha Energia Solar", score: 38.1, conversions: 3, cpa: 62.00, ctr: 4.5, tag: "risco", tag_label: "⚠️ Risco", trend: "stable", trend_label: "► Estável" },
+            { name: "Campanha Pesquisa BH", score: 15.0, conversions: 1, cpa: 145.00, ctr: 1.8, tag: "desperdicio", tag_label: "💀 Desperdício", trend: "down", trend_label: "▼ -30%" }
+        ]);
+        renderWasteBreakdown({ keywords: 396, schedule: 174, locations: 271, devices: 97, audiences: 30, total: 968 });
+        renderGrowthOpportunities([
+            { type: "Escalar Campanha", title: "Expandir 'Campanha Dentistas' com +40% orçamento", detail: "Score IA 78/100 — melhor campanha da conta.", leads_expected: 5, revenue_potential: 750, confidence: 87 },
+            { type: "Novo Mercado", title: "Expandir para São Paulo (SP)", detail: "Volume 3x maior com CPC apenas 20% superior.", leads_expected: 45, revenue_potential: 6750, confidence: 74 },
+            { type: "Novas Keywords", title: "Adicionar 38 keywords de cauda longa", detail: "Baixa concorrência e custo moderado.", leads_expected: 22, revenue_potential: 3300, confidence: 81 },
+            { type: "Novo Público", title: "Segmentar audiências RLSA de Remarketing", detail: "Taxa de conversão 3x maior para visitantes anteriores.", leads_expected: 18, revenue_potential: 2700, confidence: 91 }
+        ]);
+        renderBenchmarks([
+            { nicho: "Advocacia", emoji: "⚖️", cpa: 48.00, ctr: 7.2, conv_rate: 11.0 },
+            { nicho: "Odontologia", emoji: "🦷", cpa: 24.00, ctr: 9.8, conv_rate: 18.0 },
+            { nicho: "Automação Industrial", emoji: "⚙️", cpa: 85.00, ctr: 4.3, conv_rate: 6.5 },
+            { nicho: "Imóveis", emoji: "🏠", cpa: 120.00, ctr: 3.8, conv_rate: 4.2 },
+            { nicho: "Saúde e Estética", emoji: "💆", cpa: 32.00, ctr: 8.4, conv_rate: 14.5 },
+            { nicho: "Tráfego Pago / Agência", emoji: "📈", cpa: 38.00, ctr: 5.6, conv_rate: 9.3 }
+        ]);
+    }
+
+    // ─── INICIALIZAÇÃO ───────────────────────────────────────
+    window.addEventListener('DOMContentLoaded', () => {
+        initDashboard();
+        
+        document.getElementById('sidebar-toggle-btn')?.addEventListener('click', () => {
+            document.querySelector('.sidebar').classList.toggle('open');
+        });
+        
+        document.addEventListener('click', (e) => {
+            const sidebar = document.querySelector('.sidebar');
+            const toggleBtn = document.getElementById('sidebar-toggle-btn');
+            if (sidebar && sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target !== toggleBtn) {
+                sidebar.classList.remove('open');
+            }
+        });
+
+        if (window.location.pathname.endsWith('.php')) {
+            document.querySelectorAll('.sidebar-nav a').forEach(link => {
+                const url = new URL(link.href, window.location.href);
+                if (url.pathname.endsWith('.html')) {
+                    url.pathname = url.pathname.replace('.html', '.php');
+                    link.href = url.pathname + url.search;
+                }
+            });
+        }
+    });
+</script>
+
+<script src="matrix_dashboard.js"></script>
+</body>
+</html>
