@@ -2140,17 +2140,40 @@ def get_search_terms(campaign_id):
             logging.error(f"Erro ao buscar termos de pesquisa reais: {e}")
             
     if not terms:
-        # Fallback simulation
-        mock_terms = [
-            {"term": "landing site", "clicks": 28, "impressions": 300, "cost": 124.0, "conversions": 0},
-            {"term": "ferramenta de agrotóxica", "clicks": 14, "impressions": 150, "cost": 63.0, "conversions": 0},
-            {"term": "preços de desconto", "clicks": 12, "impressions": 220, "cost": 48.0, "conversions": 0},
-            {"term": "curso gratuito de google ads", "clicks": 35, "impressions": 500, "cost": 85.0, "conversions": 0},
-            {"term": "agência de marketing cyborg", "clicks": 85, "impressions": 400, "cost": 170.0, "conversions": 12},
-            {"term": "gestor de tráfego sp", "clicks": 45, "impressions": 350, "cost": 190.0, "conversions": 6},
-            {"term": "como criar anúncios no google", "clicks": 40, "impressions": 600, "cost": 90.0, "conversions": 0},
-            {"term": "consultor adwords preco", "clicks": 22, "impressions": 180, "cost": 88.0, "conversions": 2},
-        ]
+        # Fallback simulation based on campaign
+        if str(campaign_id) == "23542530230": # Pesquisa-Auto
+            mock_terms = [
+                {"term": "automacao de whatsapp para empresas", "clicks": 120, "impressions": 850, "cost": 420.00, "conversions": 12},
+                {"term": "sistema de automacao comercial", "clicks": 90, "impressions": 600, "cost": 315.00, "conversions": 6},
+                {"term": "como enviar whatsapp em massa gratis", "clicks": 30, "impressions": 450, "cost": 105.00, "conversions": 0},
+                {"term": "robo para whatsapp gratis", "clicks": 25, "impressions": 350, "cost": 87.50, "conversions": 0},
+                {"term": "curso de automacao de processos", "clicks": 20, "impressions": 280, "cost": 70.00, "conversions": 0},
+                {"term": "automacao de marketing digital", "clicks": 45, "impressions": 380, "cost": 157.50, "conversions": 3},
+                {"term": "plataforma de automacao de leads", "clicks": 55, "impressions": 480, "cost": 192.50, "conversions": 4}
+            ]
+        elif str(campaign_id) == "23952678122": # tiktok
+            mock_terms = [
+                {"term": "fazer propaganda no tiktok", "clicks": 85, "impressions": 1200, "cost": 722.50, "conversions": 4},
+                {"term": "gestor de trafego tiktok", "clicks": 55, "impressions": 800, "cost": 467.50, "conversions": 3},
+                {"term": "dancinhas famosas do tiktok", "clicks": 25, "impressions": 300, "cost": 212.50, "conversions": 0},
+                {"term": "como ganhar dinheiro assistindo tiktok", "clicks": 15, "impressions": 400, "cost": 127.50, "conversions": 0},
+                {"term": "musicas em alta tiktok", "clicks": 20, "impressions": 350, "cost": 170.00, "conversions": 0},
+                {"term": "visualizacoes gratis tiktok", "clicks": 18, "impressions": 290, "cost": 153.00, "conversions": 0},
+                {"term": "anunciar no tiktok valor", "clicks": 35, "impressions": 420, "cost": 297.50, "conversions": 2}
+            ]
+        else: # Site-Pesquisa (23547202690)
+            mock_terms = [
+                {"term": "criacao de sites profissionais", "clicks": 120, "impressions": 800, "cost": 360.00, "conversions": 15},
+                {"term": "criar site profissional", "clicks": 95, "impressions": 720, "cost": 285.00, "conversions": 12},
+                {"term": "desenvolvimento de landing page", "clicks": 80, "impressions": 650, "cost": 240.00, "conversions": 8},
+                {"term": "como criar site gratis wix", "clicks": 35, "impressions": 500, "cost": 105.00, "conversions": 0},
+                {"term": "fazer site gratis no google", "clicks": 30, "impressions": 450, "cost": 90.00, "conversions": 0},
+                {"term": "como criar um site sozinho gratis", "clicks": 25, "impressions": 350, "cost": 75.00, "conversions": 0},
+                {"term": "wix entrar", "clicks": 20, "impressions": 280, "cost": 60.00, "conversions": 0},
+                {"term": "wordpress entrar", "clicks": 18, "impressions": 260, "cost": 54.00, "conversions": 0},
+                {"term": "empresa de criacao de sites", "clicks": 45, "impressions": 310, "cost": 135.00, "conversions": 5},
+                {"term": "agencia de web design", "clicks": 40, "impressions": 500, "cost": 120.00, "conversions": 3}
+            ]
         # Modify mock terms based on campaign and negatives
         for t in mock_terms:
             term_text = t["term"]
@@ -3766,18 +3789,18 @@ def _get_mock_campaign_details(campaign_id, bounce_rate, hidden_waste):
         ]
     else: # Site-Pesquisa (23547202690)
         keywords = [
-            {"term": "agencia de google ads", "clicks": 120, "conversions": 15, "cost": 360.0},
-            {"term": "gestor de trafego pago", "clicks": 150, "conversions": 22, "cost": 450.0},
-            {"term": "marketing digital para empresas", "clicks": 90, "conversions": 1, "cost": 270.0},
-            {"term": "como anunciar no google gratis", "clicks": 50, "conversions": 0, "cost": 150.0},
-            {"term": "anuncio google ads valor", "clicks": 40, "conversions": 2, "cost": 120.0}
+            {"term": "criacao de sites profissionais", "clicks": 180, "conversions": 25, "cost": 540.0},
+            {"term": "desenvolvimento de landing pages", "clicks": 120, "conversions": 18, "cost": 360.0},
+            {"term": "empresa para criar site", "clicks": 90, "conversions": 10, "cost": 270.0},
+            {"term": "como criar site gratis wix", "clicks": 50, "conversions": 0, "cost": 150.0},
+            {"term": "criar site institucional valor", "clicks": 40, "conversions": 7, "cost": 120.0}
         ]
         ads = [
-            {"title": "Agência de Tráfego Pago - Cyborg", "description": "Gerenciamento profissional de Google Ads para alavancar suas vendas. Fale com um especialista."},
-            {"title": "Anunciar no Google Ads", "description": "Melhores serviços de marketing digital para sua empresa. Clique aqui."}
+            {"title": "Criação de Sites Profissionais - Cyborg", "description": "Desenvolvemos sites de alta conversão, rápidos, modernos e otimizados para SEO. Solicite uma proposta!"},
+            {"title": "Desenvolvimento de Landing Pages", "description": "LPs de alta performance focadas em vendas para o seu negócio. Fale conosco no WhatsApp."}
         ]
         audiences = [
-            {"name": "Serviços de Marketing (In-market)", "performance": "Muito boa conversão comercial", "status": "good"},
+            {"name": "Criação de Sites e Web Design (In-market)", "performance": "Muito boa conversão comercial", "status": "good"},
             {"name": "Afinidade: Entusiastas de tecnologia", "performance": "Alto custo de clique e rejeição", "status": "wasting"}
         ]
     return keywords, ads, audiences
@@ -3904,22 +3927,41 @@ def get_campaign_ai_analysis(campaign_id):
 
     else: # Site-Pesquisa
         problems_crit.append({
-            "issue": "Campanha campeã limitada e perdendo impressões por falta de saldo.",
-            "impact": "<strong>Onde está errado:</strong> A campanha de maior ROI e leads qualificados esgota o orçamento no início da tarde, perdendo as pesquisas comerciais mais quentes.<br><strong>O que melhorar:</strong> Transferir R$ 20.00 diários de orçamento da campanha do TikTok (ineficiente) diretamente para a Site-Pesquisa.<br><strong>Exemplo:</strong> Perda estimada de 15% a 20% das buscas mais quentes por falta de verba disponível no fim do dia."
+            "issue": "Campanha campeã de criação de sites limitada por orçamento diário.",
+            "impact": "<strong>Onde está errado:</strong> A campanha de maior volume de conversão para criação de sites esgota o orçamento no início da tarde, perdendo as pesquisas comerciais mais quentes.<br><strong>O que melhorar:</strong> Transferir R$ 15.00 diários de orçamento da campanha do TikTok (ineficiente) diretamente para a Site-Pesquisa.<br><strong>Exemplo:</strong> Perda estimada de 15% a 20% das buscas qualificadas por termos como 'criar site profissional' no final da tarde por falta de verba disponível."
         })
         problems_high.append({
             "issue": "Apenas um criativo de anúncio RSA configurado e ativo.",
-            "impact": "<strong>Onde está errado:</strong> A falta de um segundo anúncio responsivo impede o Google de realizar testes A/B da IA de criativos, reduzindo o CTR potencial.<br><strong>O que melhorar:</strong> Criar um novo anúncio responsivo testando outros diferenciais de atendimento presencial e garantia de qualidade.<br><strong>Exemplo:</strong> Adicionar títulos alternativos como 'Agência de Elite Google Ads' e 'Aumente seu ROI no Tráfego'."
+            "impact": "<strong>Onde está errado:</strong> A falta de um segundo anúncio responsivo de criação de sites impede o Google de realizar testes A/B, reduzindo o CTR potencial.<br><strong>O que melhorar:</strong> Criar um novo anúncio responsivo focando em landing pages de alta conversão, portfólio moderno e suporte garantido.<br><strong>Exemplo:</strong> Adicionar títulos alternativos como 'Criação de Landing Pages' e 'Sites Rápidos e Otimizados'."
         })
         problems_med.append({
-            "issue": "Ausência de extensões de imagem nos anúncios.",
-            "impact": "<strong>Onde está errado:</strong> A concorrência está exibindo anúncios com imagens (logotipo e banners) enquanto nossos anúncios aparecem em formato puramente textual.<br><strong>O que melhorar:</strong> Fazer o upload das imagens do logotipo da Cyborg e fotos dos dashboards corporativos para usar como extensões.<br><strong>Exemplo:</strong> Anúncios concorrentes ocupando maior espaço visual e obtendo melhor taxa de cliques (CTR)."
+            "issue": "Ausência de extensões de imagem nos anúncios de sites.",
+            "impact": "<strong>Onde está errado:</strong> A concorrência está exibindo anúncios com imagens (miniaturas de layouts de sites) enquanto nossos anúncios aparecem apenas em formato textual.<br><strong>O que melhorar:</strong> Adicionar extensões de imagem contendo capturas de tela dos melhores sites e LPs desenvolvidas pela Cyborg.<br><strong>Exemplo:</strong> Concorrentes ocupando maior espaço visual e obtendo melhor taxa de cliques (CTR) ao exibir imagens de portfólio."
         })
         problems_low.append({
-            "issue": "Presença residual de cliques por termos de busca informais.",
-            "impact": "<strong>Onde está errado:</strong> Cliques esporádicos provenientes de buscas por cursos ou ferramentas gratuitas gerando pequeno desperdício.<br><strong>O que melhorar:</strong> Adicionar correspondências exatas negativas para termos relacionados a cursos e tutorias online.<br><strong>Exemplo:</strong> Buscas por 'curso de google ads gratis' gerando cliques pagos que não se transformam em clientes corporativos."
+            "issue": "Desperdício com termos de busca informais e tutoriais gratuitos.",
+            "impact": "<strong>Onde está errado:</strong> Cliques provenientes de usuários buscando criar sites de graça ou tutoriais de Wix/Wordpress consumindo R$ 150.00 sem gerar leads.<br><strong>O que melhorar:</strong> Negativar palavras-chave informais como 'gratis', 'como fazer' e termos institucionais de concorrentes gratuitos (Wix, Canva).<br><strong>Exemplo:</strong> Buscas por 'como criar site gratis wix' gerando cliques pagos que não se transformam em clientes corporativos."
         })
-        pause_kws = ["curso de google ads gratis", "como fazer marketing sozinha", "divulgar empresa gratis no google", "como anunciar no google gratis"]
+        pause_kws = ["como criar site gratis wix", "fazer site gratis no google", "como criar um site sozinho gratis", "wix entrar", "wordpress entrar"]
+
+    if str(campaign_id) == "23542530230": # Pesquisa-Auto
+        new_kws = ["empresa de automacao comercial", "sistemas de automacao b2b", "consultoria de automacao whatsapp"]
+        new_auds = ["Softwares de Produtividade (In-market)", "Donos de Empresas e Decisores B2B"]
+        new_headlines = ["Automação de WhatsApp Cyborg", "Integração de Sistemas Comercial", "Ganhe Produtividade Agora"]
+        new_descriptions = ["Elimine tarefas repetitivas e integre seus sistemas com IA Cyborg. Fale com um especialista.", "Sistemas de automação comercial sob medida para sua empresa. Solicite uma proposta!"]
+        bid_strategies = ["Ajustar para CPA Alvo (tCPA) para priorizar conversões de WhatsApp"]
+    elif str(campaign_id) == "23952678122": # tiktok
+        new_kws = ["agencia de video marketing", "anunciar no tiktok para empresas", "gestao de trafego tiktok ads"]
+        new_auds = ["Público In-market: Serviços de Marketing Digital", "Decisores B2B / Pequenos Negócios"]
+        new_headlines = ["Vídeos de Alta Conversão TikTok", "Agência de TikTok Ads Sênior", "Aumente suas Vendas Comerciais"]
+        new_descriptions = ["Gerenciamento profissional de TikTok Ads para alavancar suas vendas. Solicite proposta.", "Sua marca em evidência no TikTok com vídeos altamente persuasivos."]
+        bid_strategies = ["Reduzir lance de CPC máximo e testar estratégia de Maximizar Conversões"]
+    else: # Site-Pesquisa (23547202690)
+        new_kws = ["criar site institucional profissional", "desenvolvimento de landing page", "empresa de criacao de sites"]
+        new_auds = ["Criação de Sites e Web Design (In-market)", "Comércio Eletrônico e Novos Negócios"]
+        new_headlines = ["Criação de Sites Cyborg", "Desenvolvimento de Landing Pages", "Site Rápido e Otimizado SEO"]
+        new_descriptions = ["Desenvolvemos sites institucionais e LPs de alta performance focadas em vendas. Fale conosco.", "Sites rápidos, modernos e totalmente responsivos. Solicite um orçamento sem compromisso!"]
+        bid_strategies = ["Ajustar para CPA Alvo (tCPA) para otimizar os custos por novos leads"]
 
     analysis_fallback = {
         "score_general": score_final,
@@ -3940,13 +3982,13 @@ def get_campaign_ai_analysis(campaign_id):
             "pause_keywords": pause_kws,
             "increase_budget": [f"{target_camp['name']} (+R$ 15.00/dia)"] if conversions > 10 else [],
             "reduce_budget": [f"{target_camp['name']} (-R$ 10.00/dia)"] if conversions < 5 else [],
-            "new_keywords": [f"contratar {target_camp['name']} profissional", f"melhor servico de {target_camp['name']}"],
-            "new_audiences": ["Público In-market: Serviços Comerciais", "Segmento de Intenção Personalizada"],
+            "new_keywords": new_kws,
+            "new_audiences": new_auds,
             "new_ads": {
-                "headlines": [f"Líder em {target_camp['name']}", "Atendimento Rápido WhatsApp", "Orçamento Sem Compromisso"],
-                "descriptions": [f"Melhor qualidade e atendimento em {target_camp['name']}. Fale com nossos consultores agora.", "Economize tempo e dinheiro com nossos especialistas credenciados."]
+                "headlines": new_headlines,
+                "descriptions": new_descriptions
             },
-            "bid_strategies": ["Ajustar para CPA Alvo (tCPA) para priorizar conversões de WhatsApp"]
+            "bid_strategies": bid_strategies
         }
     }
     return jsonify({"status": "success", "analysis": analysis_fallback})
