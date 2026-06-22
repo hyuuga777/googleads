@@ -3816,6 +3816,31 @@ def get_campaign_ai_analysis(campaign_id):
     if not target_camp:
         return jsonify({"status": "error", "message": f"Campanha {campaign_id} não encontrada."}), 404
 
+    # Carregar palavras-chave já negativadas desta campanha para filtrar na análise
+    negative_texts = set()
+    if os.path.exists(NEGATIVES_FILE):
+        try:
+            with open(NEGATIVES_FILE, "r", encoding="utf-8") as f:
+                neg_list = json.load(f)
+                for n in neg_list:
+                    if str(n.get("campaign_id")) == str(campaign_id):
+                        negative_texts.add(n.get("keyword", "").lower().strip())
+        except Exception:
+            pass
+            
+    if MYSQL_AVAILABLE:
+        try:
+            with get_db() as conn:
+                with conn.cursor() as cur:
+                    cur.execute("SELECT keyword FROM negative_keywords WHERE campaign_id = %s", (str(campaign_id),))
+                    for row in cur.fetchall():
+                        if isinstance(row, dict) and "keyword" in row:
+                            negative_texts.add(row["keyword"].lower().strip())
+                        elif isinstance(row, (list, tuple)) and row:
+                            negative_texts.add(row[0].lower().strip())
+        except Exception as e:
+            logging.error(f"Erro ao buscar negativas do banco em ai_analysis: {e}")
+
     visits_path = os.path.join(FRONTEND_DIR, "base", "api", "data", "visits.log.php")
     visits_count = 0
     bounced_count = 0
@@ -3922,6 +3947,9 @@ def get_campaign_ai_analysis(campaign_id):
                 {"term": "criação de sites em alphaville", "clicks": 0, "impressions": 4, "cost": 0.00, "conversions": 0}
             ]
 
+    # Filtrar termos de busca já negativados
+    search_terms_to_analyze = [t for t in search_terms_to_analyze if t["term"].lower().strip() not in negative_texts]
+
     openai_key = ""
     competitors = []
     if os.path.exists(STRATEGIES_FILE):
@@ -3939,6 +3967,12 @@ def get_campaign_ai_analysis(campaign_id):
             analysis = AiCampaignAnalyzer.run_full_campaign_analysis(
                 target_camp, search_terms_to_analyze, ads, audiences, competitors, bounce_rate, hidden_waste, openai_key
             )
+            # Filtrar sugestões da OpenAI para não sugerir palavras já negativadas
+            if "suggestions" in analysis and "pause_keywords" in analysis["suggestions"]:
+                analysis["suggestions"]["pause_keywords"] = [
+                    kw for kw in analysis["suggestions"]["pause_keywords"]
+                    if kw.lower().strip() not in negative_texts
+                ]
             return jsonify({"status": "success", "analysis": analysis})
         except Exception as e:
             logging.error(f"Erro na análise de IA via OpenAI: {e}")
@@ -4031,6 +4065,9 @@ def get_campaign_ai_analysis(campaign_id):
             "criação de sites em alphaville"
         ]
 
+    # Filtrar palavras de pausa da simulação que já estejam negativadas
+    pause_kws = [kw for kw in pause_kws if kw.lower().strip() not in negative_texts]
+
     if str(campaign_id) == "23542530230": # Pesquisa-Auto
         new_kws = ["empresa de automacao comercial", "sistemas de automacao b2b", "consultoria de automacao whatsapp"]
         new_auds = ["Softwares de Produtividade (In-market)", "Donos de Empresas e Decisores B2B"]
@@ -4101,6 +4138,36 @@ def apply_campaign_ai_suggestions(campaign_id):
                     """, (str(campaign_id), str(kw)))
         except: pass
 
+    # Também persistir localmente em negatives.json para taggear termos
+    if paused:
+        negatives = []
+        if os.path.exists(NEGATIVES_FILE):
+            try:
+                with open(NEGATIVES_FILE, "r", encoding="utf-8") as f:
+                    negatives = json.load(f)
+            except Exception:
+                pass
+        
+        existing_pairs = {(str(n.get("campaign_id")), n.get("keyword", "").lower().strip()) for n in negatives}
+        updated_negatives_file = False
+        for kw in paused:
+            kw_clean = kw.lower().strip()
+            if (str(campaign_id), kw_clean) not in existing_pairs:
+                negatives.append({
+                    "campaign_id": str(campaign_id),
+                    "keyword": kw,
+                    "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                })
+                existing_pairs.add((str(campaign_id), kw_clean))
+                updated_negatives_file = True
+                
+        if updated_negatives_file:
+            try:
+                with open(NEGATIVES_FILE, "w", encoding="utf-8") as f:
+                    json.dump(negatives, f, indent=2)
+            except Exception as e:
+                logging.error(f"Erro ao salvar arquivo de negativas em apply_campaign_ai_suggestions: {e}")
+
     if paused and client:
         try:
             campaign_criterion_service = client.get_service("CampaignCriterionService")
@@ -4167,21 +4234,8 @@ def apply_campaign_ai_suggestions(campaign_id):
     # 3. Criar anúncio RSA no Google Ads real e banco de dados local
     new_ads = suggestions.get("new_ads", {})
     if new_ads and new_ads.get("headlines"):
-        add_autonomous_log(f"Rascunho de anúncio RSA criado para '{campaign_id}' com títulos: {', '.join(new_ads['headlines'][:3])}.")
-        try:
-            with get_db() as conn:
-                with conn.cursor() as cur:
-                    cur.execute("""
-                        INSERT INTO ad_drafts (campaign_id, final_url, headlines, descriptions, status)
-                        VALUES (%s, %s, %s, %s, 'DRAFT')
-                    """, (
-                        str(campaign_id),
-                        "https://agenciacyborg.com/lead",
-                        json.dumps(new_ads.get("headlines", [])),
-                        json.dumps(new_ads.get("descriptions", [])),
-                    ))
-        except: pass
-
+        final_url = "https://agenciacyborg.com"  # Fallback seguro
+        
         if client:
             try:
                 # Encontrar o primeiro ad_group ativo desta campanha
@@ -4196,6 +4250,40 @@ def apply_campaign_ai_suggestions(campaign_id):
                 rows = list(response)
                 if rows:
                     ad_group_id = str(rows[0].ad_group.id)
+                    
+                    # Tentar obter a final_url real de algum anúncio existente do ad_group
+                    try:
+                        ad_query = f"""
+                            SELECT ad_group_ad.ad.final_urls 
+                            FROM ad_group_ad 
+                            WHERE ad_group.id = {ad_group_id} 
+                              AND ad_group_ad.status = 'ENABLED' 
+                            LIMIT 1
+                        """
+                        ad_response = ads_service.search(customer_id=CUSTOMER_ID, query=ad_query)
+                        for ad_row in ad_response:
+                            if ad_row.ad_group_ad.ad.final_urls:
+                                final_url = ad_row.ad_group_ad.ad.final_urls[0]
+                                break
+                    except Exception as ad_err:
+                        logging.warning(f"Erro ao buscar final_url do ad_group: {ad_err}")
+                        
+                    # Salvar rascunho no banco de dados local com a URL correta
+                    try:
+                        with get_db() as conn:
+                            with conn.cursor() as cur:
+                                cur.execute("""
+                                    INSERT INTO ad_drafts (campaign_id, final_url, headlines, descriptions, status)
+                                    VALUES (%s, %s, %s, %s, 'DRAFT')
+                                """, (
+                                    str(campaign_id),
+                                    final_url,
+                                    json.dumps(new_ads.get("headlines", [])),
+                                    json.dumps(new_ads.get("descriptions", [])),
+                                ))
+                    except Exception as db_err:
+                        logging.error(f"Erro ao salvar rascunho de ad no banco local: {db_err}")
+
                     ad_group_ad_service = client.get_service("AdGroupAdService")
                     ad_group_ad_operation = client.get_type("AdGroupAdOperation")
                     ad_group_ad = ad_group_ad_operation.create
@@ -4203,7 +4291,7 @@ def apply_campaign_ai_suggestions(campaign_id):
                     ad_group_ad.status = client.enums.AdGroupAdStatusEnum.PAUSED  # Salvar como pausado
                     
                     ad = ad_group_ad.ad
-                    ad.final_urls.append("https://agenciacyborg.com/lead")
+                    ad.final_urls.append(final_url)
                     
                     for text in new_ads.get("headlines", [])[:15]:
                         ad_text_asset = client.get_type("AdTextAsset")
@@ -4216,9 +4304,25 @@ def apply_campaign_ai_suggestions(campaign_id):
                         ad.responsive_search_ad.descriptions.append(ad_text_asset)
                         
                     ad_group_ad_service.mutate_ad_group_ads(customer_id=CUSTOMER_ID, operations=[ad_group_ad_operation])
-                    logging.info(f"Anúncio RSA criado com sucesso como pausado no Google Ads da campanha {campaign_id}.")
+                    logging.info(f"Anúncio RSA criado com sucesso como pausado no Google Ads da campanha {campaign_id} com final_url: {final_url}.")
             except Exception as e:
                 logging.error(f"Erro ao criar anúncio RSA no Google Ads: {e}")
+        else:
+            # Fallback se não houver cliente Google Ads
+            try:
+                with get_db() as conn:
+                    with conn.cursor() as cur:
+                        cur.execute("""
+                            INSERT INTO ad_drafts (campaign_id, final_url, headlines, descriptions, status)
+                            VALUES (%s, %s, %s, %s, 'DRAFT')
+                        """, (
+                            str(campaign_id),
+                            final_url,
+                            json.dumps(new_ads.get("headlines", [])),
+                            json.dumps(new_ads.get("descriptions", [])),
+                        ))
+            except Exception as db_err:
+                logging.error(f"Erro no fallback local ao salvar rascunho de ad: {db_err}")
             
     for kw in paused:
         add_to_learning_memory("winning_keywords", f"[Pausada/Evitada] {kw}")
